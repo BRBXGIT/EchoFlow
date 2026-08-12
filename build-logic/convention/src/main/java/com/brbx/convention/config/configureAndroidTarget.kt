@@ -1,10 +1,10 @@
-package com.brbx.convention.setup
+package com.brbx.convention.config
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
 import com.brbx.convention.constants.Android
 import org.gradle.api.Project
 
-internal fun Project.setupAndroidTarget(
+internal fun Project.configureAndroidTarget(
     androidExtension: KotlinMultiplatformAndroidLibraryExtension,
 ) {
     val modulePath = project.path
