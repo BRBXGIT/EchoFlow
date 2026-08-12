@@ -1,6 +1,7 @@
 rootProject.name = "EchoFlow"
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             mavenContent {
