@@ -9,7 +9,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 
-class AndroidAppConventionPlugin : Plugin<Project> {
+internal class AndroidAppConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
             pluginManager.apply("com.android.application")

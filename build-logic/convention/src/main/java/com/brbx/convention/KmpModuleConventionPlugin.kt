@@ -8,9 +8,12 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
-class KmpModuleConventionPlugin : Plugin<Project> {
+internal class KmpModuleConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
+            pluginManager.apply("com.android.kotlin.multiplatform.library")
+            pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+
             extensions.configure<KotlinMultiplatformExtension> {
                 configureKmpTargets()
             }
