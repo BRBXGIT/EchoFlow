@@ -1,6 +1,7 @@
-package com.brbx.convention
+package com.brbx.convention.setup
 
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
+import com.brbx.convention.constants.Android
 import org.gradle.api.Project
 
 internal fun Project.setupAndroidTarget(

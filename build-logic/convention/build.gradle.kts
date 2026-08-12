@@ -23,3 +23,28 @@ dependencies {
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.compose.compiler.gradle.plugin)
 }
+
+gradlePlugin {
+    plugins {
+        register("kmpShared") {
+            id = "echoflow.kmp.shared"
+            implementationClass = "com.brbx.convention.KmpSharedConventionPlugin"
+        }
+        register("androidApp") {
+            id = "echoflow.android.app"
+            implementationClass = "com.brbx.convention.AndroidAppConventionPlugin"
+        }
+        register("jvmApp") {
+            id = "echoflow.jvm.app"
+            implementationClass = "com.brbx.convention.JvmAppConventionPlugin"
+        }
+        register("compose") {
+            id = "echoflow.compose"
+            implementationClass = "com.brbx.convention.ComposeConventionPlugin"
+        }
+        register("kotlinLibrary") {
+            id = "echoflow.kotlin.library"
+            implementationClass = "com.brbx.convention.KotlinLibraryConventionPlugin"
+        }
+    }
+}
