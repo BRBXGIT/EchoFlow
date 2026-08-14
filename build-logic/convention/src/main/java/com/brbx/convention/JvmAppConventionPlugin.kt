@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.compose.desktop.DesktopExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
-internal class DesktopAppConventionPlugin : Plugin<Project> {
+internal class JvmAppConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
             pluginManager.apply("org.jetbrains.kotlin.jvm")

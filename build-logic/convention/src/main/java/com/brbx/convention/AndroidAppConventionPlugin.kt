@@ -1,7 +1,7 @@
 package com.brbx.convention
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.brbx.convention.config.configureKotlinMultiplatformAndroidLibraryExtension
+import com.brbx.convention.config.androidNamespace
 import com.brbx.convention.constants.Android
 import com.brbx.convention.constants.Java
 import org.gradle.api.Plugin
@@ -13,17 +13,21 @@ internal class AndroidAppConventionPlugin : Plugin<Project> {
         with(receiver = target) {
             pluginManager.apply("com.android.application")
 
-            configureKotlinMultiplatformAndroidLibraryExtension()
             configureApplicationExtension()
         }
     }
 
     private fun Project.configureApplicationExtension() {
         extensions.configure<ApplicationExtension> {
+            configureAndroid(applicationExtension = this)
             configureCompatibility()
             configureDefaultConfig()
             configureBuildTypes()
         }
+    }
+
+    private fun Project.configureAndroid(applicationExtension: ApplicationExtension) {
+        applicationExtension.namespace = androidNamespace
     }
 
     private fun ApplicationExtension.configureCompatibility() {
@@ -39,6 +43,8 @@ internal class AndroidAppConventionPlugin : Plugin<Project> {
             targetSdk = Android.TargetSdk
             versionCode = Android.VersionCode
             versionName = Android.VersionName
+            minSdk = Android.MinSdk
+            compileSdk = Android.CompileSdk
         }
     }
 
