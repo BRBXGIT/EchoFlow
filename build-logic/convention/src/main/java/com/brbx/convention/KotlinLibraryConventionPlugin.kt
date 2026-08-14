@@ -12,16 +12,27 @@ internal class KotlinLibraryConventionPlugin : Plugin<Project> {
         with(receiver = target) {
             pluginManager.apply("org.jetbrains.kotlin.jvm")
 
-            extensions.configure<JavaPluginExtension> {
-                sourceCompatibility = Java.JavaV
-                targetCompatibility = Java.JavaV
-            }
+            configureJavaPluginExtension()
+            configureKotlinCompile()
+        }
+    }
 
-            tasks.withType(KotlinCompile::class.java).configureEach {
-                compilerOptions {
-                    jvmTarget.set(Java.JvmV)
-                }
+    private fun Project.configureKotlinCompile() {
+        tasks.withType(KotlinCompile::class.java).configureEach {
+            compilerOptions {
+                jvmTarget.set(Java.JvmV)
             }
         }
+    }
+
+    private fun Project.configureJavaPluginExtension() {
+        extensions.configure<JavaPluginExtension> {
+            configureCompatibility()
+        }
+    }
+
+    private fun JavaPluginExtension.configureCompatibility() {
+        sourceCompatibility = Java.JavaV
+        targetCompatibility = Java.JavaV
     }
 }

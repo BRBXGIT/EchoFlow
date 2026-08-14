@@ -1,10 +1,9 @@
 package com.brbx.convention
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
+import com.brbx.convention.config.configureKotlinMultiplatformAndroidLibraryExtension
 import com.brbx.convention.constants.Android
 import com.brbx.convention.constants.Java
-import com.brbx.convention.config.configureAndroidTarget
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,29 +13,40 @@ internal class AndroidAppConventionPlugin : Plugin<Project> {
         with(receiver = target) {
             pluginManager.apply("com.android.application")
 
-            extensions.configure<KotlinMultiplatformAndroidLibraryExtension> {
-                configureAndroidTarget(this)
-            }
+            configureKotlinMultiplatformAndroidLibraryExtension()
+            configureApplicationExtension()
+        }
+    }
 
-            extensions.configure<ApplicationExtension> {
-                compileOptions.apply {
-                    sourceCompatibility = Java.JavaV
-                    targetCompatibility = Java.JavaV
-                }
+    private fun Project.configureApplicationExtension() {
+        extensions.configure<ApplicationExtension> {
+            configureCompatibility()
+            configureDefaultConfig()
+            configureBuildTypes()
+        }
+    }
 
-                defaultConfig {
-                    applicationId = Android.ApplicationId
-                    targetSdk = Android.TargetSdk
-                    versionCode = Android.VersionCode
-                    versionName = Android.VersionName
-                }
+    private fun ApplicationExtension.configureCompatibility() {
+        compileOptions {
+            sourceCompatibility = Java.JavaV
+            targetCompatibility = Java.JavaV
+        }
+    }
 
-                buildTypes {
-                    release {
-                        optimization {
-                            enable = false
-                        }
-                    }
+    private fun ApplicationExtension.configureDefaultConfig() {
+        defaultConfig {
+            applicationId = Android.ApplicationId
+            targetSdk = Android.TargetSdk
+            versionCode = Android.VersionCode
+            versionName = Android.VersionName
+        }
+    }
+
+    private fun ApplicationExtension.configureBuildTypes() {
+        buildTypes {
+            release {
+                optimization {
+                    enable = false
                 }
             }
         }

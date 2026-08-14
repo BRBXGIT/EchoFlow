@@ -1,8 +1,8 @@
 package com.brbx.convention
 
-import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension
-import com.brbx.convention.config.configureAndroidTarget
-import com.brbx.convention.config.configureKmpTargets
+import com.brbx.convention.config.configureJvmToolchain
+import com.brbx.convention.config.configureKotlinMultiplatformAndroidLibraryExtension
+import com.brbx.convention.constants.Java
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,12 +14,19 @@ internal class KmpModuleConventionPlugin : Plugin<Project> {
             pluginManager.apply("com.android.kotlin.multiplatform.library")
             pluginManager.apply("org.jetbrains.kotlin.multiplatform")
 
-            extensions.configure<KotlinMultiplatformExtension> {
-                configureKmpTargets()
-            }
-            extensions.configure<KotlinMultiplatformAndroidLibraryExtension> {
-                configureAndroidTarget(androidExtension = this)
-            }
+            configureKotlinMultiplatformExtension()
+            configureKotlinMultiplatformAndroidLibraryExtension()
         }
+    }
+
+    private fun Project.configureKotlinMultiplatformExtension() {
+        extensions.configure<KotlinMultiplatformExtension> {
+            configureKmpTargets()
+        }
+    }
+
+    private fun KotlinMultiplatformExtension.configureKmpTargets() {
+        jvm()
+        configureJvmToolchain()
     }
 }
