@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="512" height="512">
+    <defs>
+        <!-- Плавная тень для добавления легкого Material-объема между слоями -->
+        <filter id="m3-shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.15"/>
+        </filter>
+    </defs>
+
+    <!-- Базовый фон: Squircle (суперэллипс), стандартный для Android M3 -->
+    <rect width="120" height="120" rx="32" fill="#1C1B1F" />
+
+    <!-- Элементы "Echo" (Затухающие отражения звука) -->
+    <rect x="18" y="46" width="6" height="28" rx="3" fill="#49454F" />
+    <rect x="28" y="38" width="6" height="44" rx="3" fill="#635B70" />
+
+    <!-- Элементы "Flow" (Звуковые бары, образующие кнопку Play) -->
+    <!-- Использована тональная палитра Material 3 (от цианового к розовому) -->
+    <g filter="url(#m3-shadow)">
+        <!-- Верхний бар (Cyan) -->
+        <rect x="38" y="22" width="24" height="11" rx="6" fill="#A8EFF0" />
+
+        <!-- Второй бар (Blue) -->
+        <rect x="38" y="38" width="44" height="11" rx="6" fill="#AECBFA" />
+
+        <!-- Центральный бар - самая длинная волна (Purple - Primary) -->
+        <rect x="38" y="54" width="64" height="11" rx="6" fill="#D0BCFF" />
+
+        <!-- Четвертый бар (Light Purple) -->
+        <rect x="38" y="70" width="44" height="11" rx="6" fill="#EADDFF" />
+
+        <!-- Нижний бар (Pink) -->
+        <rect x="38" y="86" width="24" height="11" rx="6" fill="#FFD8E4" />
+    </g>
+</svg>

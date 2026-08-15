@@ -41,6 +41,17 @@ include(":core")
 
 // Feature
 include(":feature")
+
+// Preferences
+include(":core:preferences")
+include(":core:preferences:api")
+include(":core:preferences:impl")
+
+// Network
 include(":core:network")
+
+// Domain
 include(":core:domain")
+
+// Commmon
 include(":core:common")

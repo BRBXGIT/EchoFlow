@@ -13,9 +13,11 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 internal class JvmAppConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
-            pluginManager.apply("org.jetbrains.kotlin.jvm")
-            pluginManager.apply("org.jetbrains.compose")
-            pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
+            with(receiver = pluginManager) {
+                apply("org.jetbrains.kotlin.jvm")
+                apply("org.jetbrains.compose")
+                apply("org.jetbrains.kotlin.plugin.compose")
+            }
 
             configureKotlin()
             configureComposeDesktop()

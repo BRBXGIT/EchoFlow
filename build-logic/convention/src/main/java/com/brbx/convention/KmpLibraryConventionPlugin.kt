@@ -6,29 +6,26 @@ import com.brbx.convention.config.configureJvmToolchain
 import com.brbx.convention.constants.Android
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 internal class KmpLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
-            pluginManager.apply("com.android.kotlin.multiplatform.library")
-            pluginManager.apply("org.jetbrains.kotlin.multiplatform")
+            with(receiver = pluginManager) {
+                apply("com.android.kotlin.multiplatform.library")
+                apply("org.jetbrains.kotlin.multiplatform")
+            }
 
             configureKotlinMultiplatformExtension()
-            configureKotlinMultiplatformAndroidLibraryExtension()
         }
     }
 
     private fun Project.configureKotlinMultiplatformExtension() {
         extensions.configure<KotlinMultiplatformExtension> {
             configureKmpTargets()
-        }
-    }
-
-    private fun Project.configureKotlinMultiplatformAndroidLibraryExtension() {
-        extensions.configure<KotlinMultiplatformAndroidLibraryExtension> {
-            configureAndroid(androidExtension = this)
+            configureAndroid()
         }
     }
 
@@ -37,11 +34,9 @@ internal class KmpLibraryConventionPlugin : Plugin<Project> {
         configureJvmToolchain()
     }
 
-    private fun Project.configureAndroid(
-        androidExtension: KotlinMultiplatformAndroidLibraryExtension,
-    ) {
-        androidExtension.apply {
-            namespace = androidNamespace
+    private fun KotlinMultiplatformExtension.configureAndroid() {
+        (this as ExtensionAware).extensions.configure<KotlinMultiplatformAndroidLibraryExtension> {
+            namespace = project.androidNamespace
             compileSdk {
                 version = release(version = Android.CompileSdk)
             }
