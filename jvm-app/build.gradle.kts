@@ -4,3 +4,8 @@ plugins {
     // Compose multiplatform
     alias(libs.plugins.echoflow.compose.multiplatform)
 }
+
+dependencies {
+
+    implementation(compose.desktop.currentOs)
+}
