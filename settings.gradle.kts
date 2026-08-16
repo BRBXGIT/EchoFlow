@@ -41,8 +41,20 @@ include(":jvm-app")
 // Core
 include(":core")
 
-// Feature
-include(":feature")
+// Core common
+include(":core:common")
+include(":core:common:api")
+include(":core:common:impl")
+
+// Data
+include(":core:data")
+include(":core:data:api")
+include(":core:data:impl")
+
+// Domain
+include(":core:domain")
+include(":core:domain:api")
+include(":core:domain:impl")
 
 // Preferences
 include(":core:preferences")
@@ -52,15 +64,10 @@ include(":core:preferences:impl")
 // Network
 include(":core:network")
 
-// Domain
-include(":core:domain")
+// Feature
+include(":feature")
 
-// Commmon
-include(":core:common")
-include(":core:domain:api")
-include(":core:data")
-include(":core:data:api")
-include(":core:data:impl")
-include(":core:domain:impl")
-include(":core:common:api")
-include(":core:common:impl")
+// Onboarding
+include(":feature:onboarding")
+include(":feature:onboarding:api")
+include(":feature:onboarding:impl")
