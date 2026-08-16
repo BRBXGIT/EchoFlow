@@ -8,8 +8,9 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Brbx mvi
-            implementation(libs.brbx.mvi)
+            // Feature common
+            implementation(projects.feature.common.api)
+
             // Material 3
             implementation(libs.compose.material3)
             // Compose resources
