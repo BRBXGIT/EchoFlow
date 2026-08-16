@@ -33,6 +33,7 @@ materialKolor = "5.0.0"
 shimmer = "1.5.0"
 declarative-snackbar = "0.2.1"
 brbx-mvi = "1.1.2"
+solar = "2.1.0"
 
 # Testing
 junit4 = "4.13.2"
@@ -109,6 +110,7 @@ shimmer-compose = { group = "com.valentinilk.shimmer", name = "compose-shimmer",
 declarative-snackbar-core = { group = "io.github.ajiekcx", name = "declarative-snackbar-core", version.ref = "declarative-snackbar" }
 declarative-snackbar-compose = { group = "io.github.ajiekcx", name = "declarative-snackbar-compose", version.ref = "declarative-snackbar" }
 brbx-mvi = { module = "com.github.BRBXGIT:BrbxMvi", version.ref = "brbx-mvi" }
+solar = { module = "dev.chiksmedina.solar:solar", version.ref = "solar" }
 
 # Testing
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
