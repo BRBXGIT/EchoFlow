@@ -3,6 +3,7 @@ package com.brbx.preferences.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import com.brbx.preferences.StoreQualifier
 import okio.Path.Companion.toPath
 import org.koin.core.module.Module
 import org.koin.dsl.module

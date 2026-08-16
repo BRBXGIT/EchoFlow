@@ -57,3 +57,8 @@ include(":core:domain")
 
 // Commmon
 include(":core:common")
+include(":core:domain:api")
+include(":core:data")
+include(":core:data:api")
+include(":core:data:impl")
+include(":core:domain:impl")

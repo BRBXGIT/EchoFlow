@@ -4,9 +4,6 @@ plugins {
 }
 
 dependencies {
-
     // Coroutines
     api(libs.kotlinx.coroutines.core)
-    // Koin
-    implementation(libs.koin.core)
 }

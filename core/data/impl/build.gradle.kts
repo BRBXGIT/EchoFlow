@@ -1,0 +1,18 @@
+plugins {
+    // Kmp library
+    alias(libs.plugins.echoflow.kmp.library)
+}
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // Api
+            implementation(projects.core.data.api)
+            // Preferences
+            implementation(projects.core.preferences.api)
+
+            // Koin
+            implementation(libs.koin.core)
+        }
+    }
+}
