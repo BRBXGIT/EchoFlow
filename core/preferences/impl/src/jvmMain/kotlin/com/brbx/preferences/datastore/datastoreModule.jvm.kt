@@ -3,6 +3,7 @@ package com.brbx.preferences.datastore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import com.brbx.core_common.TopLevelAppConfig
 import com.brbx.preferences.StoreQualifier
 import okio.Path.Companion.toPath
 import org.koin.core.module.Module
@@ -18,6 +19,13 @@ internal actual val datastoreModule: Module = module {
     }
 }
 
-// TODO Remove relative path
+// TODO Move hardcoded EchoFlow to app config
+private val appDataDir by lazy {
+    val localAppData = System.getenv("LOCALAPPDATA")
+    "$localAppData\\${TopLevelAppConfig.AppName}".toPath()
+}
+
 private fun createStore(qualifier: StoreQualifier): DataStore<Preferences> =
-    PreferenceDataStoreFactory.createWithPath { "${qualifier.storeName}.$storeFileExt".toPath() }
+    PreferenceDataStoreFactory.createWithPath {
+        appDataDir / "${qualifier.storeName}.$storeFileExt"
+    }

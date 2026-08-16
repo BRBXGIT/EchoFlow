@@ -20,7 +20,7 @@ kotlin {
             implementation(libs.koin.core)
         }
         jvmMain.dependencies {
-
+            implementation(projects.core.common.api)
         }
     }
 }
