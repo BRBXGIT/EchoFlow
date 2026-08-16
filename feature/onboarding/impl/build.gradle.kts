@@ -4,3 +4,12 @@ plugins {
     // Compose
     alias(libs.plugins.echoflow.compose.multiplatform)
 }
+
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // Brbx mvi
+            implementation(libs.brbx.mvi)
+        }
+    }
+}
