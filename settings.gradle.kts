@@ -32,6 +32,8 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 // Apps
 include(":android-app")
 include(":jvm-app")
