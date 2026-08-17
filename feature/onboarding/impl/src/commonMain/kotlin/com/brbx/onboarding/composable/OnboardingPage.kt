@@ -1,10 +1,7 @@
 package com.brbx.onboarding.composable
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,13 +40,15 @@ import org.jetbrains.compose.resources.StringResource
 @Composable
 internal fun OnboardingPage(
     page: OnboardingPage,
+    onSkip: () -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     page.action?.let {
         WithAction(
             page = page,
-            onSkip = {},
-            onAction = {},
+            onSkip = onSkip,
+            onAction = onAction,
             modifier = modifier,
         )
     } ?: WithoutAction(page)
@@ -109,18 +108,6 @@ private fun WithAction(
             }
         }
     }
-
-@Composable
-private fun SpacedColumn(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit,
-) =
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        content = content,
-    )
 
 @Composable
 private fun SkipButton(
@@ -278,7 +265,7 @@ private fun OnboardingPageWithoutActionPreview() =
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionPreview() =
-    PreviewInternal(page = OnboardingPage.Notifications())
+    PreviewInternal(page = OnboardingPage.Authentication())
 
 @EchoFlowPreview
 @Composable
@@ -292,9 +279,11 @@ private fun PreviewInternal(page: OnboardingPage) =
         contentAlignment = Alignment.Center,
     ) {
         OnboardingPage(
+            onSkip = {},
+            onAction = {},
             page = page,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(all = mDimens.micro8)
+                .padding(all = mDimens.micro8),
         )
     }

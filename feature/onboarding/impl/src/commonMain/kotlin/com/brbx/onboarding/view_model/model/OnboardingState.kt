@@ -48,14 +48,16 @@ import echoflow.feature.onboarding.impl.generated.resources.title_greeting
 import echoflow.feature.onboarding.impl.generated.resources.title_notifications
 import org.jetbrains.compose.resources.StringResource
 
+internal expect fun createPages(): List<OnboardingPage>
+
 @Immutable
 internal data class OnboardingState(
     val currentPageIndex: Int = 0,
-    val currentPage: Int = currentPageIndex + 1,
     val pages: List<OnboardingPage> = createPages(),
-)
-
-internal expect fun createPages(): List<OnboardingPage>
+    val pageCount: Int = pages.size,
+) {
+    val currentPage: Int get() = currentPageIndex + 1
+}
 
 @Immutable
 internal sealed interface OnboardingPage {
