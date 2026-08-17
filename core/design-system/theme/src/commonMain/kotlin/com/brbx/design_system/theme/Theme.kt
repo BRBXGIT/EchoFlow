@@ -9,10 +9,11 @@ import androidx.compose.ui.graphics.Color
 import com.materialkolor.rememberDynamicColorScheme
 
 @Composable
-fun AppTheme(
+fun EchoFlowTheme(
     seedColor: Color = EchoFlowSeedColor,
     isDark: Boolean = isSystemInDarkTheme(),
     motion: EchoFlowMotion = DefaultMotion(),
+    dimens: EchoFlowDimens = DefaultDimens(),
     content: @Composable () -> Unit,
 ) {
     val dynamicColorScheme = rememberDynamicColorScheme(
@@ -22,6 +23,7 @@ fun AppTheme(
 
     CompositionLocalProvider(
         LocalMotion provides motion,
+        LocalDimens provides dimens,
     ) {
         MaterialTheme(
             colorScheme = dynamicColorScheme,
@@ -32,7 +34,8 @@ fun AppTheme(
     }
 }
 
-val mMotion @Composable @ReadOnlyComposable get() = MaterialTheme.motionScheme
+val mDimens @Composable @ReadOnlyComposable get() = LocalDimens.current
+val mMotion @Composable @ReadOnlyComposable get() = LocalMotion.current
 val mColors @Composable @ReadOnlyComposable get() = MaterialTheme.colorScheme
 val mTypography @Composable @ReadOnlyComposable get() = MaterialTheme.typography
 val mShapes @Composable @ReadOnlyComposable get() = MaterialTheme.shapes

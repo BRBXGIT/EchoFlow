@@ -10,9 +10,9 @@ kotlin {
         commonMain.dependencies {
             // Feature common
             implementation(projects.feature.common.api)
+            // Theme
+            implementation(projects.core.designSystem.theme)
 
-            // Material 3
-            implementation(libs.compose.material3)
             // Compose resources
             implementation(libs.compose.resources)
             // Solar
