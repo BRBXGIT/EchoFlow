@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.brbx.debug.compose.EchoFlowPreview
@@ -51,14 +52,13 @@ internal fun OnboardingPage(
             onAction = {},
             modifier = modifier,
         )
-    } ?: WithoutAction(page, modifier)
+    } ?: WithoutAction(page)
 
 @Composable
 private fun WithoutAction(
     page: OnboardingPage,
-    modifier: Modifier = Modifier,
 ) =
-    SpacedColumn(modifier) {
+    SpacedColumn {
         Title(res = page.title)
         IconsCollage(collage = page.collage)
         Description(res = page.description)
@@ -87,7 +87,7 @@ private fun WithAction(
         SpacedColumn(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
-            val macro2Height = mDimens.macro2
+            val macro2Height = mDimens.macro7
             val modifier = remember {
                 Modifier
                     .fillMaxWidth()
@@ -117,7 +117,8 @@ private fun SpacedColumn(
 ) =
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(mDimens.macro1),
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
+        horizontalAlignment = Alignment.CenterHorizontally,
         content = content,
     )
 
@@ -163,6 +164,7 @@ private fun Title(
         text = safeStringResource(res),
         style = mTypography.headlineLarge,
         modifier = modifier,
+        textAlign = TextAlign.Center,
     )
 
 @Composable
@@ -174,6 +176,7 @@ private fun Description(
         text = safeStringResource(res),
         style = mTypography.bodyLarge,
         modifier = modifier,
+        textAlign = TextAlign.Center,
     )
 
 @Composable
@@ -284,9 +287,14 @@ private fun OnboardingPageWithActionAndSkipPreview() =
 
 @Composable
 private fun PreviewInternal(page: OnboardingPage) =
-    OnboardingPage(
-        page = page,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(all = mDimens.micro8)
-    )
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        OnboardingPage(
+            page = page,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(all = mDimens.micro8)
+        )
+    }
