@@ -19,6 +19,12 @@ kotlin {
             implementation(libs.solar)
             // Koin ViewModel
             implementation(libs.koin.core.viewmodel)
+            // Compose preview
+            implementation(libs.compose.ui.tooling.preview)
+        }
+        androidMain.dependencies {
+            // Compose preview
+            implementation(libs.compose.ui.tooling)
         }
     }
 }

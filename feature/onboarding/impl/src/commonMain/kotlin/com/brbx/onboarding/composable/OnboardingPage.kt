@@ -1,55 +1,193 @@
 package com.brbx.onboarding.composable
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import com.brbx.onboarding.view_model.model.OnboardingPage
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.brbx.design_system.theme.EchoFlowTheme
 import com.brbx.design_system.theme.mColors
+import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
+import com.brbx.design_system.theme.mTypography
+import com.brbx.onboarding.view_model.model.OnboardingPage
+import echoflow.feature.onboarding.impl.generated.resources.Res
+import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun OnboardingPage(
     page: OnboardingPage,
     modifier: Modifier = Modifier,
 ) {
-
+    page.action?.let {
+        WithAction(
+            page = page,
+            onSkip = {},
+            onAction = {},
+            modifier = modifier,
+        )
+    } ?: WithoutAction(page, modifier)
 }
 
 @Composable
 private fun WithoutAction(
     page: OnboardingPage,
     modifier: Modifier = Modifier,
-) {
+) =
+    SpacedColumn(modifier) {
+        Title(res = page.title)
+        IconsCollage(collage = page.collage)
+        Description(res = page.description)
+    }
 
-}
+@Composable
+private fun WithAction(
+    page: OnboardingPage,
+    onSkip: () -> Unit,
+    onAction: () -> Unit,
+    modifier: Modifier = Modifier,
+) =
+    Box(
+        modifier = modifier,
+    ) {
+        SpacedColumn(
+            modifier = Modifier.align(Alignment.TopCenter)
+        ) {
+            Title(res = page.title)
+            Description(res = page.description)
+        }
+        IconsCollage(
+            collage = page.collage,
+            modifier = Modifier.align(Alignment.Center)
+        )
+        SpacedColumn(
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            val macro2Height = mDimens.macro2
+            val modifier = remember {
+                Modifier
+                    .fillMaxWidth()
+                    .height(macro2Height)
+            }
+            page.action?.let { action ->
+                if (action.canSkip) {
+                    SkipButton(
+                        textRes = Res.string.label_skip_button,
+                        onClick = onSkip,
+                        modifier = modifier,
+                    )
+                }
+                ActionButton(
+                    textRes = action.text,
+                    onClick = onAction,
+                    modifier = modifier,
+                )
+            }
+        }
+    }
+
+@Composable
+private fun SpacedColumn(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) =
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(mDimens.macro1),
+        content = content,
+    )
+
+@Composable
+private fun SkipButton(
+    textRes: StringResource,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) =
+    TextButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        Text(
+            text = stringResource(textRes),
+            style = mTypography.bodyMedium,
+            fontWeight = FontWeight.W600,
+        )
+    }
+
+@Composable
+private fun ActionButton(
+    textRes: StringResource,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) =
+    Button(
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Text(
+            text = stringResource(textRes),
+            style = mTypography.bodyMedium,
+        )
+    }
+
+@Composable
+private fun Title(
+    res: StringResource,
+    modifier: Modifier = Modifier,
+) =
+    Text(
+        text = stringResource(res),
+        style = mTypography.headlineLarge,
+        modifier = modifier,
+    )
+
+@Composable
+private fun Description(
+    res: StringResource,
+    modifier: Modifier = Modifier,
+) =
+    Text(
+        text = stringResource(res),
+        style = mTypography.bodyLarge,
+        modifier = modifier,
+    )
 
 @Composable
 private fun IconsCollage(
     collage: OnboardingPage.IconCollage,
     modifier: Modifier = Modifier
-) {
+) =
     Box(
         modifier = modifier
             .aspectRatio(1f)
-            .padding(all = 16.dp)
+            .padding(all = mDimens.macro8)
     ) {
-        // Левая верхняя (Средний размер, среднее скругление, небольшой наклон влево)
         CollageIconWrapper(
             icon = collage.topStart,
             shape = mShapes.medium,
@@ -57,12 +195,11 @@ private fun IconsCollage(
             contentColor = mColors.onSecondaryContainer,
             modifier = Modifier
                 .align(Alignment.TopStart)
-                .offset(x = 16.dp, y = 32.dp)
-                .rotate(-12f)
+                .offset(x = mDimens.micro8, y = mDimens.macro4)
+                .graphicsLayer { rotationZ = -12f }
                 .size(64.dp)
         )
 
-        // Правая верхняя (Большой размер, крупное скругление, наклон вправо)
         CollageIconWrapper(
             icon = collage.topEnd,
             shape = mShapes.large,
@@ -70,12 +207,11 @@ private fun IconsCollage(
             contentColor = mColors.onTertiaryContainer,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = -16.dp, y = 16.dp)
-                .rotate(15f)
+                .offset(x = -mDimens.micro8, y = mDimens.micro8)
+                .graphicsLayer { rotationZ = 15f }
                 .size(72.dp)
         )
 
-        // Левая нижняя (Маленькая, минимальное скругление)
         CollageIconWrapper(
             icon = collage.bottomStart,
             shape = mShapes.small,
@@ -83,26 +219,23 @@ private fun IconsCollage(
             contentColor = mColors.onSurfaceVariant,
             modifier = Modifier
                 .align(Alignment.BottomStart)
-                .offset(x = 24.dp, y = -16.dp)
-                .rotate(-10f)
+                .offset(x = mDimens.macro2, y = -mDimens.micro8)
+                .graphicsLayer { rotationZ = -10f }
                 .size(56.dp)
         )
 
-        // Правая нижняя (Идеальный круг, контрастный primary цвет)
         CollageIconWrapper(
             icon = collage.bottomEnd,
-            shape = CircleShape, // Добавим CircleShape для разнообразия геометрических форм
+            shape = CircleShape,
             containerColor = mColors.primary,
             contentColor = mColors.onPrimary,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .offset(x = -32.dp, y = -24.dp)
-                .rotate(8f)
+                .offset(x = -mDimens.macro4, y = -mDimens.macro2)
+                .graphicsLayer { rotationZ = 8f }
                 .size(64.dp)
         )
 
-        // Центральная (Самая крупная, по центру, без наклона, максимальное скругление)
-        // Располагаем её последней в коде, чтобы она отрисовалась поверх остальных (z-index)
         CollageIconWrapper(
             icon = collage.center,
             shape = mShapes.extraLarge,
@@ -111,10 +244,9 @@ private fun IconsCollage(
             modifier = Modifier
                 .align(Alignment.Center)
                 .size(120.dp),
-            iconSize = 56.dp // Сама иконка тоже крупнее
+            iconSize = 56.dp,
         )
     }
-}
 
 @Composable
 private fun CollageIconWrapper(
@@ -124,12 +256,10 @@ private fun CollageIconWrapper(
     contentColor: Color,
     modifier: Modifier = Modifier,
     iconSize: Dp = 32.dp
-) {
+) =
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .clip(shape)
-            .background(containerColor)
+        modifier = modifier.background(color = containerColor, shape = shape)
     ) {
         Icon(
             imageVector = icon,
@@ -138,4 +268,29 @@ private fun CollageIconWrapper(
             modifier = Modifier.size(iconSize)
         )
     }
-}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun OnboardingPageWithoutActionPreview() =
+    PreviewInternal(page = OnboardingPage.Greeting())
+
+@Preview(showSystemUi = true)
+@Composable
+private fun OnboardingPageWithActionPreview() =
+    PreviewInternal(page = OnboardingPage.Notifications())
+
+@Preview(showSystemUi = true)
+@Composable
+private fun OnboardingPageWithActionAndSkipPreview() =
+    PreviewInternal(page = OnboardingPage.BatteryOptimization())
+
+@Composable
+private fun PreviewInternal(page: OnboardingPage) =
+    EchoFlowTheme {
+        OnboardingPage(
+            page = page,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(all = mDimens.micro8)
+        )
+    }
