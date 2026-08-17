@@ -6,12 +6,10 @@ import com.brbx.mvicore.helpers.stateInWhileSubscribed
 import com.brbx.onboarding.view_model.delegate.PageDelegate
 import com.brbx.onboarding.view_model.model.OnboardingIntent
 import com.brbx.onboarding.view_model.model.OnboardingState
-import org.koin.core.component.KoinComponent
 
-internal class OnboardingViewModel :
-    EchoFlowViewModel<OnboardingState, OnboardingIntent>(initialState = OnboardingState()),
-    KoinComponent {
-
+internal class OnboardingViewModel : EchoFlowViewModel<OnboardingState, OnboardingIntent>(
+    initialState = OnboardingState(),
+) {
     override val state = _state.stateInWhileSubscribed(initialValue = OnboardingState())
     override val effects = _effects.shareInWhileSubscribed()
 

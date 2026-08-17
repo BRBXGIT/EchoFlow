@@ -8,17 +8,12 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Feature common
-            implementation(projects.feature.common.api)
-
             // Material 3
-            implementation(libs.compose.material3)
+            api(libs.compose.material3)
+            // Material Kolor
+            implementation(libs.materialKolor)
             // Compose resources
             implementation(libs.compose.resources)
-            // Solar
-            implementation(libs.solar)
-            // Koin ViewModel
-            implementation(libs.koin.core.viewmodel)
         }
     }
 }

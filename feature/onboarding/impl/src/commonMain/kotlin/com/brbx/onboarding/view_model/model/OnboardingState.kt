@@ -57,6 +57,7 @@ internal data class OnboardingState(
 
 internal expect fun createPages(): List<OnboardingPage>
 
+@Immutable
 internal sealed interface OnboardingPage {
     val title: StringResource
     val description: StringResource

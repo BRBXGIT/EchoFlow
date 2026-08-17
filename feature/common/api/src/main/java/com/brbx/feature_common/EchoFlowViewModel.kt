@@ -11,6 +11,6 @@ abstract class EchoFlowViewModel<State, in Intent : Any>(
 ) : ContainedMviViewModel<State, EchoFlowEffect, Intent>(initialState, effectReplay),
     KoinComponent {
 
-    protected inline fun <reified T : Any> injectDelegate(): Lazy<T> =
-        inject { parametersOf(mviScope) }
+    protected inline fun <reified D : Any> injectDelegate(): Lazy<D> =
+        inject { parametersOf(scope) }
 }

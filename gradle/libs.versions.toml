@@ -32,7 +32,7 @@ material-motion-compose = "2.0.1"
 materialKolor = "5.0.0"
 shimmer = "1.5.0"
 declarative-snackbar = "0.2.1"
-brbx-mvi = "1.1.40"
+brbx-mvi = "1.1.41"
 solar = "2.1.0"
 
 # Testing

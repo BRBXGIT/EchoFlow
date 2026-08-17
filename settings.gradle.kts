@@ -52,6 +52,9 @@ include(":core:data")
 include(":core:data:api")
 include(":core:data:impl")
 
+// Design-system
+include(":core:design-system")
+
 // Domain
 include(":core:domain")
 include(":core:domain:api")
@@ -77,3 +80,5 @@ include(":feature:common:impl")
 include(":feature:onboarding")
 include(":feature:onboarding:api")
 include(":feature:onboarding:impl")
+include(":core:design-system:theme")
+include(":core:design-system:components")
