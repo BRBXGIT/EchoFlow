@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.design_system.components.utils.safeStringResource
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
@@ -37,7 +38,6 @@ import com.brbx.onboarding.view_model.model.OnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun OnboardingPage(
@@ -132,7 +132,7 @@ private fun SkipButton(
         modifier = modifier,
     ) {
         Text(
-            text = stringResource(textRes),
+            text = safeStringResource(textRes),
             style = mTypography.bodyMedium,
             fontWeight = FontWeight.W600,
         )
@@ -149,7 +149,7 @@ private fun ActionButton(
         onClick = onClick
     ) {
         Text(
-            text = stringResource(textRes),
+            text = safeStringResource(textRes),
             style = mTypography.bodyMedium,
         )
     }
@@ -160,7 +160,7 @@ private fun Title(
     modifier: Modifier = Modifier,
 ) =
     Text(
-        text = stringResource(res),
+        text = safeStringResource(res),
         style = mTypography.headlineLarge,
         modifier = modifier,
     )
@@ -171,7 +171,7 @@ private fun Description(
     modifier: Modifier = Modifier,
 ) =
     Text(
-        text = stringResource(res),
+        text = safeStringResource(res),
         style = mTypography.bodyLarge,
         modifier = modifier,
     )
