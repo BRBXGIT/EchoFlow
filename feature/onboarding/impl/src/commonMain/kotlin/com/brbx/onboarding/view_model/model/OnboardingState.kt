@@ -1,4 +1,4 @@
-package com.brbx.onboarding.view_model
+package com.brbx.onboarding.view_model.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector

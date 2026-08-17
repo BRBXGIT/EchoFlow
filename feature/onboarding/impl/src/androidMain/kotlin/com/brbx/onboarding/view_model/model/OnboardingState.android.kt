@@ -1,7 +1,9 @@
-package com.brbx.onboarding.view_model
+package com.brbx.onboarding.view_model.model
 
 internal actual fun createPages(): List<OnboardingPage> =
     buildList {
         add(OnboardingPage.Greeting())
+        add(OnboardingPage.Notifications())
+        add(OnboardingPage.BatteryOptimization())
         add(OnboardingPage.Authentication())
     }

@@ -6,4 +6,6 @@ plugins {
 dependencies {
     // Brbx mvi
     api(libs.brbx.mvi)
+    // Koin
+    api(libs.koin.core)
 }

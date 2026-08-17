@@ -17,6 +17,8 @@ kotlin {
             implementation(libs.compose.resources)
             // Solar
             implementation(libs.solar)
+            // Koin
+            implementation(libs.koin.core)
         }
     }
 }
