@@ -13,6 +13,8 @@ import echoflow.core.design_system.theme.generated.resources.gsans_variable
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
+private val baseline = Typography()
+
 @Composable
 internal fun echoFlowType(): Typography =
     Typography(
@@ -32,8 +34,6 @@ internal fun echoFlowType(): Typography =
         labelMedium = baseline.labelMedium.applyFontFamily(),
         labelSmall = baseline.labelSmall.applyFontFamily(),
     )
-
-private val baseline = Typography()
 
 @Composable
 private fun TextStyle.applyFontFamily(
