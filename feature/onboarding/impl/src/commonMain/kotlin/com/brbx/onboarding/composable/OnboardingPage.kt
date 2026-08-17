@@ -26,10 +26,9 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.brbx.design_system.theme.EchoFlowTheme
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
@@ -44,7 +43,7 @@ import org.jetbrains.compose.resources.stringResource
 internal fun OnboardingPage(
     page: OnboardingPage,
     modifier: Modifier = Modifier,
-) {
+) =
     page.action?.let {
         WithAction(
             page = page,
@@ -53,7 +52,6 @@ internal fun OnboardingPage(
             modifier = modifier,
         )
     } ?: WithoutAction(page, modifier)
-}
 
 @Composable
 private fun WithoutAction(
@@ -269,28 +267,26 @@ private fun CollageIconWrapper(
         )
     }
 
-@Preview(showSystemUi = true)
+@EchoFlowPreview
 @Composable
 private fun OnboardingPageWithoutActionPreview() =
     PreviewInternal(page = OnboardingPage.Greeting())
 
-@Preview(showSystemUi = true)
+@EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionPreview() =
     PreviewInternal(page = OnboardingPage.Notifications())
 
-@Preview(showSystemUi = true)
+@EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionAndSkipPreview() =
     PreviewInternal(page = OnboardingPage.BatteryOptimization())
 
 @Composable
 private fun PreviewInternal(page: OnboardingPage) =
-    EchoFlowTheme {
-        OnboardingPage(
-            page = page,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = mDimens.micro8)
-        )
-    }
+    OnboardingPage(
+        page = page,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = mDimens.micro8)
+    )

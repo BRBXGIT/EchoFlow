@@ -12,6 +12,8 @@ kotlin {
             implementation(projects.feature.common.api)
             // Theme
             implementation(projects.core.designSystem.theme)
+            // Debug
+            implementation(projects.core.debug)
 
             // Compose resources
             implementation(libs.compose.resources)
@@ -19,12 +21,14 @@ kotlin {
             implementation(libs.solar)
             // Koin ViewModel
             implementation(libs.koin.core.viewmodel)
-            // Compose preview
-            implementation(libs.compose.ui.tooling.preview)
         }
         androidMain.dependencies {
             // Compose preview
             implementation(libs.compose.ui.tooling)
         }
     }
+}
+
+dependencies {
+    androidRuntimeClasspath(libs.compose.ui.tooling)
 }
