@@ -33,7 +33,9 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.onboarding.view_model.model.OnboardingPage
+import com.brbx.onboarding.view_model.onboarding_page.Authentication
+import com.brbx.onboarding.view_model.onboarding_page.Greeting
+import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
@@ -273,17 +275,24 @@ private fun CollageIconWrapper(
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithoutActionPreview() =
-    PreviewInternal(page = OnboardingPage.Greeting())
+    PreviewInternal(page = Greeting)
 
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionPreview() =
-    PreviewInternal(page = OnboardingPage.Authentication())
+    PreviewInternal(page = Authentication)
 
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionAndSkipPreview() =
-    PreviewInternal(page = OnboardingPage.BatteryOptimization())
+    PreviewInternal(
+        page = object : OnboardingPage {
+            override val title: StringResource = Authentication.title
+            override val description: StringResource = Authentication.description
+            override val collage: OnboardingPage.IconCollage = Authentication.collage
+            override val action: OnboardingPage.Action = Authentication.action.copy(canSkip = true)
+        }
+    )
 
 @Composable
 private fun PreviewInternal(page: OnboardingPage) =

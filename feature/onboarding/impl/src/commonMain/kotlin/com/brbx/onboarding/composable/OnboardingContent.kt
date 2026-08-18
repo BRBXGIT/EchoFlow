@@ -2,6 +2,7 @@ package com.brbx.onboarding.composable
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -9,8 +10,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
-import com.brbx.onboarding.view_model.model.OnboardingPage
-import com.brbx.onboarding.view_model.model.OnboardingState
+import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
+import com.brbx.onboarding.view_model.OnboardingState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -33,9 +34,9 @@ internal fun OnboardingContent(
         )
 
         val animationScope = rememberCoroutineScope()
-        Pager(
+        HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) { page ->
             val onboardingPage = remember(key1 = page) { state.pages[page] }
             OnboardingPage(
