@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -147,11 +148,10 @@ private fun Title(
     res: StringResource,
     modifier: Modifier = Modifier,
 ) =
-    Text(
-        text = safeStringResource(res),
-        style = mTypography.headlineLarge,
+    TextWrapper(
+        res = res,
+        style = mTypography.headlineMedium,
         modifier = modifier,
-        textAlign = TextAlign.Center,
     )
 
 @Composable
@@ -159,11 +159,24 @@ private fun Description(
     res: StringResource,
     modifier: Modifier = Modifier,
 ) =
-    Text(
-        text = safeStringResource(res),
+    TextWrapper(
+        res = res,
         style = mTypography.bodyLarge,
         modifier = modifier,
+    )
+
+@Composable
+private fun TextWrapper(
+    res: StringResource,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+) =
+    Text(
+        text = safeStringResource(res),
+        modifier = modifier,
+        style = style,
         textAlign = TextAlign.Center,
+        color = mColors.onBackground,
     )
 
 @Composable

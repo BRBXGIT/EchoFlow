@@ -52,12 +52,9 @@ internal expect fun createPages(): List<OnboardingPage>
 
 @Immutable
 internal data class OnboardingState(
-    val currentPageIndex: Int = 0,
     val pages: List<OnboardingPage> = createPages(),
     val pageCount: Int = pages.size,
-) {
-    val currentPage: Int get() = currentPageIndex + 1
-}
+)
 
 @Immutable
 internal sealed interface OnboardingPage {

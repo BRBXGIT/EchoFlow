@@ -21,8 +21,9 @@ kotlin {
             implementation(libs.compose.resources)
             // Solar
             implementation(libs.solar)
-            // Koin ViewModel
+            // Koin
             implementation(libs.koin.core.viewmodel)
+            implementation(libs.koin.compose.viewmodel)
         }
     }
 }

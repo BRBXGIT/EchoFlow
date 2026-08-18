@@ -4,16 +4,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
+import com.brbx.onboarding.view_model.model.OnboardingPage
 import com.brbx.onboarding.view_model.model.OnboardingState
 import kotlinx.coroutines.launch
 
 @Composable
 internal fun OnboardingContent(
     state: OnboardingState,
+    onOnboardingAction: (page: OnboardingPage) -> Unit,
     modifier: Modifier = Modifier,
 ) =
     SpacedColumn(modifier) {
@@ -34,12 +37,13 @@ internal fun OnboardingContent(
             state = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
+            val onboardingPage = remember(key1 = page) { state.pages[page] }
             OnboardingPage(
-                page = state.pages[page],
+                page = onboardingPage,
                 onSkip = {
                     animationScope.launch { pagerState.animateScrollToPage(currentPage + 1) }
                 },
-                onAction = {},
+                onAction = { onOnboardingAction(onboardingPage) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
@@ -54,4 +58,4 @@ internal fun OnboardingContent(
 @EchoFlowPreview
 @Composable
 private fun OnboardingContentPreview() =
-    OnboardingContent(state = OnboardingState(), modifier = Modifier.fillMaxSize())
+    OnboardingContent(state = OnboardingState(), onOnboardingAction = {}, modifier = Modifier.fillMaxSize())
