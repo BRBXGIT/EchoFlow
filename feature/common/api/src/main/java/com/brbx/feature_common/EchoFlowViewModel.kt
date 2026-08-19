@@ -8,7 +8,7 @@ import org.koin.core.parameter.parametersOf
 abstract class EchoFlowViewModel<State, in Intent : Any>(
     initialState: State,
     effectReplay: Int = 1,
-) : ContainedMviViewModel<State, EchoFlowEffect, Intent>(initialState, effectReplay),
+) : ContainedMviViewModel<State, EchoFlowEffect, Unit, Intent>(initialState, effectReplay),
     KoinComponent {
 
     protected inline fun <reified D : Any> injectDelegate(): Lazy<D> =

@@ -31,8 +31,7 @@ coil = "3.5.0"
 material-motion-compose = "2.0.1"
 materialKolor = "5.0.0"
 shimmer = "1.5.0"
-declarative-snackbar = "0.2.1"
-brbx-mvi = "1.1.41"
+brbx-mvi = "1.1.50"
 solar = "2.1.0"
 
 # Testing
@@ -107,8 +106,6 @@ coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", v
 material-motion-compose-core = { group = "io.github.fornewid", name = "material-motion-compose-core", version.ref = "material-motion-compose" }
 materialKolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "materialKolor" }
 shimmer-compose = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "shimmer" }
-declarative-snackbar-core = { group = "io.github.ajiekcx", name = "declarative-snackbar-core", version.ref = "declarative-snackbar" }
-declarative-snackbar-compose = { group = "io.github.ajiekcx", name = "declarative-snackbar-compose", version.ref = "declarative-snackbar" }
 brbx-mvi = { module = "com.github.BRBXGIT:BrbxMvi", version.ref = "brbx-mvi" }
 solar = { module = "dev.chiksmedina.solar:solar", version.ref = "solar" }
 

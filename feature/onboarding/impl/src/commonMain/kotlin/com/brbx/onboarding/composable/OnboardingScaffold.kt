@@ -20,7 +20,7 @@ import org.koin.compose.viewmodel.koinViewModel
 internal fun OnboardingScaffold(
     viewModel: OnboardingViewModel = koinViewModel(),
 ) {
-    HandleEffects(viewModel.effects)
+    HandleScreenEffects(viewModel.screenEffects)
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
@@ -31,7 +31,7 @@ internal fun OnboardingScaffold(
         OnboardingContent(
             onOnboardingAction = { page ->
                 val effect = OnboardingEffect.HandlePageAction(page)
-                viewModel.postEffect(effect)
+                viewModel.postScreenEffect(effect)
             },
             state = state,
             modifier = Modifier
@@ -42,10 +42,10 @@ internal fun OnboardingScaffold(
 }
 
 @Composable
-internal expect fun HandleEffects(effects: SharedFlow<OnboardingEffect>)
+internal expect fun HandleScreenEffects(effects: SharedFlow<OnboardingEffect>)
 
 @Composable
-internal inline fun HandleEffectsInternal(
+internal inline fun HandleScreenEffectsInternal(
     effects: SharedFlow<OnboardingEffect>,
     crossinline handlePageAction: (page: OnboardingPage) -> Unit,
 ) =

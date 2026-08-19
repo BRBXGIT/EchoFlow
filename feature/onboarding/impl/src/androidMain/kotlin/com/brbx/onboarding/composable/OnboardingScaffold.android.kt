@@ -6,7 +6,6 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.net.toUri
 import com.brbx.onboarding.view_model.OnboardingEffect
@@ -16,12 +15,12 @@ import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
-internal actual fun HandleEffects(effects: SharedFlow<OnboardingEffect>) {
+internal actual fun HandleScreenEffects(effects: SharedFlow<OnboardingEffect>) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) {}
-    HandleEffectsInternal(effects) { page ->
+    HandleScreenEffectsInternal(effects) { page ->
         handlePageAction(
             page = page,
             handleBatteryOptimization = { p -> startSettingsIntent(context, permission = p) },
