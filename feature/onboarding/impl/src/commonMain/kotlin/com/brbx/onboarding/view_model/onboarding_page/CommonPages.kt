@@ -1,5 +1,6 @@
 package com.brbx.onboarding.view_model.onboarding_page
 
+import androidx.compose.runtime.Composable
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage.Action
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage.IconCollage
 import echoflow.feature.onboarding.impl.generated.resources.Res
@@ -23,3 +24,6 @@ internal object Authentication : OnboardingPage {
     override val action: Action = Action(text = Res.string.label_authnticate_button)
     override val collage: IconCollage = CommonPagesCollageFactory.authenticationCollage
 }
+
+@Composable
+internal expect fun Authentication.authenticate()
