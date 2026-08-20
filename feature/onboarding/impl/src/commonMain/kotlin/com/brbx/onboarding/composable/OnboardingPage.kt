@@ -33,8 +33,7 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.onboarding.view_model.onboarding_page.Authentication
-import com.brbx.onboarding.view_model.onboarding_page.Greeting
+import com.brbx.onboarding.view_model.onboarding_page.CommonPage
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
@@ -275,22 +274,22 @@ private fun CollageIconWrapper(
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithoutActionPreview() =
-    PreviewInternal(page = Greeting)
+    PreviewInternal(page = CommonPage.Greeting)
 
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionPreview() =
-    PreviewInternal(page = Authentication)
+    PreviewInternal(page = CommonPage.Authentication)
 
 @EchoFlowPreview
 @Composable
 private fun OnboardingPageWithActionAndSkipPreview() =
     PreviewInternal(
         page = object : OnboardingPage {
-            override val title: StringResource = Authentication.title
-            override val description: StringResource = Authentication.description
-            override val collage: OnboardingPage.IconCollage = Authentication.collage
-            override val action: OnboardingPage.Action = Authentication.action.copy(canSkip = true)
+            override val title: StringResource = CommonPage.Authentication.title
+            override val description: StringResource = CommonPage.Authentication.description
+            override val collage: OnboardingPage.IconCollage = CommonPage.Authentication.collage
+            override val action: OnboardingPage.Action = CommonPage.Authentication.action.copy(canSkip = true)
         }
     )
 

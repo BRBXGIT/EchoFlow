@@ -1,0 +1,12 @@
+<resources>
+    <string name="title_battery_optimization">Battery Optimization</string>
+    <string name="description_battery_optimization">To keep your music playing without interruptions, we recommend disabling battery optimization for EchoFlow.</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="description_notifications">Allow notifications to control playback even when your phone is locked or while using other apps.</string>
+
+    <string name="label_action_button">Allow</string>
+    <string name="label_skip_button">Skip</string>
+
+    <string name="label_snackbar_battery_optimization_dialog">This permission must be given with settings dialog</string>
+    <string name="label_snackbar_battery_optimization_dialog_action">Open</string>
+</resources>

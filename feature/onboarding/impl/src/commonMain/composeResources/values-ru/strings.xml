@@ -1,14 +1,10 @@
 <resources>
     <string name="title_greeting">Добро пожаловать в EchoFlow</string>
     <string name="description_greeting">Открывайте новую музыку, находите любимые треки и слушайте их через SoundCloud. EchoFlow помогает легко находить музыку и наслаждаться ей в любое время.</string>
-    <string name="title_battery_optimization">Оптимизация батареи</string>
-    <string name="description_battery_optimization">Чтобы музыка не прерывалась, рекомендуем отключить оптимизацию батареи для EchoFlow.</string>
-    <string name="title_notifications">Уведомления</string>
-    <string name="description_notifications">Разрешите уведомления, чтобы управлять воспроизведением даже при заблокированном экране или во время использования других приложений.</string>
     <string name="title_authentication">Вход через SoundCloud</string>
     <string name="description_authentication">Войдите через SoundCloud, чтобы подключить аккаунт и получить доступ к своей музыке. Для завершения входа вы будете безопасно перенаправлены на сайт SoundCloud.</string>
 
-    <string name="label_action_button">Разрешить</string>
     <string name="label_skip_button">Пропустить</string>
+
     <string name="label_authnticate_button">Войти через SoundCloud</string>
 </resources>

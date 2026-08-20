@@ -1,4 +1,4 @@
-package com.brbx.feature_common
+package com.brbx.feature_common.view_model
 
 import com.brbx.mvicore.contracts.MviDelegate
 

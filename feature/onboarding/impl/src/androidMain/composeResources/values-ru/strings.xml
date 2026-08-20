@@ -1,0 +1,12 @@
+<resources>
+    <string name="title_battery_optimization">Оптимизация батареи</string>
+    <string name="description_battery_optimization">Чтобы музыка продолжала воспроизводиться без перерывов, рекомендуется отключить оптимизацию батареи для EchoFlow.</string>
+    <string name="title_notifications">Уведомления</string>
+    <string name="description_notifications">Разрешите уведомления для управления воспроизведением, даже когда телефон заблокирован или вы используете другие приложения.</string>
+
+    <string name="label_action_button">Разрешить</string>
+    <string name="label_skip_button">Пропустить</string>
+
+    <string name="label_snackbar_battery_optimization_dialog">Это разрешение необходимо предоставить через системный диалог</string>
+    <string name="label_snackbar_battery_optimization_dialog_action">Открыть</string>
+</resources>

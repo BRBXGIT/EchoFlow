@@ -12,6 +12,10 @@ kotlin {
             api(libs.brbx.mvi)
             // Koin
             api(libs.koin.core)
+            // Compose resources
+            implementation(libs.compose.resources)
+            // Design components
+            implementation(projects.core.designSystem.components)
         }
     }
 }

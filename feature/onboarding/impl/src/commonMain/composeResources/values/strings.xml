@@ -1,14 +1,10 @@
 <resources>
     <string name="title_greeting">Welcome to EchoFlow</string>
     <string name="description_greeting">Explore, discover, and listen to your favorite music with SoundCloud. EchoFlow makes it easy to find new tracks and enjoy your music wherever you go.</string>
-    <string name="title_battery_optimization">Battery Optimization</string>
-    <string name="description_battery_optimization">To keep your music playing without interruptions, we recommend disabling battery optimization for EchoFlow.</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="description_notifications">Allow notifications to control playback even when your phone is locked or while using other apps.</string>
     <string name="title_authentication">SoundCloud Authentication</string>
     <string name="description_authentication">Sign in with SoundCloud to connect your account and access your music. You’ll be securely redirected to the SoundCloud website to complete authentication.</string>
 
-    <string name="label_action_button">Allow</string>
     <string name="label_skip_button">Skip</string>
+
     <string name="label_authnticate_button">Sign in with SoundCloud</string>
 </resources>
