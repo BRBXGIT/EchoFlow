@@ -1,27 +1,24 @@
 package com.brbx.onboarding.view_model.onboarding_page
 
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage.Action
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage.IconCollage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.description_authentication
 import echoflow.feature.onboarding.impl.generated.resources.description_greeting
 import echoflow.feature.onboarding.impl.generated.resources.label_authnticate_button
 import echoflow.feature.onboarding.impl.generated.resources.title_authentication
 import echoflow.feature.onboarding.impl.generated.resources.title_greeting
-import org.jetbrains.compose.resources.StringResource
 
-internal sealed interface CommonPage : OnboardingPage {
-    object Greeting : CommonPage {
-        override val title: StringResource = Res.string.title_greeting
-        override val description: StringResource = Res.string.description_greeting
-        override val action: Action? = null
-        override val collage: IconCollage = CommonPagesCollageFactory.greetingCollage
-    }
+internal object CommonPage {
+    val Greeting = StandardOnboardingPage(
+        title = Res.string.title_greeting,
+        description = Res.string.description_greeting,
+        action = null,
+        collage = CommonPagesCollageFactory.greetingCollage
+    )
 
-    object Authentication : CommonPage {
-        override val title: StringResource = Res.string.title_authentication
-        override val description: StringResource = Res.string.description_authentication
-        override val action: Action = Action(text = Res.string.label_authnticate_button)
-        override val collage: IconCollage = CommonPagesCollageFactory.authenticationCollage
-    }
+    val Authentication = StandardOnboardingPage(
+        title = Res.string.title_authentication,
+        description = Res.string.description_authentication,
+        action = OnboardingAction.Authenticate(text = Res.string.label_authnticate_button),
+        collage = CommonPagesCollageFactory.authenticationCollage
+    )
 }

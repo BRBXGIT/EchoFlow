@@ -1,6 +1,5 @@
 package com.brbx.onboarding.view_model.onboarding_page
 
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage.IconCollage
 import dev.chiksmedina.solar.BoldSolar
 import dev.chiksmedina.solar.BrokenSolar
 import dev.chiksmedina.solar.bold.ElectronicDevices
@@ -22,7 +21,7 @@ import dev.chiksmedina.solar.broken.settingsfinetuning.Settings
 import dev.chiksmedina.solar.broken.weather.CloudBolt
 
 internal object AndroidPagesCollageFactory {
-    val notifications = IconCollage(
+    val notifications = StandardOnboardingPage.IconCollage(
         topStart = BrokenSolar.Notifications.Bell,
         topEnd = BrokenSolar.Notifications.BellBing,
         center = BoldSolar.ElectronicDevices.SmartphoneVibration,
@@ -30,7 +29,7 @@ internal object AndroidPagesCollageFactory {
         bottomEnd = BrokenSolar.EssentionalUi.CheckCircle,
     )
 
-    val batteryOptimization = IconCollage(
+    val batteryOptimization = StandardOnboardingPage.IconCollage(
         topStart = BrokenSolar.EssentionalUi.BatteryCharge,
         topEnd = BrokenSolar.SettingsFineTuning.Settings,
         center = BoldSolar.EssentionalUi.BatteryFull,

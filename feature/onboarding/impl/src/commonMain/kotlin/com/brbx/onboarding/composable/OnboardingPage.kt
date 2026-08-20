@@ -34,14 +34,16 @@ import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import com.brbx.onboarding.view_model.onboarding_page.CommonPage
+import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
+import com.brbx.onboarding.view_model.onboarding_page.StandardOnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
 
 @Composable
-internal fun OnboardingPage(
-    page: OnboardingPage,
+internal fun StandardPageRenderer(
+    page: StandardOnboardingPage,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -57,7 +59,7 @@ internal fun OnboardingPage(
 
 @Composable
 private fun WithoutAction(
-    page: OnboardingPage,
+    page: StandardOnboardingPage,
 ) =
     SpacedColumn {
         Title(res = page.title)
@@ -67,7 +69,7 @@ private fun WithoutAction(
 
 @Composable
 private fun WithAction(
-    page: OnboardingPage,
+    page: StandardOnboardingPage,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -76,17 +78,17 @@ private fun WithAction(
         modifier = modifier,
     ) {
         SpacedColumn(
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier.align(Alignment.TopCenter),
         ) {
             Title(res = page.title)
             Description(res = page.description)
         }
         IconsCollage(
             collage = page.collage,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center),
         )
         SpacedColumn(
-            modifier = Modifier.align(Alignment.BottomCenter)
+            modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             val macro2Height = mDimens.macro7
             val modifier = remember {
@@ -182,7 +184,7 @@ private fun TextWrapper(
 
 @Composable
 private fun IconsCollage(
-    collage: OnboardingPage.IconCollage,
+    collage: StandardOnboardingPage.IconCollage,
     modifier: Modifier = Modifier
 ) =
     Box(
@@ -285,12 +287,12 @@ private fun OnboardingPageWithActionPreview() =
 @Composable
 private fun OnboardingPageWithActionAndSkipPreview() =
     PreviewInternal(
-        page = object : OnboardingPage {
-            override val title: StringResource = CommonPage.Authentication.title
-            override val description: StringResource = CommonPage.Authentication.description
-            override val collage: OnboardingPage.IconCollage = CommonPage.Authentication.collage
-            override val action: OnboardingPage.Action = CommonPage.Authentication.action.copy(canSkip = true)
-        }
+        page = StandardOnboardingPage(
+            title = CommonPage.Authentication.title,
+            description = CommonPage.Authentication.description,
+            collage = CommonPage.Authentication.collage,
+            action = (CommonPage.Authentication.action as? OnboardingAction.Authenticate)?.copy(canSkip = true)
+        )
     )
 
 @Composable
@@ -299,7 +301,7 @@ private fun PreviewInternal(page: OnboardingPage) =
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        OnboardingPage(
+        OnboardingRendererRegistryImpl().Render(
             onSkip = {},
             onAction = {},
             page = page,

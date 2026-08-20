@@ -10,15 +10,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import com.brbx.onboarding.view_model.OnboardingState
+import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 
 @Composable
 internal fun OnboardingContent(
     state: OnboardingState,
-    onOnboardingAction: (page: OnboardingPage) -> Unit,
+    onAction: (action: OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
+    rendererRegistry: OnboardingRendererRegistry = koinInject(),
 ) =
     SpacedColumn(modifier) {
         val pagerState = rememberPagerState { state.pageCount }
@@ -30,21 +32,21 @@ internal fun OnboardingContent(
                 top = mDimens.micro8,
                 start = mDimens.micro8,
                 end = mDimens.micro8,
-            )
+            ),
         )
 
         val animationScope = rememberCoroutineScope()
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         ) { page ->
             val onboardingPage = remember(key1 = page) { state.pages[page] }
-            OnboardingPage(
+            rendererRegistry.Render(
                 page = onboardingPage,
                 onSkip = {
                     animationScope.launch { pagerState.animateScrollToPage(currentPage + 1) }
                 },
-                onAction = { onOnboardingAction(onboardingPage) },
+                onAction = { onboardingPage.action?.let(block = onAction) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
@@ -59,4 +61,4 @@ internal fun OnboardingContent(
 @EchoFlowPreview
 @Composable
 private fun OnboardingContentPreview() =
-    OnboardingContent(state = OnboardingState(), onOnboardingAction = {}, modifier = Modifier.fillMaxSize())
+    OnboardingContent(state = OnboardingState(), onAction = {}, modifier = Modifier.fillMaxSize())

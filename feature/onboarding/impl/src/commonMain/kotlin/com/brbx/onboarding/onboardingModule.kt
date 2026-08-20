@@ -1,9 +1,12 @@
 package com.brbx.onboarding
 
-import com.brbx.onboarding.view_model.OnboardingViewModel
-import org.koin.core.module.dsl.viewModelOf
+import com.brbx.onboarding.composable.composableModule
+import com.brbx.onboarding.view_model.viewModelModule
 import org.koin.dsl.module
 
 val onboardingModule = module {
-    viewModelOf(constructor = ::OnboardingViewModel)
+    includes(
+        composableModule,
+        viewModelModule,
+    )
 }

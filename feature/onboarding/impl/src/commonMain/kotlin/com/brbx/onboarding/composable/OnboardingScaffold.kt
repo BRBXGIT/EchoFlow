@@ -16,6 +16,7 @@ import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.onboarding.view_model.OnboardingEffect
 import com.brbx.onboarding.view_model.OnboardingViewModel
+import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import kotlinx.coroutines.flow.SharedFlow
 import org.koin.compose.viewmodel.koinViewModel
@@ -35,8 +36,8 @@ internal fun OnboardingScaffold(
             .background(color = mColors.background)
     ) { innerPadding ->
         OnboardingContent(
-            onOnboardingAction = { page ->
-                val effect = OnboardingEffect.HandlePageAction(page)
+            onAction = { action ->
+                val effect = OnboardingEffect.HandleAction(action)
                 viewModel.postScreenEffect(effect)
             },
             state = state,
@@ -56,12 +57,12 @@ internal expect fun HandleScreenEffects(
 @Composable
 internal inline fun HandleScreenEffectsInternal(
     effects: SharedFlow<OnboardingEffect>,
-    crossinline handlePageAction: (page: OnboardingPage) -> Unit,
+    crossinline handleAction: (action: OnboardingAction) -> Unit,
 ) =
     LaunchedEffect(key1 = effects) {
         effects.collect { effect ->
             when (effect) {
-                is OnboardingEffect.HandlePageAction -> handlePageAction(effect.page)
+                is OnboardingEffect.HandleAction -> handleAction(effect.action)
             }
         }
     }
