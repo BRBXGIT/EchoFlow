@@ -9,7 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Feature common
-            implementation(projects.feature.common.api)
+            implementation(projects.feature.common)
             // Theme
             implementation(projects.core.designSystem.theme)
             // Components

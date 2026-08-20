@@ -78,8 +78,6 @@ include(":feature")
 
 // Common
 include(":feature:common")
-include(":feature:common:api")
-include(":feature:common:impl")
 
 // Onboarding
 include(":feature:onboarding")
