@@ -72,8 +72,8 @@ private fun handlePageAction(
     }
     if (page is CommonPage) {
         when (page) {
-            CommonPage.Authentication -> TODO()
-            CommonPage.Greeting -> TODO()
+            is CommonPage.Authentication -> TODO()
+            is CommonPage.Greeting -> Unit
         }
     }
 }
