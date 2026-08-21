@@ -1,5 +1,7 @@
 package com.brbx.navigation
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 
 interface Navigator {
@@ -11,3 +13,4 @@ interface Navigator {
 }
 
 val LocalNavigator = compositionLocalOf<Navigator> { error("No navigator provided") }
+val appNavigator @Composable @ReadOnlyComposable get() = LocalNavigator.current
