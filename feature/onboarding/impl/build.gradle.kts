@@ -15,7 +15,7 @@ kotlin {
             // Components
             implementation(projects.core.designSystem.components)
             // Debug
-            implementation(projects.core.debug)
+            implementation(projects.core.debug.api)
 
             // Compose resources
             implementation(libs.compose.resources)

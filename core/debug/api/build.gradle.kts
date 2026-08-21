@@ -8,6 +8,8 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            // Impl
+            implementation(projects.core.debug.impl)
             // Theme
             implementation(projects.core.designSystem.theme)
 
@@ -18,9 +20,5 @@ kotlin {
             // Compose preview
             implementation(libs.compose.ui.tooling)
         }
-    }
-
-    compilerOptions {
-        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }

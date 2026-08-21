@@ -54,6 +54,8 @@ include(":core:data:impl")
 
 // Debug
 include(":core:debug")
+include(":core:debug:impl")
+include(":core:debug:api")
 
 // Design-system
 include(":core:design-system")
