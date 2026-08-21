@@ -6,8 +6,8 @@ import org.koin.dsl.module
 internal val composableModule = module {
     single<OnboardingRendererRegistry> {
         OnboardingRendererRegistryImpl().apply {
-            register(StandardOnboardingPage::class) { page, skip, action, mod ->
-                StandardPageRenderer(page, skip, action, mod)
+            register(clazz = StandardOnboardingPage::class) { page, skip, action, mod ->
+                StandardPageRenderer(page, onSkip = skip, onAction = action, modifier = mod)
             }
         }
     }

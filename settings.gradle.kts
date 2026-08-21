@@ -81,6 +81,11 @@ include(":feature")
 // Common
 include(":feature:common")
 
+// Navigation
+include(":feature:navigation")
+include(":feature:navigation:api")
+include(":feature:navigation:impl")
+
 // Onboarding
 include(":feature:onboarding")
 include(":feature:onboarding:api")

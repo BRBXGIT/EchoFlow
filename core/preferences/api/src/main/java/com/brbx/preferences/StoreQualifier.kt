@@ -10,4 +10,4 @@ enum class StoreQualifier(val storeName: String) : Qualifier {
     override val value: QualifierValue = this.name
 }
 
-fun Scope.getAuthStore(): AuthPrefsManager = get(qualifier = StoreQualifier.Auth)
+fun Scope.getAuthPrefs(): AuthPrefsManager = get(qualifier = StoreQualifier.Auth)
