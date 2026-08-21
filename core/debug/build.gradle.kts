@@ -19,4 +19,8 @@ kotlin {
             implementation(libs.compose.ui.tooling)
         }
     }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
+    }
 }

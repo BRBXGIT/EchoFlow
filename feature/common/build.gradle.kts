@@ -11,7 +11,7 @@ kotlin {
             // Brbx mvi
             api(libs.brbx.mvi)
             // Koin
-            api(libs.koin.core)
+            implementation(libs.koin.core)
             // Compose resources
             implementation(libs.compose.resources)
             // Design components
