@@ -91,7 +91,7 @@ private fun WithAction(
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             val macro2Height = mDimens.macro7
-            val modifier = remember {
+            val modifier = remember(key1 = macro2Height) {
                 Modifier
                     .fillMaxWidth()
                     .height(macro2Height)

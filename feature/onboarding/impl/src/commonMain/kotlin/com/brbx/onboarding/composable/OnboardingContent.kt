@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
-internal fun OnboardingContent(
+internal inline fun OnboardingContent(
     state: OnboardingState,
-    onAction: (action: OnboardingAction) -> Unit,
+    crossinline onAction: (action: OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
     rendererRegistry: OnboardingRendererRegistry = koinInject(),
 ) =
