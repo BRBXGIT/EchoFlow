@@ -8,10 +8,10 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            // Navigation 3
+            api(libs.navigation3.runtime)
             // Koin navigation
             api(libs.koin.compose.navigation3)
-            // Navigation 3
-            implementation(libs.navigation3.runtime)
             // Compose graphics
             implementation(libs.compose.ui)
             // Compose runtime

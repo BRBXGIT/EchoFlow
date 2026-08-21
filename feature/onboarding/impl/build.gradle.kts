@@ -8,8 +8,12 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            // Api
+            implementation(projects.feature.onboarding.api)
             // Feature common
             implementation(projects.feature.common)
+            // Navigation
+            implementation(projects.feature.navigation.api)
             // Theme
             implementation(projects.core.designSystem.theme)
             // Components
@@ -22,7 +26,6 @@ kotlin {
             // Solar
             implementation(libs.solar)
             // Koin
-            implementation(libs.koin.core.viewmodel)
             implementation(libs.koin.compose.viewmodel)
         }
     }

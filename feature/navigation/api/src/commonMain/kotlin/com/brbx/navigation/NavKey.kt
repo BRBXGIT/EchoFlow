@@ -4,9 +4,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.StringResource
 import androidx.navigation3.runtime.NavKey as Nav3Key
 
-interface NavKey : Nav3Key {
-    val requiresLogin: Boolean get() = false
-}
+interface NavKey : Nav3Key
 
 interface TopLevelNavKey : NavKey {
     val textRes: StringResource
