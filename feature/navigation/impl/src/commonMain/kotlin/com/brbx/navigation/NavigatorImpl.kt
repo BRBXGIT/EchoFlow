@@ -25,8 +25,11 @@ internal class NavigatorImpl(
     private val backStack: NavBackStack<NavKey>,
 ) : Navigator {
 
-    override val currentDestination: EchoFowNavKey?
-        get() = backStack.lastOrNull() as? EchoFowNavKey
+    override val currentDestination: EchoFowNavKey
+        get() = backStack.lastOrNull() as EchoFowNavKey
+
+    override val currentBackstack: List<EchoFowNavKey>
+        get() = backStack.map { it as EchoFowNavKey }
 
     override fun navigate(key: EchoFowNavKey) {
         backStack.add(key)

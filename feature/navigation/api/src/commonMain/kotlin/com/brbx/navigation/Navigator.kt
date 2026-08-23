@@ -2,10 +2,13 @@ package com.brbx.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 
+@Stable
 interface Navigator {
-    val currentDestination: EchoFowNavKey?
+    val currentDestination: EchoFowNavKey
+    val currentBackstack: List<EchoFowNavKey>
 
     fun navigate(key: EchoFowNavKey)
     fun navigateBack()
