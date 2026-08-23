@@ -5,7 +5,6 @@
     <string name="description_notifications">Разрешите уведомления для управления воспроизведением, даже когда телефон заблокирован или вы используете другие приложения.</string>
 
     <string name="label_action_button">Разрешить</string>
-    <string name="label_skip_button">Пропустить</string>
 
     <string name="label_snackbar_battery_optimization_dialog">Это разрешение необходимо предоставить через системный диалог</string>
     <string name="label_snackbar_battery_optimization_dialog_action">Открыть</string>

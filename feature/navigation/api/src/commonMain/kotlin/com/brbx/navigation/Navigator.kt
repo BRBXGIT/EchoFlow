@@ -7,13 +7,13 @@ import androidx.compose.runtime.compositionLocalOf
 
 @Stable
 interface Navigator {
-    val currentDestination: EchoFowNavKey
-    val currentBackstack: List<EchoFowNavKey>
+    val currentDestination: EchoFlowNavKey
+    val currentBackstack: List<EchoFlowNavKey>
 
-    fun navigate(key: EchoFowNavKey)
+    fun navigate(key: EchoFlowNavKey)
     fun navigateBack()
     fun removePrevious()
 }
 
 val LocalNavigator = compositionLocalOf<Navigator> { error("No navigator provided") }
-val navigator @Composable @ReadOnlyComposable get() = LocalNavigator.current
+val echoFlowNavigator @Composable @ReadOnlyComposable get() = LocalNavigator.current

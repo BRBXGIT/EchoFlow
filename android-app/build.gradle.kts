@@ -1,16 +1,16 @@
 plugins {
     // Android app
     alias(libs.plugins.echoflow.android.app)
+    // Compose
+    alias(libs.plugins.compose.compiler)
 }
 
 dependencies {
-    // Api
-    implementation(projects.feature.navigation.api)
-    implementation(projects.feature.onboarding.api)
-    // Impl
-    implementation(projects.feature.navigation.impl)
-    implementation(projects.feature.onboarding.impl)
+    // Common app
+    implementation(projects.commonApp)
 
     // Activity compose
     implementation(libs.androidx.activity.compose)
+    // Koin
+    implementation(libs.koin.android)
 }

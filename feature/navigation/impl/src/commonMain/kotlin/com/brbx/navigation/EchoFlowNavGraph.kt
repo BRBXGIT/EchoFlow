@@ -13,7 +13,8 @@ import soup.compose.material.motion.animation.materialFadeThroughOut
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun EchoFlowNavGraph(navigator: Navigator) {
+fun EchoFlowNavGraph() {
+    val navigator = echoFlowNavigator
     NavDisplay(
         backStack = navigator.currentBackstack,
         modifier = Modifier.fillMaxSize(),

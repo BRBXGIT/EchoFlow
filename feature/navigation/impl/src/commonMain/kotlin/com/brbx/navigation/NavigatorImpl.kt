@@ -1,6 +1,7 @@
 package com.brbx.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -10,7 +11,7 @@ import kotlinx.serialization.modules.SerializersModule
 @Composable
 fun rememberNavigator(
     serializers: SerializersModule,
-    startKey: EchoFowNavKey,
+    startKey: EchoFlowNavKey,
 ): Navigator {
     val backStack = rememberNavBackStack(
         configuration = SavedStateConfiguration {
@@ -18,28 +19,35 @@ fun rememberNavigator(
         },
         startKey,
     )
-    return NavigatorImpl(backStack)
+    return remember(key1 = backStack) {
+        NavigatorImpl(backStack)
+    }
 }
 
 internal class NavigatorImpl(
     private val backStack: NavBackStack<NavKey>,
 ) : Navigator {
 
-    override val currentDestination: EchoFowNavKey
-        get() = backStack.lastOrNull() as EchoFowNavKey
+    override val currentDestination: EchoFlowNavKey
+        get() = requireNotNull(backStack.lastOrNull() as? EchoFlowNavKey)
 
-    override val currentBackstack: List<EchoFowNavKey>
-        get() = backStack.map { it as EchoFowNavKey }
+    @Suppress("UNCHECKED_CAST")
+    override val currentBackstack: List<EchoFlowNavKey>
+        get() = backStack as List<EchoFlowNavKey>
 
-    override fun navigate(key: EchoFowNavKey) {
+    override fun navigate(key: EchoFlowNavKey) {
         backStack.add(key)
     }
 
     override fun navigateBack() {
-        backStack.removeFirstOrNull()
+        if (backStack.size > 1) {
+            backStack.removeLastOrNull()
+        }
     }
 
     override fun removePrevious() {
-        backStack.removeLastOrNull()
+        if (backStack.size > 1) {
+            backStack.removeAt(index = backStack.lastIndex - 1)
+        }
     }
 }
