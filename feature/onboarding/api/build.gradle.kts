@@ -9,7 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Navigation
-            api(projects.feature.navigation.api)
+            implementation(projects.feature.navigation.api)
 
             // Serialization
             implementation(libs.kotlinx.serialization.core)

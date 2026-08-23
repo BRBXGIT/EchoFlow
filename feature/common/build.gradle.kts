@@ -8,6 +8,9 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            // Navigation
+            implementation(projects.feature.navigation.api)
+
             // Brbx mvi
             api(libs.brbx.mvi)
             // Koin

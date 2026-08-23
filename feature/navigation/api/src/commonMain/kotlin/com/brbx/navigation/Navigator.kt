@@ -5,12 +5,12 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 
 interface Navigator {
-    val backStack: List<NavKey>
-    val currentDestination: NavKey?
-    val currentTopLevelDestination: TopLevelNavKey?
-    fun navigate(key: NavKey)
+    val currentDestination: EchoFowNavKey?
+
+    fun navigate(key: EchoFowNavKey)
     fun navigateBack()
+    fun removePrevious()
 }
 
 val LocalNavigator = compositionLocalOf<Navigator> { error("No navigator provided") }
-val appNavigator @Composable @ReadOnlyComposable get() = LocalNavigator.current
+val navigator @Composable @ReadOnlyComposable get() = LocalNavigator.current

@@ -17,7 +17,6 @@ import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.onboarding.view_model.OnboardingEffect
 import com.brbx.onboarding.view_model.OnboardingViewModel
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
 import kotlinx.coroutines.flow.SharedFlow
 import org.koin.compose.viewmodel.koinViewModel
 

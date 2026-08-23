@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.brbx.feature_common.utils.suspendAsString
 import com.brbx.feature_common.view_model.EchoFlowEffect
+import com.brbx.navigation.navigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
@@ -14,23 +15,24 @@ import kotlinx.coroutines.launch
 fun HandleEchoFlowEffects(
     effects: SharedFlow<EchoFlowEffect>,
     snackbarHost: SnackbarHostState? = null,
-) =
+) {
+    val navigator = navigator
     LaunchedEffect(key1 = effects) {
         effects.collect { effect ->
             when (effect) {
-                is EchoFlowEffect.Snackbar -> snackbarHost?.let {
-                    showSnackbar(snackbarHost, snackbar = effect)
-                } ?: error("No SnackbarHost provided to HandleEchoFlowEffects")
+                is EchoFlowEffect.Snackbar -> snackbarHost?.showSnackbar(effect)
+                EchoFlowEffect.NavigateBack -> navigator.navigateBack()
             }
         }
     }
+}
 
-private fun CoroutineScope.showSnackbar(
-    snackbarHost: SnackbarHostState,
+context(coroutineScope: CoroutineScope)
+private fun SnackbarHostState.showSnackbar(
     snackbar: EchoFlowEffect.Snackbar,
-) {
-    launch {
-        val result = snackbarHost.showSnackbar(
+) =
+    coroutineScope.launch {
+        val result = showSnackbar(
             message = snackbar.text.suspendAsString(),
             actionLabel = snackbar.action?.text?.suspendAsString(),
             duration = snackbar.duration,
@@ -40,4 +42,3 @@ private fun CoroutineScope.showSnackbar(
             SnackbarResult.ActionPerformed -> snackbar.action?.onClick()
         }
     }
-}

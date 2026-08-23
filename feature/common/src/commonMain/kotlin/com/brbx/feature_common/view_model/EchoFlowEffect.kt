@@ -17,5 +17,7 @@ sealed interface EchoFlowEffect {
             val onDismiss: () -> Unit = {},
         )
     }
+
+    object NavigateBack : EchoFlowEffect
 }
 
