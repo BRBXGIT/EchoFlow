@@ -8,8 +8,8 @@ import com.brbx.common_app.EchoFlowApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             EchoFlowApp()
         }

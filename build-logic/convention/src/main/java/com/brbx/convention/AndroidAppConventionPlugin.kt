@@ -11,7 +11,10 @@ import org.gradle.kotlin.dsl.configure
 internal class AndroidAppConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(receiver = target) {
-            pluginManager.apply("com.android.application")
+            with(receiver = pluginManager) {
+                apply("com.android.application")
+                apply("org.jetbrains.kotlin.android")
+            }
 
             configureApplicationExtension()
         }

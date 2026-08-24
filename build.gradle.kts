@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.android.application) apply false
     // Android
     alias(libs.plugins.android.library) apply false
+    // Kotlin (used in convention)
+    alias(libs.plugins.kotlin.android) apply false
     // Android mp (used in convention)
     alias(libs.plugins.android.multiplatform.library) apply false
     // Compose multplatform (used in convention)
