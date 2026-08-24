@@ -2,10 +2,9 @@ package com.brbx.onboarding.view_model
 
 import androidx.compose.runtime.Stable
 import com.brbx.feature_common.view_model.EchoFlowEffect
-import com.brbx.mvicore.base.ContainedMviViewModel
-import com.brbx.mvicore.helpers.shareInWhileSubscribed
-import com.brbx.mvicore.helpers.stateInWhileSubscribed
-import kotlinx.coroutines.flow.SharedFlow
+import com.brbx.mvi_core.base.ContainedMviViewModel
+import com.brbx.mvi_core.helpers.shareInWhileSubscribed
+import com.brbx.mvi_core.helpers.stateInWhileSubscribed
 
 @Stable
 internal class OnboardingViewModel :

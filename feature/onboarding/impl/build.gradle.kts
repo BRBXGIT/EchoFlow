@@ -9,7 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Api
-            implementation(projects.feature.onboarding.api)
+            api(projects.feature.onboarding.api)
             // Feature common
             implementation(projects.feature.common)
             // Navigation
