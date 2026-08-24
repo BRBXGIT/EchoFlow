@@ -55,16 +55,22 @@ internal fun StandardPageRenderer(
             onAction = onAction,
             modifier = modifier,
         )
-    } ?: WithoutAction(page)
+    } ?: WithoutAction(page, modifier)
 
 @Composable
 private fun WithoutAction(
     page: StandardOnboardingPage,
+    modifier: Modifier = Modifier,
 ) =
-    SpacedColumn {
-        Title(res = page.title)
-        IconsCollage(collage = page.collage)
-        Description(res = page.description)
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center,
+    ) {
+        SpacedColumn {
+            Title(res = page.title)
+            IconsCollage(collage = page.collage)
+            Description(res = page.description)
+        }
     }
 
 @Composable
@@ -90,11 +96,11 @@ private fun WithAction(
         SpacedColumn(
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
-            val macro2Height = mDimens.macro7
-            val modifier = remember(key1 = macro2Height) {
+            val macro8Height = mDimens.macro8
+            val modifier = remember(key1 = macro8Height) {
                 Modifier
                     .fillMaxWidth()
-                    .height(macro2Height)
+                    .height(macro8Height)
             }
             page.action?.let { action ->
                 if (action.canSkip) {
@@ -125,7 +131,7 @@ private fun SkipButton(
     ) {
         Text(
             text = safeStringResource(textRes),
-            style = mTypography.bodyMedium,
+            style = mTypography.bodyLarge,
             fontWeight = FontWeight.W600,
         )
     }
@@ -142,7 +148,7 @@ private fun ActionButton(
     ) {
         Text(
             text = safeStringResource(textRes),
-            style = mTypography.bodyMedium,
+            style = mTypography.bodyLarge,
         )
     }
 

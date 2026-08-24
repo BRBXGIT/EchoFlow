@@ -1,7 +1,9 @@
 package com.brbx.onboarding.view_model.onboarding_page
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
+import android.provider.Settings
 import androidx.annotation.RequiresApi
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.description_battery_optimization
@@ -23,11 +25,12 @@ internal object AndroidPage {
         collage = AndroidPagesCollageFactory.notifications
     )
 
+    @SuppressLint("BatteryLife")
     val BatteryOptimization = StandardOnboardingPage(
         title = Res.string.title_battery_optimization,
         description = Res.string.description_battery_optimization,
         action = OnboardingAction.RequestPermission(
-            permission = Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+            permission = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
             text = Res.string.label_action_button,
             canSkip = true
         ),
