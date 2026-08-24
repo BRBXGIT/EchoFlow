@@ -111,7 +111,7 @@ private fun WithAction(
                     )
                 }
                 ActionButton(
-                    textRes = action.text,
+                    action = action,
                     onClick = onAction,
                     modifier = modifier,
                 )
@@ -138,18 +138,30 @@ private fun SkipButton(
 
 @Composable
 private fun ActionButton(
-    textRes: StringResource,
+    action: OnboardingAction,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Button(
         modifier = modifier,
-        onClick = onClick
+        onClick = onClick,
+        enabled = action.isEnabled
     ) {
+        val textRes = rememberActionButtonText(action.isEnabled, action.disabledText, action.text)
         Text(
             text = safeStringResource(textRes),
             style = mTypography.bodyLarge,
         )
+    }
+
+@Composable
+private fun rememberActionButtonText(enabled: Boolean, disabledText: StringResource?, text: StringResource) =
+    remember(key1 = enabled, key2 = disabledText) {
+        if (!enabled && disabledText != null) {
+            disabledText
+        } else {
+            text
+        }
     }
 
 @Composable

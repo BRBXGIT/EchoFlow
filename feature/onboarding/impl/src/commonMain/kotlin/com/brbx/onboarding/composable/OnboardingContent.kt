@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.debug.compose.EchoFlowPreview
@@ -39,7 +38,7 @@ internal fun OnboardingContent(
             pagerState = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
-            val onboardingPage = remember(key1 = page) { state.pages[page] }
+            val onboardingPage = state.pages[page]
             rendererRegistry.Render(
                 page = onboardingPage,
                 onSkip = {

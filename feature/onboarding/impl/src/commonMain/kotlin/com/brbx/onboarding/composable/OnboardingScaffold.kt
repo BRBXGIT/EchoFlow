@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.design_system.components.utils.rememberSnackbarHost
@@ -17,6 +15,7 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.onboarding.view_model.OnboardingEffect
+import com.brbx.onboarding.view_model.OnboardingIntent
 import com.brbx.onboarding.view_model.OnboardingViewModel
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
 import kotlinx.coroutines.flow.SharedFlow
@@ -28,7 +27,11 @@ internal fun OnboardingScaffold(
 ) {
     val snackbarHost = rememberSnackbarHost()
     HandleEchoFlowEffects(viewModel.effects, snackbarHost)
-    HandleScreenEffects(viewModel.screenEffects, viewModel::postEffect)
+    HandleScreenEffects(
+        effects = viewModel.screenEffects,
+        postEffect = viewModel::postEffect,
+        dispatchIntent = viewModel::dispatchIntent,
+    )
 
     val state by viewModel.state.collectAsStateWithLifecycle()
     Scaffold(
@@ -54,6 +57,7 @@ internal fun OnboardingScaffold(
 internal expect fun HandleScreenEffects(
     effects: SharedFlow<OnboardingEffect>,
     postEffect: (EchoFlowEffect) -> Unit,
+    dispatchIntent: (OnboardingIntent) -> Unit,
 )
 
 @Composable

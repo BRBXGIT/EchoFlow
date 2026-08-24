@@ -3,8 +3,9 @@ package com.brbx.onboarding.view_model
 import androidx.compose.runtime.Immutable
 import com.brbx.onboarding.view_model.onboarding_page.CommonPage
 import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
+import com.brbx.onboarding.view_model.onboarding_page.PermissionChecker
 
-internal expect fun createPages(): List<OnboardingPage>
+internal expect fun createPages(permissionChecker: PermissionChecker): List<OnboardingPage>
 
 internal fun createPagesInternal(
     additional: List<OnboardingPage> = emptyList(),
@@ -17,6 +18,7 @@ internal fun createPagesInternal(
 
 @Immutable
 internal data class OnboardingState(
-    val pages: List<OnboardingPage> = createPages(),
-    val pageCount: Int = pages.size,
-)
+    val pages: List<OnboardingPage> = emptyList(),
+) {
+    val pageCount: Int get() = pages.size
+}
