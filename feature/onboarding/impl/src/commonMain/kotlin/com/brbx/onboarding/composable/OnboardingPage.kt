@@ -296,12 +296,19 @@ private fun OnboardingPageWithActionAndSkipPreview() =
     )
 
 @Composable
-private fun PreviewInternal(page: OnboardingPage) =
+private fun PreviewInternal(page: OnboardingPage) {
+    val registry = remember {
+        OnboardingRendererRegistryImpl().apply {
+            register(clazz = StandardOnboardingPage::class) { page, skip, action, mod ->
+                StandardPageRenderer(page, onSkip = skip, onAction = action, modifier = mod)
+            }
+        }
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        OnboardingRendererRegistryImpl().Render(
+        registry.Render(
             onSkip = {},
             onAction = {},
             page = page,
@@ -310,3 +317,4 @@ private fun PreviewInternal(page: OnboardingPage) =
                 .padding(all = mDimens.micro8),
         )
     }
+}

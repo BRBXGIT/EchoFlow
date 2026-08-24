@@ -30,16 +30,18 @@ internal interface OnboardingRendererRegistry {
 }
 
 internal class OnboardingRendererRegistryImpl : OnboardingRendererRegistry {
-    private val renderers = mutableMapOf<KClass<out OnboardingPage>, Any>()
+    private val renderers = mutableMapOf<KClass<out OnboardingPage>, OnboardingPageRenderer<OnboardingPage>>()
 
     override fun <T : OnboardingPage> register(
         clazz: KClass<T>,
         renderer: OnboardingPageRenderer<T>
     ) {
-        renderers[clazz] = renderer
+        renderers[clazz] = { page, onSkip, onAction, modifier ->
+            @Suppress("UNCHECKED_CAST")
+            renderer(page as T, onSkip, onAction, modifier)
+        }
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Composable
     override fun Render(
         page: OnboardingPage,
@@ -47,7 +49,7 @@ internal class OnboardingRendererRegistryImpl : OnboardingRendererRegistry {
         onAction: () -> Unit,
         modifier: Modifier,
     ) {
-        val renderer = renderers[page::class] as? OnboardingPageRenderer<OnboardingPage>
+        val renderer = renderers[page::class]
             ?: throw IllegalStateException("No renderer registered for ${page::class}")
         renderer(page, onSkip, onAction, modifier)
     }
