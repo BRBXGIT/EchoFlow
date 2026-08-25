@@ -32,25 +32,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
-import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.utils.safeStringResource
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.onboarding.view_model.onboarding_page.CommonPage
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingAction
-import com.brbx.onboarding.view_model.onboarding_page.OnboardingPage
-import com.brbx.onboarding.view_model.onboarding_page.StandardOnboardingPage
+import com.brbx.onboarding.page_source.OnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
 
 @Composable
-internal fun StandardPageRenderer(
-    page: StandardOnboardingPage,
+internal fun OnboardingPage(
+    page: OnboardingPage,
     onSkip: () -> Unit,
-    onAction: () -> Unit,
+    onAction: (page: OnboardingPage) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
@@ -60,15 +56,15 @@ internal fun StandardPageRenderer(
             .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
     }
     if (isLargeScreen) {
-        LargeLayout(page, onSkip, onAction, modifier.fillMaxSize())
+        LargeLayout(page, onSkip, onAction = { onAction(page) }, modifier.fillMaxSize())
     } else {
-        StandardLayout(page, onSkip, onAction, modifier.fillMaxSize())
+        StandardLayout(page, onSkip, onAction = { onAction(page) }, modifier.fillMaxSize())
     }
 }
 
 @Composable
 private fun StandardLayout(
-    page: StandardOnboardingPage,
+    page: OnboardingPage,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -84,7 +80,7 @@ private fun StandardLayout(
 
 @Composable
 private fun LargeLayout(
-    page: StandardOnboardingPage,
+    page: OnboardingPage,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +116,7 @@ private fun LargeLayout(
 
 @Composable
 private fun WithoutAction(
-    page: StandardOnboardingPage,
+    page: OnboardingPage,
     modifier: Modifier = Modifier,
 ) =
     Box(
@@ -136,7 +132,7 @@ private fun WithoutAction(
 
 @Composable
 private fun WithAction(
-    page: StandardOnboardingPage,
+    page: OnboardingPage,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -166,7 +162,7 @@ private fun WithAction(
 
 @Composable
 private fun OnboardingButtons(
-    action: OnboardingAction,
+    action: OnboardingPage.Action,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -215,16 +211,16 @@ private fun SkipButton(
 
 @Composable
 private fun ActionButton(
-    action: OnboardingAction,
+    action: OnboardingPage.Action,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Button(
         modifier = modifier,
         onClick = onClick,
-        enabled = action.isEnabled
+        enabled = action.enabled
     ) {
-        val textRes = rememberActionButtonText(action.isEnabled, action.disabledText, action.text)
+        val textRes = rememberActionButtonText(action.enabled, action.disabledText, action.enabledText)
         Text(
             text = safeStringResource(textRes),
             style = mTypography.bodyLarge,
@@ -232,12 +228,16 @@ private fun ActionButton(
     }
 
 @Composable
-private fun rememberActionButtonText(enabled: Boolean, disabledText: StringResource?, text: StringResource) =
+private fun rememberActionButtonText(
+    enabled: Boolean,
+    disabledText: StringResource?,
+    enabledText: StringResource
+) =
     remember(key1 = enabled, key2 = disabledText) {
         if (!enabled && disabledText != null) {
             disabledText
         } else {
-            text
+            enabledText
         }
     }
 
@@ -284,7 +284,7 @@ private fun TextWrapper(
 
 @Composable
 private fun IconsCollage(
-    collage: StandardOnboardingPage.IconCollage,
+    collage: OnboardingPage.IconCollage,
     modifier: Modifier = Modifier
 ) =
     Box(
@@ -372,49 +372,3 @@ private fun CollageIconWrapper(
             modifier = Modifier.size(iconSize)
         )
     }
-
-@EchoFlowPreview
-@Composable
-private fun OnboardingPageWithoutActionPreview() =
-    PreviewInternal(page = CommonPage.Greeting)
-
-@EchoFlowPreview
-@Composable
-private fun OnboardingPageWithActionPreview() =
-    PreviewInternal(page = CommonPage.Authentication)
-
-@EchoFlowPreview
-@Composable
-private fun OnboardingPageWithActionAndSkipPreview() =
-    PreviewInternal(
-        page = StandardOnboardingPage(
-            title = CommonPage.Authentication.title,
-            description = CommonPage.Authentication.description,
-            collage = CommonPage.Authentication.collage,
-            action = (CommonPage.Authentication.action as? OnboardingAction.Authenticate)?.copy(canSkip = true)
-        )
-    )
-
-@Composable
-private fun PreviewInternal(page: OnboardingPage) {
-    val registry = remember {
-        OnboardingRendererRegistryImpl().apply {
-            register(clazz = StandardOnboardingPage::class) { page, skip, action, mod ->
-                StandardPageRenderer(page, onSkip = skip, onAction = action, modifier = mod)
-            }
-        }
-    }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        registry.Render(
-            onSkip = {},
-            onAction = {},
-            page = page,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = mDimens.micro8),
-        )
-    }
-}

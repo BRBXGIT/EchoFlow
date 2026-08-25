@@ -1,4 +1,4 @@
-package com.brbx.onboarding.view_model.onboarding_page
+package com.brbx.onboarding.page_source
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -6,16 +6,10 @@ import org.jetbrains.compose.resources.StringResource
 
 @Immutable
 internal interface OnboardingPage {
-    val action: OnboardingAction?
-}
-
-@Immutable
-internal data class StandardOnboardingPage(
-    val title: StringResource,
-    val description: StringResource,
-    val collage: IconCollage,
-    override val action: OnboardingAction? = null,
-) : OnboardingPage {
+    val title: StringResource
+    val description: StringResource
+    val collage: IconCollage
+    val action: Action?
 
     @Immutable
     data class IconCollage(
@@ -24,5 +18,13 @@ internal data class StandardOnboardingPage(
         val center: ImageVector,
         val bottomStart: ImageVector,
         val bottomEnd: ImageVector,
+    )
+
+    @Immutable
+    data class Action(
+        val canSkip: Boolean = false,
+        val enabled: Boolean = true,
+        val disabledText: StringResource? = null,
+        val enabledText: StringResource,
     )
 }

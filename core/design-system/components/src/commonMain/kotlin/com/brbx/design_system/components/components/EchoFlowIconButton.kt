@@ -9,11 +9,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 fun EchoFlowIconButton(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: () -> Unit,
 ) =
     IconButton(
         onClick = onClick,
         modifier = modifier,
+        enabled = enabled,
     ) {
         EchoFlowIcon(imageVector = imageVector)
     }

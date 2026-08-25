@@ -1,4 +1,4 @@
-package com.brbx.onboarding.feature
+package com.brbx.onboarding.di
 
 import com.brbx.navigation.singleSerializer
 import com.brbx.onboarding.OnboardingRoute
@@ -8,7 +8,7 @@ import org.koin.dsl.module
 import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
-internal val onboardingFeatureModule = module {
+val onboardingModule = module {
     singleSerializer<OnboardingRoute> {
         subclass(OnboardingRoute::class, serializer = OnboardingRoute.serializer())
     }
