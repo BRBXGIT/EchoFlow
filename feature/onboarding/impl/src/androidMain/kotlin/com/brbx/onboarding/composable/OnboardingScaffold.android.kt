@@ -6,6 +6,7 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
@@ -26,7 +27,8 @@ import kotlinx.coroutines.flow.SharedFlow
 @SuppressLint("BatteryLife")
 @Composable
 internal actual fun HandleScreenEffects(
-    effects: SharedFlow<OnboardingEffect>,
+    screenEffects: SharedFlow<OnboardingEffect>,
+    pagerState: PagerState,
     postEffect: (EchoFlowEffect) -> Unit,
     dispatchIntent: (OnboardingIntent) -> Unit,
 ) {
@@ -37,7 +39,7 @@ internal actual fun HandleScreenEffects(
         contract = ActivityResultContracts.RequestPermission()
     ) { dispatchIntent(OnboardingIntent.RefreshPermissions) }
 
-    HandleScreenEffectsInternal(effects) { action ->
+    HandleScreenEffectsInternal(screenEffects, pagerState) { action ->
         when (action) {
             is OnboardingAction.Authenticate -> TODO("Navigate to Auth")
             is OnboardingAction.RequestPermission -> {

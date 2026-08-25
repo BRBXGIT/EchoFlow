@@ -6,6 +6,8 @@ plugins {
 }
 
 dependencies {
+    // Core common
+    implementation(projects.core.common.api)
     // Common app
     implementation(projects.commonApp)
 

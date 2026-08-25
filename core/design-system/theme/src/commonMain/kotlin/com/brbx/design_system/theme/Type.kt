@@ -19,7 +19,7 @@ private val baseline = Typography()
 internal fun echoFlowType(): Typography {
     val fontFamily = gSansFontFamily()
 
-    return remember(fontFamily) {
+    return remember(key1 = fontFamily) {
         Typography(
             displayLarge = baseline.displayLarge.copy(fontFamily = fontFamily),
             displayMedium = baseline.displayMedium.copy(fontFamily = fontFamily),

@@ -11,11 +11,13 @@ import com.brbx.design_system.theme.mDimens
 @Composable
 internal fun SpacedColumn(
     modifier: Modifier = Modifier,
+    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+    verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(mDimens.micro6),
     content: @Composable ColumnScope.() -> Unit,
 ) =
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
         content = content,
     )

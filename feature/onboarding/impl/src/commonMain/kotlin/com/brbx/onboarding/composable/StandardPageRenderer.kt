@@ -1,7 +1,10 @@
 package com.brbx.onboarding.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.window.core.layout.WindowSizeClass
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.utils.safeStringResource
 import com.brbx.design_system.theme.mColors
@@ -47,6 +52,26 @@ internal fun StandardPageRenderer(
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
+) {
+    val adaptiveInfo = currentWindowAdaptiveInfoV2()
+    val isLargeScreen = remember(key1 = adaptiveInfo) {
+        adaptiveInfo
+            .windowSizeClass
+            .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+    }
+    if (isLargeScreen) {
+        LargeLayout(page, onSkip, onAction, modifier.fillMaxSize())
+    } else {
+        StandardLayout(page, onSkip, onAction, modifier.fillMaxSize())
+    }
+}
+
+@Composable
+private fun StandardLayout(
+    page: StandardOnboardingPage,
+    onSkip: () -> Unit,
+    onAction: () -> Unit,
+    modifier: Modifier = Modifier,
 ) =
     page.action?.let {
         WithAction(
@@ -56,6 +81,42 @@ internal fun StandardPageRenderer(
             modifier = modifier,
         )
     } ?: WithoutAction(page, modifier)
+
+@Composable
+private fun LargeLayout(
+    page: StandardOnboardingPage,
+    onSkip: () -> Unit,
+    onAction: () -> Unit,
+    modifier: Modifier = Modifier,
+) =
+    Row(
+        modifier = modifier.padding(mDimens.macro8),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(mDimens.macro8)
+    ) {
+        IconsCollage(
+            collage = page.collage,
+            modifier = Modifier.weight(1f)
+        )
+        SpacedColumn(
+            modifier = Modifier.weight(1f),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(mDimens.micro6, Alignment.CenterVertically)
+        ) {
+            Title(res = page.title, textAlign = TextAlign.Start)
+            Description(res = page.description, textAlign = TextAlign.Start)
+
+            page.action?.let { action ->
+                Spacer(modifier = Modifier.height(mDimens.macro2))
+                OnboardingButtons(
+                    action = action,
+                    onSkip = onSkip,
+                    onAction = onAction,
+                    horizontalAlignment = Alignment.Start
+                )
+            }
+        }
+    }
 
 @Composable
 private fun WithoutAction(
@@ -93,30 +154,46 @@ private fun WithAction(
             collage = page.collage,
             modifier = Modifier.align(Alignment.Center),
         )
-        SpacedColumn(
-            modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-            val macro8Height = mDimens.macro8
-            val modifier = remember(key1 = macro8Height) {
-                Modifier
-                    .fillMaxWidth()
-                    .height(macro8Height)
-            }
-            page.action?.let { action ->
-                if (action.canSkip) {
-                    SkipButton(
-                        textRes = Res.string.label_skip_button,
-                        onClick = onSkip,
-                        modifier = modifier,
-                    )
-                }
-                ActionButton(
-                    action = action,
-                    onClick = onAction,
-                    modifier = modifier,
-                )
-            }
+        page.action?.let { action ->
+            OnboardingButtons(
+                action = action,
+                onSkip = onSkip,
+                onAction = onAction,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
         }
+    }
+
+@Composable
+private fun OnboardingButtons(
+    action: OnboardingAction,
+    onSkip: () -> Unit,
+    onAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
+) =
+    SpacedColumn(
+        modifier = modifier,
+        horizontalAlignment = horizontalAlignment,
+    ) {
+        val macro8Height = mDimens.macro8
+        val buttonModifier = remember(key1 = macro8Height) {
+            Modifier
+                .fillMaxWidth()
+                .height(macro8Height)
+        }
+        if (action.canSkip) {
+            SkipButton(
+                textRes = Res.string.label_skip_button,
+                onClick = onSkip,
+                modifier = buttonModifier,
+            )
+        }
+        ActionButton(
+            action = action,
+            onClick = onAction,
+            modifier = buttonModifier,
+        )
     }
 
 @Composable
@@ -168,22 +245,26 @@ private fun rememberActionButtonText(enabled: Boolean, disabledText: StringResou
 private fun Title(
     res: StringResource,
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
 ) =
     TextWrapper(
         res = res,
         style = mTypography.headlineMedium,
         modifier = modifier,
+        textAlign = textAlign,
     )
 
 @Composable
 private fun Description(
     res: StringResource,
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
 ) =
     TextWrapper(
         res = res,
         style = mTypography.bodyLarge,
         modifier = modifier,
+        textAlign = textAlign,
     )
 
 @Composable
@@ -191,12 +272,13 @@ private fun TextWrapper(
     res: StringResource,
     style: TextStyle,
     modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
 ) =
     Text(
         text = safeStringResource(res),
         modifier = modifier,
         style = style,
-        textAlign = TextAlign.Center,
+        textAlign = textAlign,
         color = mColors.onBackground,
     )
 

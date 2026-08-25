@@ -12,6 +12,8 @@ kotlin {
             api(libs.navigation3.runtime)
             // Koin navigation
             api(libs.koin.compose.navigation3)
+            // Adaptive
+            api(libs.compose.material3.adaptive.navigation3)
             // Compose graphics
             implementation(libs.compose.ui)
             // Compose runtime
