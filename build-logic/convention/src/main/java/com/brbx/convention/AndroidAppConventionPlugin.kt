@@ -1,7 +1,7 @@
 package com.brbx.convention
 
 import com.android.build.api.dsl.ApplicationExtension
-import com.brbx.convention.config.androidNamespace
+import com.brbx.convention.config.moduleNamespace
 import com.brbx.convention.constants.Android
 import com.brbx.convention.constants.Java
 import org.gradle.api.Plugin
@@ -30,7 +30,7 @@ internal class AndroidAppConventionPlugin : Plugin<Project> {
     }
 
     private fun Project.configureAndroid(applicationExtension: ApplicationExtension) {
-        applicationExtension.namespace = androidNamespace
+        applicationExtension.namespace = moduleNamespace
     }
 
     private fun ApplicationExtension.configureCompatibility() {

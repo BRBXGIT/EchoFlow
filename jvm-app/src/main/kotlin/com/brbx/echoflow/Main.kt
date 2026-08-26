@@ -7,10 +7,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import androidx.compose.ui.window.v2.rememberWindowState
 import com.brbx.common_app.EchoFlowApp
 import com.brbx.common_app.setupKoin
-import com.brbx.core_common.TopLevelAppConfig
 
 fun main() {
     application {
@@ -23,7 +21,7 @@ fun main() {
 
         Window(
             onCloseRequest = ::exitApplication,
-            title = TopLevelAppConfig.AppName,
+            title = "HERE",
             state = windowState,
         ) {
             EchoFlowApp()

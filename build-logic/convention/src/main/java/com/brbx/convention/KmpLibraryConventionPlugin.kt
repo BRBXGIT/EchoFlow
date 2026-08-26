@@ -1,7 +1,7 @@
 package com.brbx.convention
 
 import com.android.build.api.dsl.LibraryExtension
-import com.brbx.convention.config.androidNamespace
+import com.brbx.convention.config.moduleNamespace
 import com.brbx.convention.config.configureJvmToolchain
 import com.brbx.convention.constants.Android
 import org.gradle.api.Plugin
@@ -36,7 +36,7 @@ internal class KmpLibraryConventionPlugin : Plugin<Project> {
     private fun Project.configureAndroid(kmpExtension: KotlinMultiplatformExtension) {
         kmpExtension.androidTarget()
         extensions.configure<LibraryExtension> {
-            namespace = androidNamespace
+            namespace = moduleNamespace
             compileSdk = Android.CompileSdk
             defaultConfig {
                 minSdk = Android.MinSdk

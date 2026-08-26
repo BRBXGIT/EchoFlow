@@ -1,5 +1,6 @@
 package com.brbx.onboarding.composable
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
@@ -39,6 +40,7 @@ private fun handlePage(
     }
 }
 
+@SuppressLint("BatteryLife")
 private fun handleAndroidPermissions(
     launcher: ActivityResultLauncher<String>,
     permission: String,

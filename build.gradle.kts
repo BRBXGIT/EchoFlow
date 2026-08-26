@@ -1,8 +1,6 @@
 plugins {
     // Application (used in convention)
     alias(libs.plugins.android.application) apply false
-    // Android
-    alias(libs.plugins.android.library) apply false
     // Kotlin (used in convention)
     alias(libs.plugins.kotlin.android) apply false
     // Android mp (used in convention)
@@ -13,8 +11,12 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     // Kotlin jvm (used in convention)
     alias(libs.plugins.kotlin.jvm) apply false
-    // Serialization
-    alias(libs.plugins.kotlin.serialization) apply false
     // Kmp (used in convention)
     alias(libs.plugins.kotlin.multiplatform) apply false
+    // Build konfig (used in convention)
+    alias(libs.plugins.buildKonfig) apply false
+    // Serialization
+    alias(libs.plugins.kotlin.serialization) apply false
+    // Android
+    alias(libs.plugins.android.library) apply false
 }

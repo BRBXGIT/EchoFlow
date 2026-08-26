@@ -33,6 +33,7 @@ materialKolor = "5.0.0"
 shimmer = "1.5.0"
 brbx-mvi = "1.2.04"
 solar = "2.1.0"
+buildkonfig = "0.22.0"
 
 # Testing
 junit4 = "4.13.2"
@@ -121,6 +122,7 @@ android-gradle-plugin-lib = { group = "com.android.tools.build", name = "gradle"
 kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradle-plugin = { group = "org.jetbrains.compose", name = "compose-gradle-plugin", version.ref = "compose-multiplatform" }
 compose-compiler-gradle-plugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
+buildkonfig-gradle-plugin = { group = "com.codingfeline.buildkonfig", name = "buildkonfig-gradle-plugin", version.ref = "buildkonfig" }
 
 [plugins]
 # Android
@@ -139,9 +141,14 @@ kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose-multiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 
+# Build-config
+buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
+
 # EchoFlow
 echoflow-android-app = { id = "echoflow.android.app" }
 echoflow-jvm-app = { id = "echoflow.jvm.app" }
 echoflow-kmp-library = { id = "echoflow.kmp.library" }
 echoflow-kotlin-library = { id = "echoflow.kotlin.library" }
 echoflow-compose-multiplatform = { id = "echoflow.compose.multiplatform" }
+echoflow-auth-konfig = { id = "echoflow.auth.konfig" }
+echoflow-top-level-konfig = { id = "echoflow.top.level.konfig" }

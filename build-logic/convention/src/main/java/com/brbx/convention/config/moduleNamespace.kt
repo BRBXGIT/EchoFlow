@@ -3,7 +3,7 @@ package com.brbx.convention.config
 import com.brbx.convention.constants.EchoFlow
 import org.gradle.api.Project
 
-internal val Project.androidNamespace: String
+internal val Project.moduleNamespace: String
     get() {
         val modulePath = path
             .split(":")
