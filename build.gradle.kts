@@ -14,7 +14,7 @@ plugins {
     // Kmp (used in convention)
     alias(libs.plugins.kotlin.multiplatform) apply false
     // Build konfig (used in convention)
-    alias(libs.plugins.buildKonfig) apply false
+    alias(libs.plugins.buildconfig) apply false
     // Serialization
     alias(libs.plugins.kotlin.serialization) apply false
     // Android

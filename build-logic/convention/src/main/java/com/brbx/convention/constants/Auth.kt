@@ -1,7 +1,7 @@
 package com.brbx.convention.constants
 
 internal object Auth {
-    const val ObjectName = "AuthKonfig"
+    const val ObjectName = "AuthConfig"
 
     const val ClientId = "clientId"
     const val ClientSecret = "clientSecret"

@@ -1,17 +1,17 @@
 package com.brbx.convention.config
 
-import com.codingfeline.buildkonfig.gradle.BuildKonfigExtension
+import com.github.gmazzo.buildconfig.BuildConfigExtension
 import org.gradle.api.Project
 import java.util.Properties
 import org.gradle.api.Action
 
-internal fun Project.configureBuildKonfig(
-    generatedObjectName: String = "BuildKonfig",
-    block: Action<in BuildKonfigExtension>,
+internal fun Project.configureBuildConfig(
+    generatedClassName: String = "BuildConfig",
+    block: Action<in BuildConfigExtension>,
 ) {
-    extensions.configure(BuildKonfigExtension::class.java) {
+    extensions.configure(BuildConfigExtension::class.java) {
         packageName.set(project.moduleNamespace)
-        objectName.set(generatedObjectName)
+        className.set(generatedClassName)
         block.execute(this)
     }
 }

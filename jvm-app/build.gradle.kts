@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.echoflow.jvm.app)
     // Compose multiplatform
     alias(libs.plugins.echoflow.compose.multiplatform)
-    // Top level konfig
-    alias(libs.plugins.echoflow.top.level.konfig)
+    // Top level config
+    alias(libs.plugins.echoflow.top.level.config)
 }
 
 dependencies {

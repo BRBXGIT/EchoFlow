@@ -9,6 +9,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.brbx.common_app.EchoFlowApp
 import com.brbx.common_app.setupKoin
+import com.brbx.jvm_app.TopLevelConfig
 
 fun main() {
     application {
@@ -21,7 +22,7 @@ fun main() {
 
         Window(
             onCloseRequest = ::exitApplication,
-            title = "HERE",
+            title = TopLevelConfig.appName,
             state = windowState,
         ) {
             EchoFlowApp()

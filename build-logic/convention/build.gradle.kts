@@ -25,8 +25,8 @@ dependencies {
     // Compose
     compileOnly(libs.compose.gradle.plugin)
     compileOnly(libs.compose.compiler.gradle.plugin)
-    // Build-konfig
-    compileOnly(libs.buildkonfig.gradle.plugin)
+    // Build-сonfig
+    compileOnly(libs.buildconfig.gradle.plugin)
 }
 
 gradlePlugin {
@@ -56,14 +56,14 @@ gradlePlugin {
             implementationClass = "com.brbx.convention.ComposeMultiplatformConventionPlugin"
         }
 
-        register("authKonfig") {
-            id = libs.plugins.echoflow.auth.konfig.get().pluginId
-            implementationClass = "com.brbx.convention.AuthKonfigConventionPlugin"
+        register("authConfig") {
+            id = libs.plugins.echoflow.auth.config.get().pluginId
+            implementationClass = "com.brbx.convention.AuthConfigConventionPlugin"
         }
 
-        register("topLevelKonfig") {
-            id = libs.plugins.echoflow.top.level.konfig.get().pluginId
-            implementationClass = "com.brbx.convention.TopLevelKonfigConventionPlugin"
+        register("topLeveCKonfig") {
+            id = libs.plugins.echoflow.top.level.config.get().pluginId
+            implementationClass = "com.brbx.convention.TopLevelConfigConventionPlugin"
         }
     }
 }

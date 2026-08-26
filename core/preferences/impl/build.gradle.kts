@@ -1,8 +1,8 @@
 plugins {
     // Kmp library
     alias(libs.plugins.echoflow.kmp.library)
-    // Top level konfig
-    alias(libs.plugins.echoflow.top.level.konfig)
+    // Top level config
+    alias(libs.plugins.echoflow.top.level.config)
 }
 
 kotlin {

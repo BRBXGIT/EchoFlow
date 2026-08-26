@@ -3,8 +3,8 @@ plugins {
     alias(libs.plugins.echoflow.kmp.library)
     // Compose
     alias(libs.plugins.echoflow.compose.multiplatform)
-    // Auth konfig
-    alias(libs.plugins.echoflow.auth.konfig)
+    // Auth config
+    alias(libs.plugins.echoflow.auth.config)
 }
 
 kotlin {
