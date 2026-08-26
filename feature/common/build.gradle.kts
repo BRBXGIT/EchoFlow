@@ -9,7 +9,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Navigation
-            implementation(projects.feature.navigation.api)
+            implementation(projects.feature.navigation.impl) // Impl for encapsulating Navigator
+            api(projects.feature.navigation.api)
 
             // Brbx mvi
             api(libs.brbx.mvi)

@@ -7,5 +7,5 @@ dependencies {
     // Coroutines
     api(libs.kotlinx.coroutines.core)
     // Koin
-    implementation(libs.koin.core)
+    api(libs.koin.core)
 }

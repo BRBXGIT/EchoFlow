@@ -3,6 +3,7 @@ package com.brbx.feature_common.view_model
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Immutable
 import com.brbx.feature_common.utils.CommonText
+import com.brbx.navigation.EchoFlowNavKey
 
 @Immutable
 sealed interface EchoFlowEffect {
@@ -18,6 +19,8 @@ sealed interface EchoFlowEffect {
         )
     }
 
-    object NavigateBack : EchoFlowEffect
+    data object NavigateBack : EchoFlowEffect
+
+    @JvmInline value class Navigate(val key: EchoFlowNavKey) : EchoFlowEffect
 }
 

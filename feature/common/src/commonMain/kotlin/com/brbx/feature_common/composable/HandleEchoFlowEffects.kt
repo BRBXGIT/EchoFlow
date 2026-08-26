@@ -21,7 +21,8 @@ fun HandleEchoFlowEffects(
         effects.collect { effect ->
             when (effect) {
                 is EchoFlowEffect.Snackbar -> snackbarHost?.showSnackbar(effect)
-                EchoFlowEffect.NavigateBack -> navigator.navigateBack()
+                is EchoFlowEffect.NavigateBack -> navigator.navigateBack()
+                is EchoFlowEffect.Navigate -> navigator.navigate(effect.key)
             }
         }
     }
