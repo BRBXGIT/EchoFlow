@@ -49,3 +49,6 @@ hs_err_pid*
 
 # Utils caches
 .lint/
+
+# Firebase hosting
+**/echoflow-deeplink/
