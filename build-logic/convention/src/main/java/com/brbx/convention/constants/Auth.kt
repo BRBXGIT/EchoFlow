@@ -7,4 +7,5 @@ internal object Auth {
     const val ClientSecret = "clientSecret"
     const val RedirectUri = "redirectUri"
     const val ResponseType = "responseType"
+    const val AuthBasePath = "authBasePath"
 }

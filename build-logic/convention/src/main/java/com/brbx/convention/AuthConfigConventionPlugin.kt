@@ -18,12 +18,14 @@ internal class AuthConfigConventionPlugin : Plugin<Project> {
             val clientSecret = localProperties.getOrEmpty(key = Auth.ClientSecret)
             val redirectUri = localProperties.getOrEmpty(key = Auth.RedirectUri)
             val responseType = localProperties.getOrEmpty(key = Auth.ResponseType)
+            val authBasePath = localProperties.getOrEmpty(key = Auth.AuthBasePath)
 
             configureBuildConfig(generatedClassName = Auth.ObjectName) {
                 buildConfigField("String", Auth.ClientId, "\"$clientId\"")
                 buildConfigField("String", Auth.ClientSecret, "\"$clientSecret\"")
                 buildConfigField("String", Auth.RedirectUri, "\"$redirectUri\"")
                 buildConfigField("String", Auth.ResponseType, "\"$responseType\"")
+                buildConfigField("String", Auth.AuthBasePath, "\"$authBasePath\"")
             }
         }
     }

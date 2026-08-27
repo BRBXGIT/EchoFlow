@@ -1,5 +1,6 @@
 package com.brbx.onboarding.page_source
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -7,7 +8,6 @@ import android.os.PowerManager
 import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
-@Stable
 private class AndroidPageItemsSource(
     private val context: Context,
 ) : PageItemsSource {
@@ -48,6 +47,7 @@ private class AndroidPageItemsSource(
         return this.copy(action = updatedAction)
     }
 
+    @SuppressLint("BatteryLife")
     private fun isPermissionGranted(context: Context, permission: String): Boolean {
         return when (permission) {
             Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -> {

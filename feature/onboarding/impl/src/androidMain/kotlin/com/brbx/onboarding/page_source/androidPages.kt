@@ -1,6 +1,7 @@
 package com.brbx.onboarding.page_source
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
 import android.provider.Settings
 import androidx.annotation.RequiresApi
@@ -35,6 +36,7 @@ internal val notifications = AndroidOnboardingPageItem(
     action = basicAction,
 )
 
+@SuppressLint("BatteryLife")
 internal val batteryOptimization = AndroidOnboardingPageItem(
     title = Res.string.title_battery_optimization,
     description = Res.string.description_battery_optimization,
