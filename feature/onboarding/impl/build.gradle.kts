@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.echoflow.compose.multiplatform)
     // Auth config
     alias(libs.plugins.echoflow.auth.config)
+    // Koin
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {

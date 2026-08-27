@@ -1,4 +1,4 @@
-package com.brbx.onboarding.page_source
+package com.brbx.onboarding.model
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.vector.ImageVector

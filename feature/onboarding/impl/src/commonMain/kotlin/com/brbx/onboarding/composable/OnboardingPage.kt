@@ -37,7 +37,7 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.onboarding.page_source.OnboardingPage
+import com.brbx.onboarding.model.OnboardingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
@@ -46,7 +46,7 @@ import org.jetbrains.compose.resources.StringResource
 internal fun OnboardingPage(
     page: OnboardingPage,
     onSkip: () -> Unit,
-    onAction: (page: OnboardingPage) -> Unit,
+    onAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val adaptiveInfo = currentWindowAdaptiveInfoV2()
@@ -56,9 +56,9 @@ internal fun OnboardingPage(
             .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
     }
     if (isLargeScreen) {
-        LargeLayout(page, onSkip, onAction = { onAction(page) }, modifier.fillMaxSize())
+        LargeLayout(page, onSkip, onAction = { onAction() }, modifier.fillMaxSize())
     } else {
-        StandardLayout(page, onSkip, onAction = { onAction(page) }, modifier.fillMaxSize())
+        StandardLayout(page, onSkip, onAction = { onAction() }, modifier.fillMaxSize())
     }
 }
 

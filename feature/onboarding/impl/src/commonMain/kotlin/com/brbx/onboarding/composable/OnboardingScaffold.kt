@@ -6,20 +6,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mColors
-import com.brbx.onboarding.page_source.OnboardingPage
-import com.brbx.onboarding.page_source.PageItemsSource
-import com.brbx.onboarding.page_source.rememberPageItemsSource
+import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.model.OnboardingState
 
 @Composable
-internal fun OnboardingScaffoldInternal(
-    source: PageItemsSource,
-    onPageAction: (page: OnboardingPage) -> Unit,
+internal expect fun OnboardingScaffold()
+
+@Composable
+internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
+    state: OnboardingState<T>,
+    onPageAction: (T) -> Unit,
 ) {
-    val pages by source.createPages().collectAsState(initial = emptyList())
+    val pages = state.pages
     val pagerState = rememberPagerState { pages.size }
     Scaffold(
         bottomBar = { OnboardingNavBar(pagerState) },
@@ -37,6 +37,3 @@ internal fun OnboardingScaffoldInternal(
         )
     }
 }
-
-@Composable
-internal expect fun OnboardingScaffold()

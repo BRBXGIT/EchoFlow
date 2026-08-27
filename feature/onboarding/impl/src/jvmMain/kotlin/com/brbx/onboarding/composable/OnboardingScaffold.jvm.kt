@@ -1,21 +1,26 @@
 package com.brbx.onboarding.composable
 
 import androidx.compose.runtime.Composable
-import com.brbx.onboarding.page_source.AuthOnboardingPage
-import com.brbx.onboarding.page_source.OnboardingPage
-import com.brbx.onboarding.page_source.rememberPageItemsSource
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.brbx.onboarding.model.BaseAuthPage
+import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.view_model.OnboardingViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal actual fun OnboardingScaffold() {
-    val source = rememberPageItemsSource()
+    val viewModel = koinViewModel<OnboardingViewModel<OnboardingPage>>()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
     OnboardingScaffoldInternal(
-        source = source,
-        onPageAction = { page -> handleJvmPages(page) }
+        state = state,
+        onPageAction = { page -> handlePageAction(page) }
     )
 }
 
-private fun handleJvmPages(page: OnboardingPage) {
-    when (page) {
-        is AuthOnboardingPage -> TODO()
+private fun handlePageAction(page: OnboardingPage) {
+    if (page is BaseAuthPage) {
+        TODO()
     }
 }

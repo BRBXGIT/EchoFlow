@@ -1,5 +1,6 @@
-package com.brbx.onboarding.page_source
+package com.brbx.onboarding.utils
 
+import com.brbx.onboarding.model.OnboardingPage
 import dev.chiksmedina.solar.BoldSolar
 import dev.chiksmedina.solar.BrokenSolar
 import dev.chiksmedina.solar.bold.Hands
@@ -21,7 +22,7 @@ import dev.chiksmedina.solar.broken.security.ShieldCheck
 
 internal object CommonPagesCollageFactory {
 
-    val greetingCollage = OnboardingPage.IconCollage(
+    val greeting = OnboardingPage.IconCollage(
         topStart = BrokenSolar.ElectronicDevices.AirbudsCaseOpen,
         topEnd = BrokenSolar.Astronomy.StarFall,
         center = BoldSolar.Hands.HandShake,
@@ -29,7 +30,7 @@ internal object CommonPagesCollageFactory {
         bottomEnd = BrokenSolar.Astronomy.StarsMinimalistic,
     )
 
-    val authenticationCollage = OnboardingPage.IconCollage(
+    val authentication = OnboardingPage.IconCollage(
         topStart = BrokenSolar.Security.Lock,
         topEnd = BrokenSolar.Security.Key,
         center = BoldSolar.Users.UserCircle,

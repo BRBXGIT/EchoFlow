@@ -7,15 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mDimens
-import com.brbx.onboarding.page_source.OnboardingPage
+import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.utils.scrollToNext
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun OnboardingContent(
+internal fun <T : OnboardingPage> OnboardingContent(
     pagerState: PagerState,
-    pages: List<OnboardingPage>,
-    onAction: (page: OnboardingPage) -> Unit,
+    pages: List<T>,
+    onAction: (T) -> Unit,
     modifier: Modifier = Modifier,
 ) =
     SpacedColumn(modifier) {
@@ -35,10 +35,11 @@ internal fun OnboardingContent(
             pagerState = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
+            val current = pages[page]
             OnboardingPage(
-                page = pages[page],
+                page = current,
                 onSkip = { animationScope.launch { pagerState.scrollToNext() } },
-                onAction = onAction,
+                onAction = { onAction(current) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(

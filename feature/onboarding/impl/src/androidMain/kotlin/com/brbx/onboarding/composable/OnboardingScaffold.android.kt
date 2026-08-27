@@ -1,59 +1,80 @@
 package com.brbx.onboarding.composable
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
-import com.brbx.onboarding.page_source.AndroidOnboardingPage
-import com.brbx.onboarding.page_source.AuthOnboardingPage
-import com.brbx.onboarding.page_source.OnboardingPage
-import com.brbx.onboarding.page_source.rememberPageItemsSource
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.brbx.onboarding.model.AndroidAuth
+import com.brbx.onboarding.model.AndroidPage
+import com.brbx.onboarding.model.OnboardingIntent
+import com.brbx.onboarding.model.Special
+import com.brbx.onboarding.view_model.OnboardingViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal actual fun OnboardingScaffold() {
-    val source = rememberPageItemsSource()
+    val viewModel = koinViewModel<OnboardingViewModel<AndroidPage>>()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val dispatchIntent = viewModel::dispatchIntent
+
+    HandleOnResume(dispatchIntent)
+
+    val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
-    ) { granted -> if (granted) source.refreshPages() }
-    val context = LocalContext.current
-
+    ) { granted -> if (granted) dispatchIntent(OnboardingIntent.RefreshPages) }
     OnboardingScaffoldInternal(
-        source = source,
-        onPageAction = { page -> handlePage(page, launcher, context) }
+        state = state,
+        onPageAction = { page -> handlePageAction(page, launcher, context) },
     )
 }
 
-private fun handlePage(
-    page: OnboardingPage,
-    launcher: ActivityResultLauncher<String>,
-    context: Context,
-) {
-    when (page) {
-        is AndroidOnboardingPage -> handleAndroidPermissions(launcher, page.permission, context)
-        is AuthOnboardingPage -> TODO()
+@Composable
+private fun HandleOnResume(dispatchIntent: (OnboardingIntent) -> Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(key1 = lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                dispatchIntent(OnboardingIntent.RefreshPages)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 }
 
-@SuppressLint("BatteryLife")
-private fun handleAndroidPermissions(
+private fun handlePageAction(
+    page: AndroidPage,
     launcher: ActivityResultLauncher<String>,
-    permission: String,
     context: Context,
 ) {
-    when (permission) {
-        Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS -> {
-            val intent = Intent().apply {
-                action = permission
-                data = "package:${context.packageName}".toUri()
-            }
-            context.startActivity(intent)
+    if (page is AndroidAuth) handleAuth() else
+        handlePermissions(page, launcher, context)
+}
+
+private fun handleAuth() {
+    TODO()
+}
+
+private fun handlePermissions(
+    page: AndroidPage,
+    launcher: ActivityResultLauncher<String>,
+    context: Context,
+) {
+    page.permission?.let {
+        if (page is Special) page.ask(context) else {
+            launcher.launch(input = page.permission!!)
         }
-        else -> launcher.launch(input = permission)
     }
 }
