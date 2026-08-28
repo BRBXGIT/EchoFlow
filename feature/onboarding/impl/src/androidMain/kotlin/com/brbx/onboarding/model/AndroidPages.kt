@@ -24,9 +24,9 @@ private val defaultAction = OnboardingPage.Action(
     enabledText = Res.string.label_action_button_permission,
 )
 
-internal data object AndroidGreeting : BaseGreetingPage(), AndroidPage
+internal data object AndroidGreeting : AndroidPage, OnboardingPage by BaseGreetingPage
 
-internal data object AndroidAuth : BaseAuthPage(), AndroidPage
+internal data object AndroidAuth : AndroidPage, OnboardingPage by BaseAuthPage
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 internal data class Notifications(
@@ -36,7 +36,7 @@ internal data class Notifications(
     override val collage: OnboardingPage.IconCollage = AndroidPagesCollageFactory.notifications,
     override val action: OnboardingPage.Action? = defaultAction,
 ) : AndroidPage {
-    override fun withEnabledAction(isEnabled: Boolean) =
+    override fun withEnabledAction(isEnabled: Boolean): AndroidPage =
         copy(action = action?.copy(enabled = isEnabled))
 }
 
@@ -48,19 +48,17 @@ internal data class BatteryOptimization(
     override val collage: OnboardingPage.IconCollage = AndroidPagesCollageFactory.batteryOptimization,
     override val action: OnboardingPage.Action? = defaultAction.copy(canSkip = true),
 ) : Special {
-    override fun withEnabledAction(isEnabled: Boolean) =
+    override fun withEnabledAction(isEnabled: Boolean): AndroidPage =
         copy(action = action?.copy(enabled = isEnabled))
 
-    override fun isGranted(context: Context): Boolean {
-        val powerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
-        return powerManager.isIgnoringBatteryOptimizations(context.packageName)
-    }
+    override fun isGranted(context: Context): Boolean =
+        (context.getSystemService(Context.POWER_SERVICE) as PowerManager)
+            .isIgnoringBatteryOptimizations(context.packageName)
 
-    override fun ask(context: Context) {
-        val intent = Intent().apply {
+    override fun ask(context: Context) = context.startActivity(
+        Intent().apply {
             action = permission
             data = "package:${context.packageName}".toUri()
         }
-        context.startActivity(intent)
-    }
+    )
 }

@@ -40,14 +40,10 @@ internal class NavigatorImpl(
     }
 
     override fun navigateBack() {
-        if (backStack.size > 1) {
-            backStack.removeLastOrNull()
-        }
+        if (backStack.size > 1) backStack.removeLastOrNull()
     }
 
     override fun removePrevious() {
-        if (backStack.size > 1) {
-            backStack.removeAt(index = backStack.lastIndex - 1)
-        }
+        if (backStack.size > 1) backStack.removeAt(index = backStack.lastIndex - 1)
     }
 }

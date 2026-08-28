@@ -23,10 +23,9 @@ internal class OnboardingViewModel<T : OnboardingPage> :
     override val effects = _effects.shareInWhileSubscribed()
     override val screenEffects = _screenEffects.shareInWhileSubscribed()
 
-    override fun dispatchIntent(intent: OnboardingIntent) {
+    override fun dispatchIntent(intent: OnboardingIntent) =
         when (intent) {
             is OnboardingIntent.RefreshPages -> pagesDelegate(intent)
             is OnboardingIntent.Authenticate -> authDelegate(intent)
         }
-    }
 }

@@ -22,21 +22,17 @@ abstract class EchoFlowViewModel<State, in Intent : Any, ScreenEffect : Any>(
         override val effects: SharedFlow<EchoFlowEffect> = this@EchoFlowViewModel.effects
         override val screenEffects: SharedFlow<ScreenEffect> = this@EchoFlowViewModel.screenEffects
 
-        override fun reduce(reducer: State.() -> State) {
+        override fun reduce(reducer: State.() -> State) =
             this@EchoFlowViewModel.reduce(reducer)
-        }
 
-        override fun dispatchIntent(intent: Intent) {
+        override fun dispatchIntent(intent: Intent) =
             this@EchoFlowViewModel.dispatchIntent(intent)
-        }
 
-        override fun postEffect(effect: EchoFlowEffect) {
+        override fun postEffect(effect: EchoFlowEffect) =
             this@EchoFlowViewModel.postEffect(effect)
-        }
 
-        override fun postScreenEffect(effect: ScreenEffect) {
+        override fun postScreenEffect(effect: ScreenEffect) =
             this@EchoFlowViewModel.postScreenEffect(effect)
-        }
     }
 
     protected inline fun <reified D : Any> injectDelegate(): Lazy<D> =

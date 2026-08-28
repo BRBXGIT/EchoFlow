@@ -19,9 +19,8 @@ internal class AndroidPagesDelegate(
     override val scope: EchoFlowMviScope<OnboardingState<AndroidPage>, OnboardingIntent, Unit>,
     private val context: Context, // Application context in viewModel antipattern maybe will be rewritten
 ) : PagesDelegate<AndroidPage> {
-    override fun invoke(intent: OnboardingIntent.RefreshPages) {
+    override fun invoke(intent: OnboardingIntent.RefreshPages) =
         reduce { copy(pages = buildPages()) }
-    }
 
     private fun buildPages(): List<AndroidPage> =
         buildList {
@@ -34,9 +33,9 @@ internal class AndroidPagesDelegate(
         }
 
     private fun AndroidPage.checkIsGranted(): AndroidPage =
-        permission?.let {
+        permission?.let { permission ->
             val isGranted = if (this is Special) isGranted(context) else {
-                ContextCompat.checkSelfPermission(context, permission!!) ==
+                ContextCompat.checkSelfPermission(context, permission) ==
                         PackageManager.PERMISSION_GRANTED
             }
             withEnabledAction(isEnabled = !isGranted)

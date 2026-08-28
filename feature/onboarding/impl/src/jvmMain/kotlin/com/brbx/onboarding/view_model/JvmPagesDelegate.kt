@@ -17,7 +17,7 @@ internal class JvmPagesDelegate(
 
     private fun buildPages(): List<OnboardingPage> =
         buildList {
-            add(BaseGreetingPage())
-            add(BaseAuthPage())
+            add(BaseGreetingPage)
+            add(BaseAuthPage)
         }
 }

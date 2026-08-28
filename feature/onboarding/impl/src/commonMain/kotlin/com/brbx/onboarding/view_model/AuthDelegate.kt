@@ -16,8 +16,6 @@ internal class AuthDelegateImpl(
     override val scope: EchoFlowMviScope<OnboardingState<OnboardingPage>, OnboardingIntent, Unit>,
     private val getAuthLinkUseCase: GetAuthLinkUseCase,
 ) : AuthDelegate {
-    override fun invoke(intent: OnboardingIntent.Authenticate) {
-        val link = getAuthLinkUseCase()
-        postEffect(EchoFlowEffect.OpenLink(link))
-    }
+    override fun invoke(intent: OnboardingIntent.Authenticate) =
+        postEffect(EchoFlowEffect.OpenLink(getAuthLinkUseCase()))
 }

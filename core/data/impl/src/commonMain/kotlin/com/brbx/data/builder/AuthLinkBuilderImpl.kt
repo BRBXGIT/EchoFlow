@@ -9,40 +9,38 @@ internal class AuthLinkBuilderImpl(
 
     override var currentCodeVerifier: String? = null
 
-    override fun getLink(): String {
-        return cachedLink ?: generateLink().also { cachedLink = it }
-    }
+    override fun getLink(): String = cachedLink ?: generateLink().also { cachedLink = it }
 
-    private fun generateLink(): String {
+    private fun generateLink(): String = run {
         val state = pkceGenerator.generateRandomString()
-        val codeVerifier = pkceGenerator.generateRandomString(length = verifierLength)
+        val codeVerifier = pkceGenerator.generateRandomString(length = VERIFIER_LENGTH)
         val codeChallenge = pkceGenerator.generateCodeChallenge(codeVerifier)
 
         this.currentCodeVerifier = codeVerifier
 
-        return buildString {
+        buildString {
             append(AuthConfig.authBasePath)
-            append("?$paramClientId=${AuthConfig.clientId}")
-            append("&$paramRedirectUri=${AuthConfig.redirectUri}")
-            append("&$paramResponseType=$valueResponseTypeCode")
-            append("&$paramCodeChallengeMethod=$valueCodeChallengeMethod")
-            append("&$paramCodeChallenge=$codeChallenge")
-            append("&$paramState=$state")
+            append("?$PARAM_CLIENT_ID=${AuthConfig.clientId}")
+            append("&$PARAM_REDIRECT_URI=${AuthConfig.redirectUri}")
+            append("&$PARAM_RESPONSE_TYPE=$VALUE_RESPONSE_TYPE_CODE")
+            append("&$PARAM_CODE_CHALLENGE_METHOD=$VALUE_CODE_CHALLENGE_METHOD")
+            append("&$PARAM_CODE_CHALLENGE=$codeChallenge")
+            append("&$PARAM_STATE=$state")
         }
     }
 
     private companion object {
         // Параметры запроса
-        const val paramClientId = "client_id"
-        const val paramRedirectUri = "redirect_uri"
-        const val paramResponseType = "response_type"
-        const val paramCodeChallengeMethod = "code_challenge_method"
-        const val paramCodeChallenge = "code_challenge"
-        const val paramState = "state"
+        const val PARAM_CLIENT_ID = "client_id"
+        const val PARAM_REDIRECT_URI = "redirect_uri"
+        const val PARAM_RESPONSE_TYPE = "response_type"
+        const val PARAM_CODE_CHALLENGE_METHOD = "code_challenge_method"
+        const val PARAM_CODE_CHALLENGE = "code_challenge"
+        const val PARAM_STATE = "state"
 
-        const val valueResponseTypeCode = "code"
-        const val valueCodeChallengeMethod = "S256"
+        const val VALUE_RESPONSE_TYPE_CODE = "code"
+        const val VALUE_CODE_CHALLENGE_METHOD = "S256"
 
-        const val verifierLength = 64
+        const val VERIFIER_LENGTH = 64
     }
 }

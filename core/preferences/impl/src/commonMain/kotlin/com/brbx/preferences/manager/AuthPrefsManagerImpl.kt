@@ -13,13 +13,9 @@ internal class AuthPrefsManagerImpl(
     override val accessToken: Flow<String?> = getValue(accessTokenKey)
     override val refreshToken: Flow<String?> = getValue(refreshTokenKey)
 
-    override suspend fun saveAccessToken(token: String) {
-        setValue(accessTokenKey, token)
-    }
+    override suspend fun saveAccessToken(token: String) = setValue(accessTokenKey, token)
 
-    override suspend fun saveRefreshToken(token: String) {
-        setValue(refreshTokenKey, token)
-    }
+    override suspend fun saveRefreshToken(token: String) = setValue(refreshTokenKey, token)
 
     private companion object {
         private const val accessTokenKeyName = "access_token"
