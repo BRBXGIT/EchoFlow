@@ -12,8 +12,15 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 @Composable
-fun HandleEchoFlowEffects(
+expect fun HandleEchoFlowEffects(
     effects: SharedFlow<EchoFlowEffect>,
+    snackbarHost: SnackbarHostState? = null,
+)
+
+@Composable
+internal fun HandleEchoFlowEffectsInternal(
+    effects: SharedFlow<EchoFlowEffect>,
+    onOpenLink: (String) -> Unit,
     snackbarHost: SnackbarHostState? = null,
 ) {
     val navigator = echoFlowNavigator
@@ -23,6 +30,7 @@ fun HandleEchoFlowEffects(
                 is EchoFlowEffect.Snackbar -> snackbarHost?.showSnackbar(effect)
                 is EchoFlowEffect.NavigateBack -> navigator.navigateBack()
                 is EchoFlowEffect.Navigate -> navigator.navigate(effect.key)
+                is EchoFlowEffect.OpenLink -> onOpenLink(effect.link)
             }
         }
     }

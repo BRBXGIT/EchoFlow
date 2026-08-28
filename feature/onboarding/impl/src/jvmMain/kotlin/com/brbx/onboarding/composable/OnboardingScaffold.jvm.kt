@@ -15,6 +15,7 @@ internal actual fun OnboardingScaffold() {
 
     OnboardingScaffoldInternal(
         state = state,
+        effects = viewModel.effects,
         onPageAction = { page -> handlePageAction(page) }
     )
 }

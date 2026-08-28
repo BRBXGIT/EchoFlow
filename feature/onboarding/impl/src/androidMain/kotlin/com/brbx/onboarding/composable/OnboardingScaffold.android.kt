@@ -33,7 +33,8 @@ internal actual fun OnboardingScaffold() {
     ) { granted -> if (granted) dispatchIntent(OnboardingIntent.RefreshPages) }
     OnboardingScaffoldInternal(
         state = state,
-        onPageAction = { page -> handlePageAction(page, launcher, context) },
+        effects = viewModel.effects,
+        onPageAction = { page -> handlePageAction(page, launcher, context, dispatchIntent) },
     )
 }
 
@@ -58,13 +59,14 @@ private fun handlePageAction(
     page: AndroidPage,
     launcher: ActivityResultLauncher<String>,
     context: Context,
+    dispatchIntent: (OnboardingIntent) -> Unit,
 ) {
-    if (page is AndroidAuth) handleAuth() else
+    if (page is AndroidAuth) handleAuth(dispatchIntent) else
         handlePermissions(page, launcher, context)
 }
 
-private fun handleAuth() {
-    TODO()
+private fun handleAuth(dispatchIntent: (OnboardingIntent) -> Unit) {
+    dispatchIntent(OnboardingIntent.Authenticate)
 }
 
 private fun handlePermissions(

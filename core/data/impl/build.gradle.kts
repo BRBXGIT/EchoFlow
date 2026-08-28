@@ -1,6 +1,8 @@
 plugins {
     // Kmp library
     alias(libs.plugins.echoflow.kmp.library)
+    // Auth config
+    alias(libs.plugins.echoflow.auth.config)
 }
 
 kotlin {
@@ -13,6 +15,8 @@ kotlin {
 
             // Koin
             implementation(libs.koin.core)
+            // Okio
+            implementation(libs.okio)
         }
     }
 }

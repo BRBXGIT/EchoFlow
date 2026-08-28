@@ -7,6 +7,12 @@ import com.brbx.navigation.EchoFlowNavKey
 
 @Immutable
 sealed interface EchoFlowEffect {
+    data object NavigateBack : EchoFlowEffect
+
+    @JvmInline value class Navigate(val key: EchoFlowNavKey) : EchoFlowEffect
+
+    @JvmInline value class OpenLink(val link: String) : EchoFlowEffect
+
     data class Snackbar(
         val text: CommonText,
         val action: Action? = null,
@@ -18,9 +24,5 @@ sealed interface EchoFlowEffect {
             val onDismiss: () -> Unit = {},
         )
     }
-
-    data object NavigateBack : EchoFlowEffect
-
-    @JvmInline value class Navigate(val key: EchoFlowNavKey) : EchoFlowEffect
 }
 

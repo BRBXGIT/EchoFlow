@@ -35,6 +35,7 @@ shimmer = "1.5.0"
 brbx-mvi = "1.2.04"
 solar = "2.1.0"
 buildconfig = "6.0.10"
+okio = "3.18.1"
 
 # Testing
 junit4 = "4.13.2"
@@ -110,6 +111,7 @@ materialKolor = { group = "com.materialkolor", name = "material-kolor", version.
 shimmer-compose = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version.ref = "shimmer" }
 brbx-mvi = { module = "com.github.BRBXGIT.BrbxMvi:api", version.ref = "brbx-mvi" }
 solar = { module = "dev.chiksmedina.solar:solar", version.ref = "solar" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 # Testing
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }

@@ -1,6 +1,5 @@
-package com.brbx.domain
+package com.brbx.domain.di
 
-import com.brbx.domain.use_case.useCaseModule
 import org.koin.dsl.module
 
 val domainModule = module {

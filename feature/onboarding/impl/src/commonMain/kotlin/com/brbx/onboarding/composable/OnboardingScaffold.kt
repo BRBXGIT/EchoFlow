@@ -8,8 +8,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mColors
+import com.brbx.feature_common.composable.HandleEchoFlowEffects
+import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.OnboardingState
+import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
 internal expect fun OnboardingScaffold()
@@ -17,15 +20,18 @@ internal expect fun OnboardingScaffold()
 @Composable
 internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
     state: OnboardingState<T>,
+    effects: SharedFlow<EchoFlowEffect>,
     onPageAction: (T) -> Unit,
 ) {
+    HandleEchoFlowEffects(effects)
+
     val pages = state.pages
     val pagerState = rememberPagerState { pages.size }
     Scaffold(
         bottomBar = { OnboardingNavBar(pagerState) },
         modifier = Modifier
             .fillMaxSize()
-            .background(mColors.background)
+            .background(color = mColors.background)
     ) { innerPadding ->
         OnboardingContent(
             pagerState = pagerState,

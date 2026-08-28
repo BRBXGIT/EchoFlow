@@ -3,9 +3,7 @@ plugins {
     alias(libs.plugins.echoflow.kmp.library)
     // Compose
     alias(libs.plugins.echoflow.compose.multiplatform)
-    // Auth config
-    alias(libs.plugins.echoflow.auth.config)
-    // Koin
+    // Koin compiler
     alias(libs.plugins.koin.compiler)
 }
 
@@ -24,6 +22,8 @@ kotlin {
             implementation(projects.core.designSystem.components)
             // Debug
             implementation(projects.core.debug.api)
+            // Domain
+            implementation(projects.core.domain.api)
 
             // Compose resources
             implementation(libs.compose.resources)

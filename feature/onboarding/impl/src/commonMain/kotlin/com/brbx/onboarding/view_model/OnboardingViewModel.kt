@@ -13,6 +13,7 @@ internal class OnboardingViewModel<T : OnboardingPage> :
     EchoFlowViewModel<OnboardingState<T>, OnboardingIntent, Unit>(initialState = OnboardingState()) {
 
     private val pagesDelegate by injectDelegate<PagesDelegate<T>>()
+    private val authDelegate by injectDelegate<AuthDelegate>()
 
     init {
         dispatchIntent(OnboardingIntent.RefreshPages)
@@ -25,6 +26,7 @@ internal class OnboardingViewModel<T : OnboardingPage> :
     override fun dispatchIntent(intent: OnboardingIntent) {
         when (intent) {
             is OnboardingIntent.RefreshPages -> pagesDelegate(intent)
+            is OnboardingIntent.Authenticate -> authDelegate(intent)
         }
     }
 }
