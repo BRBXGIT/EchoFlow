@@ -8,7 +8,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-internal val authLinkBuilderModule = module {
+internal val builderModule = module {
     singleOf(constructor = ::PkceGeneratorImpl) { bind<PkceGenerator>() }
 
     singleOf(constructor = ::AuthLinkBuilderImpl) { bind<AuthLinkBuilder>() }

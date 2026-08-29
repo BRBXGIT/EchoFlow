@@ -17,6 +17,8 @@ kotlin {
             implementation(libs.koin.core)
             // Okio
             implementation(libs.okio)
+            // Ktor http
+            implementation(libs.ktor.http)
         }
     }
 }

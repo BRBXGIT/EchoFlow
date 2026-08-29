@@ -25,7 +25,7 @@ fun main() {
             title = TopLevelConfig.appName,
             state = windowState,
         ) {
-            EchoFlowApp()
+            EchoFlowApp("")
         }
     }
 }

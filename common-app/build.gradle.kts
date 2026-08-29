@@ -9,6 +9,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Api
+            implementation(projects.core.domain.api)
             implementation(projects.feature.navigation.api)
             // Impl
             implementation(projects.core.common.impl)
@@ -19,6 +20,10 @@ kotlin {
             implementation(projects.feature.onboarding.impl)
             // Other
             implementation(projects.core.designSystem.theme)
+            implementation(projects.feature.common)
+
+            // Libs
+            implementation(libs.koin.compose.viewmodel)
         }
     }
 }

@@ -5,6 +5,7 @@ import org.koin.dsl.module
 val dataModule = module {
     includes(
         repositoryModule,
-        authLinkBuilderModule,
+        builderModule,
+        handlerModule,
     )
 }

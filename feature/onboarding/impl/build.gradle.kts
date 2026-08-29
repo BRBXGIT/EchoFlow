@@ -14,8 +14,6 @@ kotlin {
             api(projects.feature.onboarding.api)
             // Feature common
             implementation(projects.feature.common)
-            // Navigation
-            implementation(projects.feature.navigation.api)
             // Theme
             implementation(projects.core.designSystem.theme)
             // Components

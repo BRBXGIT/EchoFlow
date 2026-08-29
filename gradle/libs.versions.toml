@@ -28,9 +28,9 @@ kotlinx-serialization = "1.11.0"
 ktor = "3.5.2"
 koin = "4.2.2"
 koin-compiler = "1.1.0"
-coil = "3.5.0"
+coil = "3.6.0"
 material-motion-compose = "2.0.1"
-materialKolor = "5.0.0"
+materialKolor = "5.0.1"
 shimmer = "1.5.0"
 brbx-mvi = "1.2.04"
 solar = "2.1.0"
@@ -69,6 +69,7 @@ androidx-paging-core = { group = "androidx.paging", name = "paging-common", vers
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidx-paging" }
 
 # Jetbrains
+ktor-http = { module = "io.ktor:ktor-http", version.ref = "ktor" }
 lifecycle-runtime = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidx-lifecycle" }
 lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
