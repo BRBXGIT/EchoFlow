@@ -8,20 +8,20 @@ plugins {
 kotlin {
     sourceSets {
         androidMain.dependencies {
-            // Koin android
+            // Libs
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
             // Api
             implementation(projects.core.preferences.api)
 
-            // Datastore
+            // Libs
             implementation(libs.androidx.datastore.core)
             implementation(libs.androidx.datastore.preferences)
-            // Koin
             implementation(libs.koin.core)
         }
         jvmMain.dependencies {
+            // Api
             implementation(projects.core.common.api)
         }
     }

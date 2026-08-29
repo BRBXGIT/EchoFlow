@@ -7,6 +7,6 @@ dependencies {
     // Api
     implementation(projects.core.common.api)
 
-    // Koin
+    // Libs
     implementation(libs.koin.core)
 }

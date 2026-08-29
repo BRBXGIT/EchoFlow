@@ -6,11 +6,10 @@ plugins {
 }
 
 dependencies {
-    // Common app
+    // Other
     implementation(projects.commonApp)
 
-    // Activity compose
+    // Libs
     implementation(libs.androidx.activity.compose)
-    // Koin
     implementation(libs.koin.android)
 }

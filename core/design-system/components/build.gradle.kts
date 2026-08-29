@@ -8,9 +8,10 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Material 3
+            // Api
             api(libs.compose.material3)
-            // Compose resources
+
+            // Libs
             implementation(libs.compose.resources)
         }
     }

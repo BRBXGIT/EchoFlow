@@ -8,10 +8,10 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Navigation
+            // Api
             api(projects.feature.navigation.api)
 
-            // Serialization
+            // Libs
             implementation(libs.kotlinx.serialization.core)
         }
     }

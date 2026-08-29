@@ -8,18 +8,16 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Navigation
-            implementation(projects.feature.navigation.impl) // Impl for encapsulating Navigator
+            // Api
             api(projects.feature.navigation.api)
-
-            // Brbx mvi
-            api(libs.brbx.mvi)
-            // Koin
-            implementation(libs.koin.core)
-            // Compose resources
-            implementation(libs.compose.resources)
-            // Design components
+            // Impl
+            implementation(projects.feature.navigation.impl)
             implementation(projects.core.designSystem.components)
+
+            // Libs
+            api(libs.brbx.mvi)
+            implementation(libs.koin.core)
+            implementation(libs.compose.resources)
         }
     }
 }

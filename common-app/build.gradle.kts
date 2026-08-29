@@ -18,7 +18,8 @@ kotlin {
             implementation(projects.core.preferences.impl)
             implementation(projects.feature.navigation.impl)
             implementation(projects.feature.onboarding.impl)
-            // Other
+            implementation(projects.feature.home.impl)
+            // Ohter
             implementation(projects.core.designSystem.theme)
             implementation(projects.feature.common)
 

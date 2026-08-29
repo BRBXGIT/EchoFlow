@@ -12,22 +12,16 @@ kotlin {
         commonMain.dependencies {
             // Api
             api(projects.feature.onboarding.api)
-            // Feature common
-            implementation(projects.feature.common)
-            // Theme
-            implementation(projects.core.designSystem.theme)
-            // Components
-            implementation(projects.core.designSystem.components)
-            // Debug
             implementation(projects.core.debug.api)
-            // Domain
             implementation(projects.core.domain.api)
+            // Other
+            implementation(projects.feature.common)
+            implementation(projects.core.designSystem.theme)
+            implementation(projects.core.designSystem.components)
 
-            // Compose resources
+            // Libs
             implementation(libs.compose.resources)
-            // Solar
             implementation(libs.solar)
-            // Koin
             implementation(libs.koin.compose.viewmodel)
         }
     }

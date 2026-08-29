@@ -8,13 +8,12 @@ plugins {
 }
 
 dependencies {
-    // Core common
+    // Api
     implementation(projects.core.common.api)
-    // Common app
+    // Other
     implementation(projects.commonApp)
 
-    // Compose desktop
-    implementation(compose.desktop.currentOs)
-    // Coroutines swing
+    // Libs
     implementation(libs.kotlinx.coroutines.swing)
+    implementation(compose.desktop.currentOs)
 }

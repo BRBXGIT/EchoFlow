@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.design_system.theme.EchoFlowTheme
 import com.brbx.domain.model.UserAuthState
+import com.brbx.home.HomeRoute
 import com.brbx.navigation.EchoFlowNavGraph
 import com.brbx.navigation.EchoFlowNavKey
 import com.brbx.navigation.LocalNavigator
@@ -45,5 +46,5 @@ private fun rememberSerializers(): SerializersModule {
 @Composable
 private fun rememberStartKey(authState: UserAuthState): EchoFlowNavKey =
     remember {
-        if (authState == UserAuthState.Unauthorized) OnboardingRoute else OnboardingRoute
+        if (authState == UserAuthState.Unauthorized) OnboardingRoute else HomeRoute
     }

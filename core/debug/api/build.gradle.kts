@@ -8,16 +8,15 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            // Api
+            api(libs.compose.preview)
             // Impl
             implementation(projects.core.debug.impl)
-            // Theme
+            // Other
             implementation(projects.core.designSystem.theme)
-
-            // Compose preview
-            api(libs.compose.preview)
         }
         androidMain.dependencies {
-            // Compose preview
+            // Libs
             implementation(libs.compose.ui.tooling)
         }
     }

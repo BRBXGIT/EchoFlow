@@ -6,9 +6,10 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Data
+            // Api
             implementation(projects.core.data.api)
-            // Koin
+
+            // Libs
             implementation(libs.koin.core)
         }
     }

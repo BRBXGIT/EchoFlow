@@ -4,6 +4,6 @@ plugins {
 }
 
 dependencies {
-    // Domain
+    // Api
     api(projects.core.domain.api)
 }

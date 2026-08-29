@@ -1,15 +1,17 @@
 plugins {
     // Kmp library
     alias(libs.plugins.echoflow.kmp.library)
+    // Serialization
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Navigation
+            // Api
             api(projects.feature.navigation.api)
 
-            // Serialization
+            // Libs
             implementation(libs.kotlinx.serialization.core)
         }
     }
