@@ -8,4 +8,6 @@ internal object Auth {
     const val RedirectUri = "redirectUri"
     const val ResponseType = "responseType"
     const val AuthBasePath = "authBasePath"
+    const val AuthGrantType = "authGrantType"
+    const val RefreshGrantType = "refreshGrantType"
 }

@@ -5,6 +5,8 @@ import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.view_model.base.OnboardingMviScope
+import com.brbx.onboarding.view_model.base.OnboardingViewModelDelegate
 
 internal interface AuthDelegate :
     OnboardingViewModelDelegate<OnboardingPage, OnboardingIntent.Authenticate>

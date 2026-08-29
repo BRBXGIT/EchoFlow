@@ -6,16 +6,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.feature_common.view_model.EchoFlowEffect
+import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.OnboardingState
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
-internal expect fun OnboardingScaffold()
+internal expect fun OnboardingScaffold(deeplink: String?)
 
 @Composable
 internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
@@ -43,3 +45,12 @@ internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
         )
     }
 }
+
+@Composable
+internal fun HandleDeeplink(
+    deeplink: String?,
+    dispatchIntent: (OnboardingIntent) -> Unit,
+) =
+    LaunchedEffect(key1 = deeplink) {
+        deeplink?.let { dispatchIntent(OnboardingIntent.HandleAuthDeeplink(deeplink)) }
+    }

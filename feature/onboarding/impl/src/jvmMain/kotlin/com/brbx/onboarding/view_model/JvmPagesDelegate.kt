@@ -5,6 +5,7 @@ import com.brbx.onboarding.model.BaseAuthPage
 import com.brbx.onboarding.model.BaseGreetingPage
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class JvmPagesDelegate(
     override val scope: OnboardingMviScope<OnboardingPage>,

@@ -1,4 +1,4 @@
-package com.brbx.onboarding.view_model
+package com.brbx.onboarding.view_model.base
 
 import com.brbx.feature_common.view_model.EchoFlowMviScope
 import com.brbx.onboarding.model.OnboardingIntent

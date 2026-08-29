@@ -9,9 +9,11 @@ import com.brbx.onboarding.view_model.OnboardingViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal actual fun OnboardingScaffold() {
+internal actual fun OnboardingScaffold(deeplink: String?) {
     val viewModel = koinViewModel<OnboardingViewModel<OnboardingPage>>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    HandleDeeplink(deeplink, viewModel::dispatchIntent)
 
     OnboardingScaffoldInternal(
         state = state,

@@ -7,5 +7,6 @@ val dataModule = module {
         repositoryModule,
         builderModule,
         handlerModule,
+        interactorModule,
     )
 }

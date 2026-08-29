@@ -4,4 +4,6 @@ import com.brbx.navigation.EchoFlowNavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-object OnboardingRoute : EchoFlowNavKey
+data class OnboardingRoute(
+    val deeplink: String? = null,
+) : EchoFlowNavKey

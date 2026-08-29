@@ -13,6 +13,7 @@ interface Navigator {
     fun navigate(key: EchoFlowNavKey)
     fun navigateBack()
     fun removePrevious()
+    fun removeAllExceptCurrent()
 }
 
 val LocalNavigator = compositionLocalOf<Navigator> { error("No navigator provided") }

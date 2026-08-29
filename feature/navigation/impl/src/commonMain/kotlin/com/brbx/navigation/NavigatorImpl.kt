@@ -46,4 +46,10 @@ internal class NavigatorImpl(
     override fun removePrevious() {
         if (backStack.size > 1) backStack.removeAt(index = backStack.lastIndex - 1)
     }
+
+    override fun removeAllExceptCurrent() {
+        while (backStack.size > 1) {
+            backStack.removeAt(index = 0)
+        }
+    }
 }

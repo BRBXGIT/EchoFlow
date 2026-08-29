@@ -12,6 +12,7 @@ import com.brbx.onboarding.model.BatteryOptimization
 import com.brbx.onboarding.model.Notifications
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.Special
+import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class AndroidPagesDelegate(
     override val scope: OnboardingMviScope<AndroidPage>,

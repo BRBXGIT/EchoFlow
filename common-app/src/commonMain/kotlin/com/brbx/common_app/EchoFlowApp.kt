@@ -2,12 +2,16 @@ package com.brbx.common_app
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.common_app.view_model.AppViewModel
 import com.brbx.design_system.theme.EchoFlowTheme
-import com.brbx.domain.model.UserAuthState
+import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.home.HomeRoute
 import com.brbx.navigation.EchoFlowNavGraph
 import com.brbx.navigation.EchoFlowNavKey
@@ -22,15 +26,39 @@ import org.koin.compose.viewmodel.koinViewModel
 fun EchoFlowApp(deeplink: String?) {
     val viewModel = koinViewModel<AppViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val authState = state.authState
 
     val navigator = rememberNavigator(
         serializers = rememberSerializers(),
-        startKey = rememberStartKey(state.authState),
+        startKey = rememberStartKey(authState, deeplink),
     )
+
+    HandleAuthChanges(
+        authState = authState,
+        onLogOut = {
+            navigator.navigate(key = OnboardingRoute())
+            navigator.removeAllExceptCurrent()
+        },
+    )
+
     CompositionLocalProvider(value = LocalNavigator provides navigator) {
         EchoFlowTheme {
             EchoFlowNavGraph()
         }
+    }
+}
+
+@Composable
+private fun HandleAuthChanges(
+    authState: UserAuthState,
+    onLogOut: () -> Unit,
+) {
+    var previous by rememberSaveable { mutableStateOf<UserAuthState?>(value = null) }
+    LaunchedEffect(key1 = authState) {
+        if (authState == UserAuthState.Unauthorized && previous == UserAuthState.Authorized) {
+            onLogOut()
+        }
+        previous = authState
     }
 }
 
@@ -45,7 +73,7 @@ private fun rememberSerializers(): SerializersModule {
 }
 
 @Composable
-private fun rememberStartKey(authState: UserAuthState): EchoFlowNavKey =
+private fun rememberStartKey(authState: UserAuthState, deeplink: String?): EchoFlowNavKey =
     remember {
-        if (authState == UserAuthState.Unauthorized) OnboardingRoute else HomeRoute
+        if (authState == UserAuthState.Unauthorized) OnboardingRoute(deeplink) else HomeRoute
     }

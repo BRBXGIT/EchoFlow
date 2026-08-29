@@ -27,5 +27,6 @@ internal class OnboardingViewModel<T : OnboardingPage> :
         when (intent) {
             is OnboardingIntent.RefreshPages -> pagesDelegate(intent)
             is OnboardingIntent.Authenticate -> authDelegate(intent)
+            is OnboardingIntent.HandleAuthDeeplink -> TODO()
         }
 }

@@ -8,15 +8,23 @@ internal class AuthLinkBuilderImpl(
     private var cachedLink: String? = null
 
     override var currentCodeVerifier: String? = null
+    override var currentState: String? = null
 
     override fun getLink(): String = cachedLink ?: generateLink().also { cachedLink = it }
+
+    override fun clear() {
+        cachedLink = null
+        currentCodeVerifier = null
+        currentState = null
+    }
 
     private fun generateLink(): String = run {
         val state = pkceGenerator.generateRandomString()
         val codeVerifier = pkceGenerator.generateRandomString(length = VERIFIER_LENGTH)
         val codeChallenge = pkceGenerator.generateCodeChallenge(codeVerifier)
 
-        this.currentCodeVerifier = codeVerifier
+        currentCodeVerifier = codeVerifier
+        currentState = state
 
         buildString {
             append(AuthConfig.authBasePath)

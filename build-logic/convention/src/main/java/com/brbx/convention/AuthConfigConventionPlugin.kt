@@ -19,6 +19,8 @@ internal class AuthConfigConventionPlugin : Plugin<Project> {
             val redirectUri = localProperties.getOrEmpty(key = Auth.RedirectUri)
             val responseType = localProperties.getOrEmpty(key = Auth.ResponseType)
             val authBasePath = localProperties.getOrEmpty(key = Auth.AuthBasePath)
+            val authGrantType = localProperties.getOrEmpty(key = Auth.AuthGrantType)
+            val refreshGrantType = localProperties.getOrEmpty(key = Auth.RefreshGrantType)
 
             configureBuildConfig(generatedClassName = Auth.ObjectName) {
                 buildConfigField("String", Auth.ClientId, "\"$clientId\"")
@@ -26,6 +28,8 @@ internal class AuthConfigConventionPlugin : Plugin<Project> {
                 buildConfigField("String", Auth.RedirectUri, "\"$redirectUri\"")
                 buildConfigField("String", Auth.ResponseType, "\"$responseType\"")
                 buildConfigField("String", Auth.AuthBasePath, "\"$authBasePath\"")
+                buildConfigField("String", Auth.AuthGrantType, "\"$authGrantType\"")
+                buildConfigField("String", Auth.RefreshGrantType, "\"$refreshGrantType\"")
             }
         }
     }

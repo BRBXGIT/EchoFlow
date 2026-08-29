@@ -20,12 +20,13 @@ import com.brbx.onboarding.view_model.OnboardingViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-internal actual fun OnboardingScaffold() {
+internal actual fun OnboardingScaffold(deeplink: String?) {
     val viewModel = koinViewModel<OnboardingViewModel<AndroidPage>>()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val dispatchIntent = viewModel::dispatchIntent
 
     HandleOnResume(dispatchIntent)
+    HandleDeeplink(deeplink, dispatchIntent)
 
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(

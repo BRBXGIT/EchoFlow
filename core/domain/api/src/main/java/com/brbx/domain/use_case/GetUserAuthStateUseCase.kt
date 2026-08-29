@@ -1,6 +1,6 @@
 package com.brbx.domain.use_case
 
-import com.brbx.domain.model.UserAuthState
+import com.brbx.domain.model.enums.UserAuthState
 import kotlinx.coroutines.flow.Flow
 
 fun interface GetUserAuthStateUseCase {

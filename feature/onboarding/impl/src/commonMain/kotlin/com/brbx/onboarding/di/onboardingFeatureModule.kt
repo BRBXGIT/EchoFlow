@@ -12,7 +12,7 @@ internal val onboardingFeatureModule = module {
     singleSerializer<OnboardingRoute> {
         subclass(OnboardingRoute::class, serializer = OnboardingRoute.serializer())
     }
-    navigation<OnboardingRoute> {
-        OnboardingScaffold()
+    navigation<OnboardingRoute> { route ->
+        OnboardingScaffold(route.deeplink)
     }
 }
