@@ -1,4 +1,4 @@
-package com.brbx.common_app
+package com.brbx.common_app.model
 
 import androidx.compose.runtime.Immutable
 import com.brbx.domain.model.UserAuthState

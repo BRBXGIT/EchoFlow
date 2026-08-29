@@ -3,6 +3,7 @@ package com.brbx.common_app
 import com.brbx.core_common.coreCommonModule
 import com.brbx.data.di.dataModule
 import com.brbx.domain.di.domainModule
+import com.brbx.home.homeModule
 import com.brbx.onboarding.di.onboardingModule
 import com.brbx.preferences.preferencesModule
 import org.koin.core.KoinApplication
@@ -19,6 +20,7 @@ fun setupKoin(
             domainModule,
             preferencesModule,
             onboardingModule,
+            homeModule,
         )
     }
 }

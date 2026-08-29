@@ -5,6 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.brbx.common_app.view_model.AppViewModel
 import com.brbx.design_system.theme.EchoFlowTheme
 import com.brbx.domain.model.UserAuthState
 import com.brbx.home.HomeRoute

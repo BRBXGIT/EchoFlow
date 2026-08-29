@@ -11,7 +11,7 @@ import org.koin.dsl.module
 import org.koin.dsl.navigation3.navigation
 
 @OptIn(KoinExperimentalAPI::class)
-val homeFeatureModule = module {
+internal val homeFeatureModule = module {
     singleSerializer<HomeRoute> {
         subclass(HomeRoute::class, serializer = HomeRoute.serializer())
     }
