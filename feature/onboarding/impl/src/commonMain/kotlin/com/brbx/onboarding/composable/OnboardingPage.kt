@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ContainedLoadingIndicator
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -209,6 +211,7 @@ private fun SkipButton(
         )
     }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun ActionButton(
     action: OnboardingPage.Action,
@@ -220,11 +223,15 @@ private fun ActionButton(
         onClick = onClick,
         enabled = action.enabled
     ) {
-        val textRes = rememberActionButtonText(action.enabled, action.disabledText, action.enabledText)
-        Text(
-            text = safeStringResource(textRes),
-            style = mTypography.bodyLarge,
-        )
+        if (action.isLoading) {
+            ContainedLoadingIndicator(modifier = Modifier.height(mDimens.micro6))
+        } else {
+            val textRes = rememberActionButtonText(action.enabled, action.disabledText, action.enabledText)
+            Text(
+                text = safeStringResource(textRes),
+                style = mTypography.bodyLarge,
+            )
+        }
     }
 
 @Composable

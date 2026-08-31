@@ -2,7 +2,6 @@ package com.brbx.feature_common.view_model
 
 import androidx.lifecycle.viewModelScope
 import com.brbx.mvi_core.base.ContainedMviViewModel
-import com.brbx.mvi_core.contracts.MviScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +33,4 @@ abstract class EchoFlowViewModel<State, in Intent : Any, ScreenEffect : Any>(
         override fun postScreenEffect(effect: ScreenEffect) =
             this@EchoFlowViewModel.postScreenEffect(effect)
     }
-
-    protected inline fun <reified D : Any> injectDelegate(): Lazy<D> =
-        inject { parametersOf(scope) }
 }

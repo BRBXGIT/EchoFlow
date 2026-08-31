@@ -12,8 +12,10 @@ kotlin {
         commonMain.dependencies {
             // Api
             api(projects.feature.onboarding.api)
+            api(projects.feature.home.api)
             implementation(projects.core.debug.api)
             implementation(projects.core.domain.api)
+            implementation(projects.core.common.api)
             // Other
             implementation(projects.feature.common)
             implementation(projects.core.designSystem.theme)

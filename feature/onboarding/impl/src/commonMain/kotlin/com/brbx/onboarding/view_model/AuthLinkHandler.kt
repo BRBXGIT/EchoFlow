@@ -8,13 +8,13 @@ import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.view_model.base.OnboardingMviScope
 import com.brbx.onboarding.view_model.base.OnboardingViewModelDelegate
 
-internal interface AuthDelegate :
-    OnboardingViewModelDelegate<OnboardingPage, OnboardingIntent.Authenticate>
+internal interface AuthLinkHandler :
+    OnboardingViewModelDelegate<OnboardingPage, OnboardingIntent.OpenAuthLink>
 
-internal class AuthDelegateImpl(
+internal class AuthLinkHandlerImpl(
     override val scope: OnboardingMviScope<OnboardingPage>,
     private val getAuthLinkUseCase: GetAuthLinkUseCase,
-) : AuthDelegate {
-    override fun invoke(intent: OnboardingIntent.Authenticate) =
+) : AuthLinkHandler {
+    override fun invoke(intent: OnboardingIntent.OpenAuthLink) =
         postEffect(EchoFlowEffect.OpenLink(getAuthLinkUseCase()))
 }

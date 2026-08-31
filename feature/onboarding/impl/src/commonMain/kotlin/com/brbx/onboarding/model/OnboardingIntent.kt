@@ -3,7 +3,7 @@ package com.brbx.onboarding.model
 sealed interface OnboardingIntent {
     data object RefreshPages : OnboardingIntent
 
-    data object Authenticate : OnboardingIntent
+    data object OpenAuthLink : OnboardingIntent
 
-    @JvmInline value class HandleAuthDeeplink(val deeplink: String) : OnboardingIntent
+    @JvmInline value class Authenticate(val deeplink: String) : OnboardingIntent
 }

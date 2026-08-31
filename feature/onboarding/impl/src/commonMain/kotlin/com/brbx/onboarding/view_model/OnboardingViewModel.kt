@@ -2,6 +2,7 @@ package com.brbx.onboarding.view_model
 
 import androidx.compose.runtime.Immutable
 import com.brbx.feature_common.view_model.EchoFlowViewModel
+import com.brbx.feature_common.view_model.injectDelegate
 import com.brbx.mvi_core.helpers.shareInWhileSubscribed
 import com.brbx.mvi_core.helpers.stateInWhileSubscribed
 import com.brbx.onboarding.model.OnboardingIntent
@@ -12,12 +13,11 @@ import com.brbx.onboarding.model.OnboardingState
 internal class OnboardingViewModel<T : OnboardingPage> :
     EchoFlowViewModel<OnboardingState<T>, OnboardingIntent, Unit>(initialState = OnboardingState()) {
 
-    private val pagesDelegate by injectDelegate<PagesDelegate<T>>()
-    private val authDelegate by injectDelegate<AuthDelegate>()
+    private val pagesSource by injectDelegate<PagesSource<T>>()
+    private val authLinkHandler by injectDelegate<AuthLinkHandler>()
+    private val authenticator by injectDelegate<Authenticator>()
 
-    init {
-        dispatchIntent(OnboardingIntent.RefreshPages)
-    }
+    init { dispatchIntent(OnboardingIntent.RefreshPages) }
 
     override val state = _state.stateInWhileSubscribed(initialValue = OnboardingState())
     override val effects = _effects.shareInWhileSubscribed()
@@ -25,8 +25,8 @@ internal class OnboardingViewModel<T : OnboardingPage> :
 
     override fun dispatchIntent(intent: OnboardingIntent) =
         when (intent) {
-            is OnboardingIntent.RefreshPages -> pagesDelegate(intent)
-            is OnboardingIntent.Authenticate -> authDelegate(intent)
-            is OnboardingIntent.HandleAuthDeeplink -> TODO()
+            is OnboardingIntent.RefreshPages -> pagesSource(intent)
+            is OnboardingIntent.OpenAuthLink -> authLinkHandler(intent)
+            is OnboardingIntent.Authenticate -> authenticator(intent)
         }
 }

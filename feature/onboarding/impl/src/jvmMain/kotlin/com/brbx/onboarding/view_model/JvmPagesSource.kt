@@ -7,15 +7,15 @@ import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
-internal class JvmPagesDelegate(
+internal class JvmPagesSource(
     override val scope: OnboardingMviScope<OnboardingPage>,
-) : PagesDelegate<OnboardingPage> {
+) : PagesSource<OnboardingPage> {
     override fun invoke(intent: OnboardingIntent.RefreshPages) =
         reduce { copy(pages = buildPages()) }
 
     private fun buildPages(): List<OnboardingPage> =
         buildList {
             add(BaseGreetingPage)
-            add(BaseAuthPage)
+            add(BaseAuthPage())
         }
 }

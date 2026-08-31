@@ -25,6 +25,7 @@ internal interface OnboardingPage {
         val canSkip: Boolean = false,
         val enabled: Boolean = true,
         val disabledText: StringResource? = null,
+        val isLoading: Boolean = false,
         val enabledText: StringResource,
     )
 }

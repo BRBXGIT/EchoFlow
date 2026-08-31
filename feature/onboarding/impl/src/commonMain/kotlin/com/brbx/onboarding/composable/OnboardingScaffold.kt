@@ -5,8 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
@@ -25,24 +28,31 @@ internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
     effects: SharedFlow<EchoFlowEffect>,
     onPageAction: (T) -> Unit,
 ) {
-    HandleEchoFlowEffects(effects)
+    val snackbarHost = remember { SnackbarHostState() }
+    HandleEchoFlowEffects(effects, snackbarHost)
 
     val pages = state.pages
     val pagerState = rememberPagerState { pages.size }
-    Scaffold(
-        bottomBar = { OnboardingNavBar(pagerState) },
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = mColors.background)
-    ) { innerPadding ->
-        OnboardingContent(
-            pagerState = pagerState,
-            pages = pages,
-            onAction = onPageAction,
+    LoadingBox(
+        loading = state.loading,
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Scaffold(
+            snackbarHost = { SnackbarHost(hostState = snackbarHost) },
+            bottomBar = { OnboardingNavBar(pagerState) },
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = innerPadding)
-        )
+                .background(color = mColors.background)
+        ) { innerPadding ->
+            OnboardingContent(
+                pagerState = pagerState,
+                pages = pages,
+                onAction = onPageAction,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = innerPadding)
+            )
+        }
     }
 }
 
@@ -52,5 +62,5 @@ internal fun HandleDeeplink(
     dispatchIntent: (OnboardingIntent) -> Unit,
 ) =
     LaunchedEffect(key1 = deeplink) {
-        deeplink?.let { dispatchIntent(OnboardingIntent.HandleAuthDeeplink(deeplink)) }
+        deeplink?.let { dispatchIntent(OnboardingIntent.Authenticate(deeplink)) }
     }

@@ -28,8 +28,10 @@ internal fun HandleEchoFlowEffectsInternal(
         effects.collect { effect ->
             when (effect) {
                 is EchoFlowEffect.Snackbar -> snackbarHost?.showSnackbar(effect)
+
                 is EchoFlowEffect.NavigateBack -> navigator.navigateBack()
                 is EchoFlowEffect.Navigate -> navigator.navigate(effect.key)
+                is EchoFlowEffect.DropPreviousNavKey -> navigator.removePrevious()
                 is EchoFlowEffect.OpenLink -> onOpenLink(effect.link)
             }
         }
@@ -45,6 +47,7 @@ private fun SnackbarHostState.showSnackbar(
             message = snackbar.text.suspendAsString(),
             actionLabel = snackbar.action?.text?.suspendAsString(),
             duration = snackbar.duration,
+            withDismissAction = snackbar.dismissable,
         )
         when (result) {
             SnackbarResult.Dismissed -> snackbar.action?.onDismiss()

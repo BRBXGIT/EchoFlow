@@ -29,8 +29,8 @@ internal class AuthenticateUserUseCaseImpl(
             return failure(exception = RequestException.CsrfAttack)
         }
 
-        return savedVerifier?.let { v ->
-            authRepository.authenticate(deeplinkPayload.code, verifier = v)
+        return savedVerifier?.let { verifier ->
+            authRepository.authenticate(deeplinkPayload.code, verifier)
                 .onSuccess { codes ->
                     authInteractor.saveTokens(AuthTokens(codes.access, codes.refresh))
                 }

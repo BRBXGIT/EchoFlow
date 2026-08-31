@@ -1,0 +1,11 @@
+<resources>
+    <string name="error_conflict">Произошел конфликт. Проверьте данные. :(</string>
+    <string name="error_too_many_requests">Слишком много запросов. Пожалуйста, подождите. :0</string>
+    <string name="error_payload_too_large">Файл слишком большой. :(</string>
+    <string name="error_server_error">Ошибка сервера. Мы уже работаем над этим! :0</string>
+    <string name="error_unauthorized">Доступ запрещен. Пожалуйста, войдите снова. :(</string>
+    <string name="error_request_timeout">Время ожидания истекло. Попробуйте еще раз. :(</string>
+    <string name="error_internet">Нет подключения к интернету. :(</string>
+    <string name="error_unknown">Что-то пошло не так. :(</string>
+    <string name="error_csrf_attack">Ошибка безопасности. Пожалуйста, попробуйте снова. :0</string>
+</resources>

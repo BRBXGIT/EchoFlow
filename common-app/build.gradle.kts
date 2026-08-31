@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.echoflow.kmp.library)
     // Compose
     alias(libs.plugins.echoflow.compose.multiplatform)
+    // Koin compiler
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {
@@ -10,6 +12,7 @@ kotlin {
         commonMain.dependencies {
             // Api
             implementation(projects.core.domain.api)
+            implementation(projects.core.common.api)
             implementation(projects.feature.navigation.api)
             // Impl
             implementation(projects.core.common.impl)

@@ -10,6 +10,7 @@ kotlin {
         commonMain.dependencies {
             // Api
             api(projects.feature.navigation.api)
+            implementation(projects.core.domain.api)
             // Impl
             implementation(projects.feature.navigation.impl)
             implementation(projects.core.designSystem.components)

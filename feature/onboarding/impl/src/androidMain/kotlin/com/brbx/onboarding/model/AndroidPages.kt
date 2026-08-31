@@ -26,7 +26,7 @@ private val defaultAction = OnboardingPage.Action(
 
 internal data object AndroidGreeting : AndroidPage, OnboardingPage by BaseGreetingPage
 
-internal data object AndroidAuth : AndroidPage, OnboardingPage by BaseAuthPage
+internal data object AndroidAuth : AndroidPage, OnboardingPage by BaseAuthPage()
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 internal data class Notifications(

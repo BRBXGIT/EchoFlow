@@ -5,5 +5,5 @@ import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.OnboardingState
 
-internal interface OnboardingMviScope<T : OnboardingPage> :
+internal typealias OnboardingMviScope<T> =
         EchoFlowMviScope<OnboardingState<T>, OnboardingIntent, Unit>

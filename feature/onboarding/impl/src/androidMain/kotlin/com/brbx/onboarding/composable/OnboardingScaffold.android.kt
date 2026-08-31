@@ -67,7 +67,7 @@ private fun handlePageAction(
 }
 
 private fun handleAuth(dispatchIntent: (OnboardingIntent) -> Unit) {
-    dispatchIntent(OnboardingIntent.Authenticate)
+    dispatchIntent(OnboardingIntent.OpenAuthLink)
 }
 
 private fun handlePermissions(

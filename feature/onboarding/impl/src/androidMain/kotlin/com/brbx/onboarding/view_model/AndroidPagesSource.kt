@@ -14,10 +14,10 @@ import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.Special
 import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
-internal class AndroidPagesDelegate(
+internal class AndroidPagesSource(
     override val scope: OnboardingMviScope<AndroidPage>,
     private val context: Context, // Application context in viewModel antipattern maybe will be rewritten
-) : PagesDelegate<AndroidPage> {
+) : PagesSource<AndroidPage> {
     override fun invoke(intent: OnboardingIntent.RefreshPages) =
         reduce { copy(pages = buildPages()) }
 
