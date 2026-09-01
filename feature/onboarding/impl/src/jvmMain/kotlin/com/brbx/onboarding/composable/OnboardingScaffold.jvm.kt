@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.onboarding.model.BaseAuthPage
+import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.view_model.OnboardingViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -18,12 +19,15 @@ internal actual fun OnboardingScaffold(deeplink: String?) {
     OnboardingScaffoldInternal(
         state = state,
         effects = viewModel.effects,
-        onPageAction = { page -> handlePageAction(page) }
+        onPageAction = { page -> handlePageAction(page, viewModel::dispatchIntent) }
     )
 }
 
-private fun handlePageAction(page: OnboardingPage) {
+private fun handlePageAction(
+    page: OnboardingPage,
+    dispatchIntent: (OnboardingIntent) -> Unit
+) {
     if (page is BaseAuthPage) {
-        TODO()
+        dispatchIntent(OnboardingIntent.OpenAuthLink)
     }
 }
