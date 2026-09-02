@@ -1,5 +1,6 @@
 package com.brbx.local_server
 
+import com.brbx.core.local_server.impl.AuthConfig
 import io.ktor.server.cio.CIO
 import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.engine.EmbeddedServer
@@ -25,20 +26,22 @@ internal class JvmAuthServerImpl : JvmAuthServer {
     private fun bindServer(
         onDataReceived: (url: String) -> Unit,
     ): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
-        embeddedServer(factory = CIO, port = 53999) {
-            routing {
-                get(path = "/callback") {
-                    val url = call.url()
-                    if (url != "") {
-                        call.respondText("Done! You can close this tab and open app.")
-                        onDataReceived(url)
-                        server?.stop()
-                        server = null
-                    } else {
-                        call.respondText("Something went wrong please retry.")
-                        server?.stop()
+        AuthConfig.jvmPort?.let { port ->
+            embeddedServer(factory = CIO, port = port) {
+                routing {
+                    get(path = AuthConfig.jvmPath) {
+                        val url = call.url()
+                        if (url != "") {
+                            call.respondText("Done! You can close this tab and open app.")
+                            onDataReceived(url)
+                            server?.stop()
+                            server = null
+                        } else {
+                            call.respondText("Something went wrong please retry.")
+                            server?.stop()
+                        }
                     }
                 }
             }
-        }
+        } ?:error("Port cannot be null")
 }

@@ -7,6 +7,10 @@ plugins {
 
 kotlin {
     sourceSets {
+        commonMain.dependencies {
+            // Libs
+            implementation(libs.koin.core)
+        }
         jvmMain.dependencies {
             // Api
             implementation(projects.core.localServer.api)
@@ -14,7 +18,6 @@ kotlin {
             // Libs
             implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.cio)
-            implementation(libs.koin.core)
         }
     }
 }

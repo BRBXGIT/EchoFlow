@@ -25,20 +25,22 @@ internal class AuthConfigConventionPlugin : Plugin<Project> {
             val androidRedirectUri = localProperties.getOrEmpty(key = Auth.AndroidRedirectUri)
             val jvmScheme = localProperties.getOrEmpty(key = Auth.JvmScheme)
             val jvmHost =  localProperties.getOrEmpty(key = Auth.JvmHost)
+            val jvmPath =  localProperties.getOrEmpty(key = Auth.JvmPath)
             val jvmPort =  localProperties.getOrEmpty(key = Auth.JvmPort).toIntOrNull()
 
             configureBuildConfig(generatedClassName = Auth.ObjectName) {
-                buildConfigField(Auth.ClientId, "\"$clientId\"")
-                buildConfigField(Auth.ClientSecret, "\"$clientSecret\"")
-                buildConfigField(Auth.ResponseType, "\"$responseType\"")
-                buildConfigField(Auth.AuthBasePath, "\"$authBasePath\"")
-                buildConfigField(Auth.AuthGrantType, "\"$authGrantType\"")
-                buildConfigField(Auth.RefreshGrantType, "\"$refreshGrantType\"")
+                buildConfigField(name = Auth.ClientId, value = "\"$clientId\"")
+                buildConfigField(name = Auth.ClientSecret, value = "\"$clientSecret\"")
+                buildConfigField(name = Auth.ResponseType, value = "\"$responseType\"")
+                buildConfigField(name = Auth.AuthBasePath, value = "\"$authBasePath\"")
+                buildConfigField(name = Auth.AuthGrantType, value = "\"$authGrantType\"")
+                buildConfigField(name = Auth.RefreshGrantType, value = "\"$refreshGrantType\"")
 
-                buildConfigField(Auth.AndroidRedirectUri, "\"$androidRedirectUri\"")
-                buildConfigField(Auth.JvmScheme, "\"$jvmScheme\"")
-                buildConfigField(Auth.JvmHost, "\"$jvmHost\"")
-                buildConfigField(Auth.JvmPort, "$jvmPort")
+                buildConfigField(name = Auth.AndroidRedirectUri, value = "\"$androidRedirectUri\"")
+                buildConfigField(name = Auth.JvmScheme, value = "\"$jvmScheme\"")
+                buildConfigField(name = Auth.JvmHost, value = "\"$jvmHost\"")
+                buildConfigField(name = Auth.JvmPort, value = jvmPort)
+                buildConfigField(name = Auth.JvmPath, value = "\"$jvmPath\"")
             }
         }
     }

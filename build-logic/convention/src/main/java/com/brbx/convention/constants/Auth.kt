@@ -14,4 +14,5 @@ internal object Auth {
     const val JvmScheme = "jvmScheme"
     const val JvmHost = "localhost"
     const val JvmPort = "jvmPort"
+    const val JvmPath = "jvmPath"
 }

@@ -5,6 +5,6 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-val localServerModule = module {
+actual val localServerModule = module {
     singleOf(constructor = ::JvmAuthServerImpl) { bind<JvmAuthServer>() }
 }
