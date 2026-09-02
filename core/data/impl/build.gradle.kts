@@ -18,5 +18,9 @@ kotlin {
             implementation(libs.okio)
             implementation(libs.ktor.http)
         }
+        jvmMain.dependencies {
+            // Api
+            implementation(projects.core.localServer.api)
+        }
     }
 }

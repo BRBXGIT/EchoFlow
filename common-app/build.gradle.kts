@@ -20,6 +20,7 @@ kotlin {
             implementation(projects.core.domain.impl)
             implementation(projects.core.preferences.impl)
             implementation(projects.core.network.impl)
+            implementation(projects.core.localServer.impl)
             implementation(projects.feature.navigation.impl)
             implementation(projects.feature.onboarding.impl)
             implementation(projects.feature.home.impl)

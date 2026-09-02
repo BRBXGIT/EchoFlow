@@ -14,6 +14,7 @@ kotlin {
             // Libs
             implementation(libs.ktor.server.core)
             implementation(libs.ktor.server.cio)
+            implementation(libs.koin.core)
         }
     }
 }
