@@ -2,6 +2,8 @@ package com.brbx.data.builder
 
 import com.brbx.core.data.impl.AuthConfig
 
+internal expect fun AuthLinkBuilderImpl.platformState(state: String): String
+
 internal class AuthLinkBuilderImpl(
     private val pkceGenerator: PkceGenerator,
 ) : AuthLinkBuilder {
@@ -24,7 +26,7 @@ internal class AuthLinkBuilderImpl(
         val codeChallenge = pkceGenerator.generateCodeChallenge(codeVerifier)
 
         currentCodeVerifier = codeVerifier
-        currentState = state
+        currentState = platformState(state)
 
         buildString {
             append(AuthConfig.authBasePath)
@@ -33,12 +35,11 @@ internal class AuthLinkBuilderImpl(
             append("&$PARAM_RESPONSE_TYPE=$VALUE_RESPONSE_TYPE_CODE")
             append("&$PARAM_CODE_CHALLENGE_METHOD=$VALUE_CODE_CHALLENGE_METHOD")
             append("&$PARAM_CODE_CHALLENGE=$codeChallenge")
-            append("&$PARAM_STATE=$state")
+            append("&$PARAM_STATE=$currentState")
         }
     }
 
     private companion object {
-        // Параметры запроса
         const val PARAM_CLIENT_ID = "client_id"
         const val PARAM_REDIRECT_URI = "redirect_uri"
         const val PARAM_RESPONSE_TYPE = "response_type"
