@@ -1,18 +1,21 @@
 package com.brbx.data.repository
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import local_server.JvmAuthServer
 
 internal class AuthServerRepositoryImpl(
     private val server: JvmAuthServer,
 ) : AuthServerRepository {
-    override var currentUrl: String? = null
+    private val _currentUrl = MutableStateFlow<String?>(value = null)
+    override val currentUrl = _currentUrl.asStateFlow()
 
     override fun clearUrl() {
-        currentUrl = null
+        _currentUrl.value = null
     }
 
     override fun openServer() =
         server.startServerAndWaitForCode(
-            onDataReceived = { url -> currentUrl = url },
+            onDataReceived = { url -> _currentUrl.value = url },
         )
 }

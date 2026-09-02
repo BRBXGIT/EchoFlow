@@ -12,7 +12,7 @@ internal object Auth {
 
     const val AndroidRedirectUri = "androidRedirectUri"
     const val JvmScheme = "jvmScheme"
-    const val JvmHost = "localhost"
+    const val JvmHost = "jvmHost"
     const val JvmPort = "jvmPort"
     const val JvmPath = "jvmPath"
 }

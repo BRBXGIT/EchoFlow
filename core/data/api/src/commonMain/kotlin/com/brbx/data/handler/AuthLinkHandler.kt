@@ -2,6 +2,6 @@ package com.brbx.data.handler
 
 import com.brbx.domain.model.AuthCallbackPayload
 
-interface AuthDeeplinkHandler {
+interface AuthLinkHandler {
     fun handle(rawUri: String): AuthCallbackPayload?
 }

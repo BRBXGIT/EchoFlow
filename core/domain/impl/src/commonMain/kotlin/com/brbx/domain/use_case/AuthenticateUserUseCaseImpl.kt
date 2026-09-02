@@ -1,7 +1,7 @@
 package com.brbx.domain.use_case
 
 import com.brbx.data.builder.AuthLinkBuilder
-import com.brbx.data.handler.AuthDeeplinkHandler
+import com.brbx.data.handler.AuthLinkHandler
 import com.brbx.data.interactor.UserAuthInteractor
 import com.brbx.data.repository.UserAuthRepository
 import com.brbx.domain.model.AuthTokens
@@ -12,13 +12,13 @@ import com.brbx.domain.model.map
 import com.brbx.domain.model.onSuccess
 
 internal class AuthenticateUserUseCaseImpl(
-    private val handler: AuthDeeplinkHandler,
+    private val authLinkHandler: AuthLinkHandler,
     private val authLinkBuilder: AuthLinkBuilder,
     private val authRepository: UserAuthRepository,
     private val authInteractor: UserAuthInteractor,
 ) : AuthenticateUserUseCase {
     override suspend fun invoke(rawUri: String): RequestResult<Unit> {
-        val deeplinkPayload = handler.handle(rawUri)
+        val deeplinkPayload = authLinkHandler.handle(rawUri)
             ?: return failure(exception = RequestException.Unknown)
 
         val savedState = authLinkBuilder.currentState
