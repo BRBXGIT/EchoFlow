@@ -5,9 +5,13 @@ internal object Auth {
 
     const val ClientId = "clientId"
     const val ClientSecret = "clientSecret"
-    const val RedirectUri = "redirectUri"
     const val ResponseType = "responseType"
-    const val AuthBasePath = "authBasePath"
     const val AuthGrantType = "authGrantType"
     const val RefreshGrantType = "refreshGrantType"
+    const val AuthBasePath = "authBasePath"
+
+    const val AndroidRedirectUri = "androidRedirectUri"
+    const val JvmScheme = "jvmScheme"
+    const val JvmHost = "localhost"
+    const val JvmPort = "jvmPort"
 }

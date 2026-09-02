@@ -7,6 +7,6 @@ data class AuthRequestDto(
     val codeVerifier: String,
     val clientId: String = AuthConfig.clientId,
     val clientSecret: String = AuthConfig.clientSecret,
-    val redirectUri: String = AuthConfig.redirectUri,
+    val redirectUri: String = AuthConfig.androidRedirectUri,
     val grantType: String = AuthConfig.authGrantType
 )

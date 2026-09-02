@@ -6,7 +6,7 @@ import io.ktor.http.Url
 
 internal class AuthDeeplinkHandlerImpl : AuthDeeplinkHandler {
     override fun handle(rawUri: String): AuthCallbackPayload? {
-        if (!rawUri.startsWith(prefix = AuthConfig.redirectUri)) return null
+        if (!rawUri.startsWith(prefix = AuthConfig.androidRedirectUri)) return null
 
         val url = Url(urlString = rawUri)
         val code = url.parameters[code]

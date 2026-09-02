@@ -31,7 +31,7 @@ internal class AuthLinkBuilderImpl(
         buildString {
             append(AuthConfig.authBasePath)
             append("?$PARAM_CLIENT_ID=${AuthConfig.clientId}")
-            append("&$PARAM_REDIRECT_URI=${AuthConfig.redirectUri}")
+            append("&$PARAM_REDIRECT_URI=${AuthConfig.androidRedirectUri}")
             append("&$PARAM_RESPONSE_TYPE=$VALUE_RESPONSE_TYPE_CODE")
             append("&$PARAM_CODE_CHALLENGE_METHOD=$VALUE_CODE_CHALLENGE_METHOD")
             append("&$PARAM_CODE_CHALLENGE=$codeChallenge")
