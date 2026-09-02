@@ -6,11 +6,10 @@ import com.brbx.feature_common.view_model.injectDelegate
 import com.brbx.mvi_core.helpers.shareInWhileSubscribed
 import com.brbx.mvi_core.helpers.stateInWhileSubscribed
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.OnboardingState
 
 @Immutable
-internal class OnboardingViewModel<T : OnboardingPage> :
+internal class OnboardingViewModel<T> :
     EchoFlowViewModel<OnboardingState<T>, OnboardingIntent, Unit>(initialState = OnboardingState()) {
 
     private val pagesSource by injectDelegate<PagesSource<T>>()

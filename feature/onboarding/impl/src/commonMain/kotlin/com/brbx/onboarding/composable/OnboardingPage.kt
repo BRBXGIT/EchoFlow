@@ -46,27 +46,30 @@ import org.jetbrains.compose.resources.StringResource
 
 @Composable
 internal fun OnboardingPage(
-    page: OnboardingPage,
+    page: OnboardingPage<*>,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    val adaptiveInfo = currentWindowAdaptiveInfoV2()
-    val isLargeScreen = remember(key1 = adaptiveInfo) {
-        adaptiveInfo
-            .windowSizeClass
-            .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
-    }
-    if (isLargeScreen) {
-        LargeLayout(page, onSkip, onAction = { onAction() }, modifier.fillMaxSize())
+) =
+    if (rememberIsLargeScreen()) {
+        LargeLayout(page, onSkip, onAction = onAction, modifier = modifier.fillMaxSize())
     } else {
-        StandardLayout(page, onSkip, onAction = { onAction() }, modifier.fillMaxSize())
+        StandardLayout(page, onSkip, onAction = onAction, modifier = modifier.fillMaxSize())
     }
-}
+
+@Composable
+private fun rememberIsLargeScreen() =
+    currentWindowAdaptiveInfoV2().let { adaptiveInfo ->
+        remember(key1 = adaptiveInfo) {
+            adaptiveInfo
+                .windowSizeClass
+                .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
+        }
+    }
 
 @Composable
 private fun StandardLayout(
-    page: OnboardingPage,
+    page: OnboardingPage<*>,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -82,7 +85,7 @@ private fun StandardLayout(
 
 @Composable
 private fun LargeLayout(
-    page: OnboardingPage,
+    page: OnboardingPage<*>,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,
@@ -118,7 +121,7 @@ private fun LargeLayout(
 
 @Composable
 private fun WithoutAction(
-    page: OnboardingPage,
+    page: OnboardingPage<*>,
     modifier: Modifier = Modifier,
 ) =
     Box(
@@ -134,7 +137,7 @@ private fun WithoutAction(
 
 @Composable
 private fun WithAction(
-    page: OnboardingPage,
+    page: OnboardingPage<*>,
     onSkip: () -> Unit,
     onAction: () -> Unit,
     modifier: Modifier = Modifier,

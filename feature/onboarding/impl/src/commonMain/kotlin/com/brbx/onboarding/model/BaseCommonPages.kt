@@ -7,20 +7,21 @@ import echoflow.feature.onboarding.impl.generated.resources.description_greeting
 import echoflow.feature.onboarding.impl.generated.resources.label_authenticate_button
 import echoflow.feature.onboarding.impl.generated.resources.title_authentication
 import echoflow.feature.onboarding.impl.generated.resources.title_greeting
-import org.jetbrains.compose.resources.StringResource
 
-internal data class BaseAuthPage(
-    override val title: StringResource = Res.string.title_authentication,
-    override val description: StringResource = Res.string.description_authentication,
-    override val collage: OnboardingPage.IconCollage = CommonPagesCollageFactory.authentication,
-    override val action: OnboardingPage.Action = OnboardingPage.Action(
+internal fun <T> createGreetingPage(payload: T) = OnboardingPage(
+    title = Res.string.title_greeting,
+    description = Res.string.description_greeting,
+    collage = CommonPagesCollageFactory.greeting,
+    action = null,
+    payload = payload,
+)
+
+internal fun <T> createAuthPage(payload: T) = OnboardingPage(
+    title = Res.string.title_authentication,
+    description = Res.string.description_authentication,
+    collage = CommonPagesCollageFactory.authentication,
+    action = OnboardingPage.Action(
         enabledText = Res.string.label_authenticate_button,
     ),
-) : OnboardingPage
-
-internal object BaseGreetingPage : OnboardingPage {
-    override val title: StringResource = Res.string.title_greeting
-    override val description: StringResource = Res.string.description_greeting
-    override val collage: OnboardingPage.IconCollage = CommonPagesCollageFactory.greeting
-    override val action: OnboardingPage.Action? = null
-}
+    payload = payload,
+)

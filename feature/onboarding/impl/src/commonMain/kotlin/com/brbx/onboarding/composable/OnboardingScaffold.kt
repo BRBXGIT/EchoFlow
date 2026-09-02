@@ -23,10 +23,10 @@ import kotlinx.coroutines.flow.SharedFlow
 internal expect fun OnboardingScaffold(deeplink: String?)
 
 @Composable
-internal fun <T : OnboardingPage> OnboardingScaffoldInternal(
+internal fun <T> OnboardingScaffoldInternal(
     state: OnboardingState<T>,
     effects: SharedFlow<EchoFlowEffect>,
-    onPageAction: (T) -> Unit,
+    onPageAction: (OnboardingPage<T>) -> Unit,
 ) {
     val snackbarHost = remember { SnackbarHostState() }
     HandleEchoFlowEffects(effects, snackbarHost)

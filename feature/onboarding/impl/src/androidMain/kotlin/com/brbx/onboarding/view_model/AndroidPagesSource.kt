@@ -5,38 +5,41 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.content.ContextCompat
 import com.brbx.mvi_core.helpers.reduce
-import com.brbx.onboarding.model.AndroidAuth
-import com.brbx.onboarding.model.AndroidGreeting
-import com.brbx.onboarding.model.AndroidPage
-import com.brbx.onboarding.model.BatteryOptimization
-import com.brbx.onboarding.model.Notifications
+import com.brbx.onboarding.model.AndroidAuthPayload
+import com.brbx.onboarding.model.AndroidGreetingPayload
+import com.brbx.onboarding.model.AndroidPagePayload
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.model.Special
+import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.model.SpecialAndroidPagePayload
+import com.brbx.onboarding.model.createAuthPage
+import com.brbx.onboarding.model.createBatteryOptimizationPage
+import com.brbx.onboarding.model.createGreetingPage
+import com.brbx.onboarding.model.createNotificationsPage
 import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class AndroidPagesSource(
-    override val scope: OnboardingMviScope<AndroidPage>,
-    private val context: Context, // Application context in viewModel antipattern maybe will be rewritten
-) : PagesSource<AndroidPage> {
+    override val scope: OnboardingMviScope<AndroidPagePayload>,
+    private val context: Context,
+) : PagesSource<AndroidPagePayload> {
     override fun invoke(intent: OnboardingIntent.RefreshPages) =
         reduce { copy(pages = buildPages()) }
 
-    private fun buildPages(): List<AndroidPage> =
+    private fun buildPages(): List<OnboardingPage<AndroidPagePayload>> =
         buildList {
-            add(AndroidGreeting)
+            add(createGreetingPage(AndroidGreetingPayload))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                add(Notifications().checkIsGranted())
+                add(createNotificationsPage().checkIsGranted())
             }
-            add(BatteryOptimization().checkIsGranted())
-            add(AndroidAuth)
+            add(createBatteryOptimizationPage().checkIsGranted())
+            add(createAuthPage(AndroidAuthPayload))
         }
 
-    private fun AndroidPage.checkIsGranted(): AndroidPage =
-        permission?.let { permission ->
-            val isGranted = if (this is Special) isGranted(context) else {
+    private fun <P : AndroidPagePayload> OnboardingPage<P>.checkIsGranted(): OnboardingPage<P> =
+        payload.permission?.let { permission ->
+            val isGranted = if (payload is SpecialAndroidPagePayload) payload.isGranted(context) else {
                 ContextCompat.checkSelfPermission(context, permission) ==
                         PackageManager.PERMISSION_GRANTED
             }
-            withEnabledAction(isEnabled = !isGranted)
+            copy(action = action?.copy(enabled = !isGranted))
         } ?: this
 }

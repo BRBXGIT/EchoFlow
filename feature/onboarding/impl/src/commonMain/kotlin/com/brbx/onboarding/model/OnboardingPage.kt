@@ -5,12 +5,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import org.jetbrains.compose.resources.StringResource
 
 @Immutable
-internal interface OnboardingPage {
-    val title: StringResource
-    val description: StringResource
-    val collage: IconCollage
-    val action: Action?
-
+internal data class OnboardingPage<out T>(
+    val title: StringResource,
+    val description: StringResource,
+    val collage: IconCollage,
+    val action: Action? = null,
+    val payload: T,
+) {
     @Immutable
     data class IconCollage(
         val topStart: ImageVector,

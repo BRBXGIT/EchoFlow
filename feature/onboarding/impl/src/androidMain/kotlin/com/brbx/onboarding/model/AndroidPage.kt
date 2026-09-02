@@ -4,14 +4,12 @@ import android.content.Context
 import androidx.compose.runtime.Immutable
 
 @Immutable
-internal interface AndroidPage : OnboardingPage {
+internal interface AndroidPagePayload {
     val permission: String? get() = null
-
-    fun withEnabledAction(isEnabled: Boolean): AndroidPage = this
 }
 
 @Immutable
-internal interface Special : AndroidPage {
+internal interface SpecialAndroidPagePayload : AndroidPagePayload {
     fun isGranted(context: Context): Boolean
     fun ask(context: Context)
 }

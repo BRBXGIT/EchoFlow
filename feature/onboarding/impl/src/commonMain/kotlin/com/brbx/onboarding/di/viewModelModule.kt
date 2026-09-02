@@ -2,7 +2,6 @@ package com.brbx.onboarding.di
 
 import com.brbx.core_common.dispatchers.getIoDispatcher
 import com.brbx.feature_common.view_model.delegateFactory
-import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.view_model.AuthLinkHandler
 import com.brbx.onboarding.view_model.AuthLinkHandlerImpl
 import com.brbx.onboarding.view_model.Authenticator
@@ -16,13 +15,13 @@ import org.koin.plugin.module.dsl.viewModel
 
 internal expect val viewModelModule: Module
 
-internal fun <T : OnboardingPage> Module.viewModelModuleInternal() {
+internal fun <T> Module.viewModelModuleInternal() {
     factoryOf(constructor = ::AuthLinkHandlerImpl) { bind<AuthLinkHandler>() }
-    delegateFactory<Authenticator, OnboardingMviScope<OnboardingPage>> {
+    delegateFactory<Authenticator, OnboardingMviScope<Any?>> {
         AuthenticatorImpl(
             scope = it,
             authUseCase = get(),
-            dispatcherIo = getIoDispatcher()
+            dispatcherIo = getIoDispatcher(),
         )
     }
 

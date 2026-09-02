@@ -12,16 +12,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.brbx.onboarding.model.AndroidAuth
-import com.brbx.onboarding.model.AndroidPage
+import com.brbx.onboarding.model.AndroidAuthPayload
+import com.brbx.onboarding.model.AndroidPagePayload
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.model.Special
+import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.model.SpecialAndroidPagePayload
 import com.brbx.onboarding.view_model.OnboardingViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal actual fun OnboardingScaffold(deeplink: String?) {
-    val viewModel = koinViewModel<OnboardingViewModel<AndroidPage>>()
+    val viewModel = koinViewModel<OnboardingViewModel<AndroidPagePayload>>()
     val state by viewModel.state.collectAsStateWithLifecycle()
     val dispatchIntent = viewModel::dispatchIntent
 
@@ -57,27 +58,24 @@ private fun HandleOnResume(dispatchIntent: (OnboardingIntent) -> Unit) {
 }
 
 private fun handlePageAction(
-    page: AndroidPage,
+    page: OnboardingPage<AndroidPagePayload>,
     launcher: ActivityResultLauncher<String>,
     context: Context,
     dispatchIntent: (OnboardingIntent) -> Unit,
-) {
-    if (page is AndroidAuth) handleAuth(dispatchIntent) else
-        handlePermissions(page, launcher, context)
-}
+) =
+    if (page.payload is AndroidAuthPayload) handleAuth(dispatchIntent) else
+        handlePermissions(page.payload, launcher, context)
 
-private fun handleAuth(dispatchIntent: (OnboardingIntent) -> Unit) {
+private fun handleAuth(dispatchIntent: (OnboardingIntent) -> Unit) =
     dispatchIntent(OnboardingIntent.OpenAuthLink)
-}
 
 private fun handlePermissions(
-    page: AndroidPage,
+    payload: AndroidPagePayload,
     launcher: ActivityResultLauncher<String>,
     context: Context,
-) {
-    page.permission?.let {
-        if (page is Special) page.ask(context) else {
-            launcher.launch(input = page.permission!!)
+) =
+    payload.permission?.let { permission ->
+        if (payload is SpecialAndroidPagePayload) payload.ask(context) else {
+            launcher.launch(input = permission)
         }
     }
-}

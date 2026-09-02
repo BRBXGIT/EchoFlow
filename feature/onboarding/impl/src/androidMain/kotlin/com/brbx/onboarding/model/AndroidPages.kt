@@ -17,40 +17,25 @@ import echoflow.feature.onboarding.impl.generated.resources.label_action_button_
 import echoflow.feature.onboarding.impl.generated.resources.label_action_button_permission_granted
 import echoflow.feature.onboarding.impl.generated.resources.title_battery_optimization
 import echoflow.feature.onboarding.impl.generated.resources.title_notifications
-import org.jetbrains.compose.resources.StringResource
 
 private val defaultAction = OnboardingPage.Action(
     disabledText = Res.string.label_action_button_permission_granted,
     enabledText = Res.string.label_action_button_permission,
 )
 
-internal data object AndroidGreeting : AndroidPage, OnboardingPage by BaseGreetingPage
+internal data object AndroidGreetingPayload : AndroidPagePayload
 
-internal data object AndroidAuth : AndroidPage, OnboardingPage by BaseAuthPage()
+internal data object AndroidAuthPayload : AndroidPagePayload
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-internal data class Notifications(
+internal data class NotificationsPayload(
     override val permission: String? = Manifest.permission.POST_NOTIFICATIONS,
-    override val title: StringResource = Res.string.title_notifications,
-    override val description: StringResource = Res.string.description_notifications,
-    override val collage: OnboardingPage.IconCollage = AndroidPagesCollageFactory.notifications,
-    override val action: OnboardingPage.Action? = defaultAction,
-) : AndroidPage {
-    override fun withEnabledAction(isEnabled: Boolean): AndroidPage =
-        copy(action = action?.copy(enabled = isEnabled))
-}
+) : AndroidPagePayload
 
 @SuppressLint("BatteryLife")
-internal data class BatteryOptimization(
+internal data class BatteryOptimizationPayload(
     override val permission: String? = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
-    override val title: StringResource = Res.string.title_battery_optimization,
-    override val description: StringResource = Res.string.description_battery_optimization,
-    override val collage: OnboardingPage.IconCollage = AndroidPagesCollageFactory.batteryOptimization,
-    override val action: OnboardingPage.Action? = defaultAction.copy(canSkip = true),
-) : Special {
-    override fun withEnabledAction(isEnabled: Boolean): AndroidPage =
-        copy(action = action?.copy(enabled = isEnabled))
-
+) : SpecialAndroidPagePayload {
     override fun isGranted(context: Context): Boolean =
         (context.getSystemService(Context.POWER_SERVICE) as PowerManager)
             .isIgnoringBatteryOptimizations(context.packageName)
@@ -59,6 +44,24 @@ internal data class BatteryOptimization(
         Intent().apply {
             action = permission
             data = "package:${context.packageName}".toUri()
-        }
+        },
     )
 }
+
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+internal fun createNotificationsPage() = OnboardingPage(
+    title = Res.string.title_notifications,
+    description = Res.string.description_notifications,
+    collage = AndroidPagesCollageFactory.notifications,
+    action = defaultAction,
+    payload = NotificationsPayload(),
+)
+
+@SuppressLint("BatteryLife")
+internal fun createBatteryOptimizationPage() = OnboardingPage(
+    title = Res.string.title_battery_optimization,
+    description = Res.string.description_battery_optimization,
+    collage = AndroidPagesCollageFactory.batteryOptimization,
+    action = defaultAction.copy(canSkip = true),
+    payload = BatteryOptimizationPayload(),
+)
