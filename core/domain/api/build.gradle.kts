@@ -1,9 +1,13 @@
 plugins {
-    // Kotlin library
-    alias(libs.plugins.echoflow.kotlin.library)
+    // Kmp library
+    alias(libs.plugins.echoflow.kmp.library)
 }
 
-dependencies {
-    // Libs
-    api(libs.kotlinx.coroutines.core)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // Libs
+            api(libs.kotlinx.coroutines.core)
+        }
+    }
 }
