@@ -7,4 +7,6 @@ interface UserAuthInteractor {
     val tokens: Flow<AuthTokens?>
 
     suspend fun saveTokens(tokens: AuthTokens)
+
+    suspend fun clearTokens()
 }

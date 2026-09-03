@@ -9,4 +9,6 @@ interface AuthPrefsManager {
 
     suspend fun saveAccessToken(token: String)
     suspend fun saveRefreshToken(token: String)
+    suspend fun clearAccessToken()
+    suspend fun clearRefreshToken()
 }

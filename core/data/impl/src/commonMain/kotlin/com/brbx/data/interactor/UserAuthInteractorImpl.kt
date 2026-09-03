@@ -18,4 +18,9 @@ internal class UserAuthInteractorImpl(
         authPrefsManager.saveAccessToken(tokens.access)
         authPrefsManager.saveRefreshToken(tokens.refresh)
     }
+
+    override suspend fun clearTokens() {
+        authPrefsManager.clearAccessToken()
+        authPrefsManager.clearRefreshToken()
+    }
 }

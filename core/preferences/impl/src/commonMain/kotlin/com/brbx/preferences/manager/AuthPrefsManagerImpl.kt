@@ -17,6 +17,10 @@ internal class AuthPrefsManagerImpl(
 
     override suspend fun saveRefreshToken(token: String) = setValue(refreshTokenKey, token)
 
+    override suspend fun clearAccessToken() = clearValue(accessTokenKey)
+
+    override suspend fun clearRefreshToken() = clearValue(refreshTokenKey)
+
     private companion object {
         private const val accessTokenKeyName = "access_token"
         private const val refreshTokenKeyName = "refresh_token"
