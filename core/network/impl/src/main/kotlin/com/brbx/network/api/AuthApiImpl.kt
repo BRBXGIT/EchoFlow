@@ -12,15 +12,11 @@ import io.ktor.http.Parameters
 internal class AuthApiImpl(
     private val clientProvider: AuthApiClientProvider,
 ) : AuthApi {
-    override suspend fun exchangeCode(authRequest: AuthRequestDto): AuthResponseDto {
-        val client = clientProvider.client
-        return client.submitForm(
+    override suspend fun exchangeCode(authRequest: AuthRequestDto): AuthResponseDto =
+        clientProvider.client.submitForm(
             url = EndPoint,
             formParameters = authRequest.toFormParameters()
-        ) {
-            header(HttpHeaders.Accept, AcceptType)
-        }.body()
-    }
+        ).body()
 
     private fun AuthRequestDto.toFormParameters() = Parameters.build {
         append(name = "code", value = code)
@@ -33,6 +29,5 @@ internal class AuthApiImpl(
 
     private companion object {
         const val EndPoint = "oauth/token"
-        const val AcceptType = "application/json; charset=utf-8"
     }
 }
