@@ -243,7 +243,7 @@ private fun rememberActionButtonText(
     disabledText: StringResource?,
     enabledText: StringResource
 ) =
-    remember(key1 = enabled, key2 = disabledText) {
+    remember(key1 = enabled, key2 = disabledText, key3 = enabledText) {
         if (!enabled && disabledText != null) {
             disabledText
         } else {

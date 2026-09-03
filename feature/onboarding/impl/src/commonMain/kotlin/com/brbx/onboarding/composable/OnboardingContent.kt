@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mDimens
@@ -36,7 +35,7 @@ internal fun <T> OnboardingContent(
             pagerState = pagerState,
             modifier = Modifier.weight(1f),
         ) { page ->
-            val current = remember(key1 = page) { pages[page] }
+            val current = pages[page]
             OnboardingPage(
                 page = current,
                 onSkip = { animationScope.launch { pagerState.scrollToNext() } },
