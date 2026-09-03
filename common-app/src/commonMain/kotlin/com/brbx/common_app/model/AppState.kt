@@ -5,5 +5,5 @@ import com.brbx.domain.model.enums.UserAuthState
 
 @Immutable
 internal data class AppState(
-    val authState: UserAuthState = UserAuthState.Unauthorized,
+    val authState: UserAuthState? = null,
 )

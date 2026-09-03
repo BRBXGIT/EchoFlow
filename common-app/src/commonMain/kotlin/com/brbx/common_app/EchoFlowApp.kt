@@ -26,7 +26,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun EchoFlowApp(deeplink: String?) {
     val viewModel = koinViewModel<AppViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val authState = state.authState
+    val authState = state.authState ?: return
 
     val navigator = rememberNavigator(
         serializers = rememberSerializers(),
@@ -35,6 +35,10 @@ fun EchoFlowApp(deeplink: String?) {
 
     HandleAuthChanges(
         authState = authState,
+        onLogIn = {
+            navigator.navigate(key = HomeRoute)
+            navigator.removeAllExceptCurrent()
+        },
         onLogOut = {
             navigator.navigate(key = OnboardingRoute())
             navigator.removeAllExceptCurrent()
@@ -51,12 +55,17 @@ fun EchoFlowApp(deeplink: String?) {
 @Composable
 private fun HandleAuthChanges(
     authState: UserAuthState,
+    onLogIn: () -> Unit,
     onLogOut: () -> Unit,
 ) {
     var previous by rememberSaveable { mutableStateOf<UserAuthState?>(value = null) }
     LaunchedEffect(key1 = authState) {
-        if (authState == UserAuthState.Unauthorized && previous == UserAuthState.Authorized) {
-            onLogOut()
+        if (previous != null) {
+            if (authState == UserAuthState.Authorized && previous == UserAuthState.Unauthorized) {
+                onLogIn()
+            } else if (authState == UserAuthState.Unauthorized && previous == UserAuthState.Authorized) {
+                onLogOut()
+            }
         }
         previous = authState
     }
@@ -74,6 +83,6 @@ private fun rememberSerializers(): SerializersModule {
 
 @Composable
 private fun rememberStartKey(authState: UserAuthState, deeplink: String?): EchoFlowNavKey =
-    remember {
+    remember(key1 = authState) {
         if (authState == UserAuthState.Unauthorized) OnboardingRoute(deeplink) else HomeRoute
     }
