@@ -9,7 +9,10 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import io.ktor.server.util.url
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import local_server.JvmAuthServer
+import kotlin.time.Duration.Companion.milliseconds
 
 internal class JvmAuthServerImpl : JvmAuthServer {
     private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
@@ -17,10 +20,10 @@ internal class JvmAuthServerImpl : JvmAuthServer {
     override fun startServerAndWaitForCode(
         onDataReceived: (url: String) -> Unit,
     ) {
-        server?.start() ?: {
-            bindServer(onDataReceived)
-            server?.start()
+        if (server == null) {
+            server = bindServer(onDataReceived)
         }
+        server?.start(wait = false)
     }
 
     private fun bindServer(
@@ -31,17 +34,25 @@ internal class JvmAuthServerImpl : JvmAuthServer {
                 routing {
                     get(path = AuthConfig.jvmPath) {
                         val url = call.url()
-                        if (url != "") {
+                        if (url.isNotEmpty()) {
                             call.respondText("Done! You can close this tab and open app.")
                             onDataReceived(url)
-                            server?.stop()
-                            server = null
+                            stopServerWithDelay()
                         } else {
                             call.respondText("Something went wrong please retry.")
-                            server?.stop()
+                            stopServerWithDelay()
                         }
                     }
                 }
             }
-        } ?:error("Port cannot be null")
+        } ?: error("Port cannot be null")
+
+    private suspend fun stopServerWithDelay() {
+        val currentServer = server
+        server = null
+        coroutineScope {
+            delay(duration = 500.milliseconds)
+            currentServer?.stop(gracePeriodMillis = 1000, timeoutMillis = 2000)
+        }
+    }
 }

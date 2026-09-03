@@ -29,18 +29,18 @@ internal class AuthConfigConventionPlugin : Plugin<Project> {
             val jvmPort =  localProperties.getOrEmpty(key = Auth.JvmPort).toIntOrNull()
 
             configureBuildConfig(generatedClassName = Auth.ObjectName) {
-                buildConfigField(name = Auth.ClientId, value = "\"$clientId\"")
-                buildConfigField(name = Auth.ClientSecret, value = "\"$clientSecret\"")
-                buildConfigField(name = Auth.ResponseType, value = "\"$responseType\"")
-                buildConfigField(name = Auth.AuthBasePath, value = "\"$authBasePath\"")
-                buildConfigField(name = Auth.AuthGrantType, value = "\"$authGrantType\"")
-                buildConfigField(name = Auth.RefreshGrantType, value = "\"$refreshGrantType\"")
+                buildConfigField(name = Auth.ClientId, value = clientId)
+                buildConfigField(name = Auth.ClientSecret, value = clientSecret)
+                buildConfigField(name = Auth.ResponseType, value = responseType)
+                buildConfigField(name = Auth.AuthBasePath, value = authBasePath)
+                buildConfigField(name = Auth.AuthGrantType, value = authGrantType)
+                buildConfigField(name = Auth.RefreshGrantType, value = refreshGrantType)
 
-                buildConfigField(name = Auth.AndroidRedirectUri, value = "\"$androidRedirectUri\"")
-                buildConfigField(name = Auth.JvmScheme, value = "\"$jvmScheme\"")
-                buildConfigField(name = Auth.JvmHost, value = "\"$jvmHost\"")
+                buildConfigField(name = Auth.AndroidRedirectUri, value = androidRedirectUri)
+                buildConfigField(name = Auth.JvmScheme, value = jvmScheme)
+                buildConfigField(name = Auth.JvmHost, value = jvmHost)
                 buildConfigField(name = Auth.JvmPort, value = jvmPort)
-                buildConfigField(name = Auth.JvmPath, value = "\"$jvmPath\"")
+                buildConfigField(name = Auth.JvmPath, value = jvmPath)
             }
         }
     }
