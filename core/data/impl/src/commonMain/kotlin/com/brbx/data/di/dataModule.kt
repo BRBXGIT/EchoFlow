@@ -12,5 +12,6 @@ val dataModule = module {
         handlerModule,
         interactorModule,
         platformModule,
+        inversionModule,
     )
 }

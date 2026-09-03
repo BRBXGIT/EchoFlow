@@ -1,6 +1,7 @@
 package com.brbx.network.client
 
 import com.brbx.network.api.AuthApi
+import com.brbx.network.handler.AuthResponseHandler
 import com.brbx.network.inversion.TokensInteractor
 import com.brbx.network.model.Tokens
 import io.ktor.client.plugins.auth.Auth
@@ -11,6 +12,7 @@ internal interface ApiClientProvider : BaseApiClientProvider
 
 internal class ApiClientProviderImpl(
     private val tokensInteractor: TokensInteractor,
+    private val handler: AuthResponseHandler,
     private val authApi: AuthApi,
 ) : ApiClientProvider {
     override val client by setupApiClient(BaseUrl) {
@@ -25,7 +27,7 @@ internal class ApiClientProviderImpl(
                 }
                 refreshTokens {
                     val refreshToken = tokensInteractor.getTokens().refresh
-                    val refreshed = authApi.refreshTokens(refreshToken)
+                    val refreshed = handler.handle { authApi.refreshTokens(refreshToken) }
                     val tokens = Tokens(
                         access = refreshed.accessToken,
                         refresh = refreshed.refreshToken,

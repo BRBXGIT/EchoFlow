@@ -6,5 +6,6 @@ val networkModule = module {
     includes(
         apiClientModule,
         apiModule,
+        handlerModule,
     )
 }
