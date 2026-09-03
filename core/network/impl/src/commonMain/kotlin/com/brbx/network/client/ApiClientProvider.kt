@@ -19,23 +19,23 @@ internal class ApiClientProviderImpl(
         install(plugin = Auth) {
             bearer {
                 loadTokens {
-                    val tokens = tokensInteractor.getTokens()
+                    val (access, refresh) = tokensInteractor.getTokens()
                     BearerTokens(
-                        accessToken = tokens.access,
-                        refreshToken = tokens.refresh,
+                        accessToken = access,
+                        refreshToken = refresh,
                     )
                 }
                 refreshTokens {
                     val refreshToken = tokensInteractor.getTokens().refresh
                     val refreshed = handler.handle { authApi.refreshTokens(refreshToken) }
-                    val tokens = Tokens(
+                    val newTokens = Tokens(
                         access = refreshed.accessToken,
                         refresh = refreshed.refreshToken,
                     )
-                    tokensInteractor.setTokens(tokens)
+                    tokensInteractor.setTokens(newTokens)
                     BearerTokens(
-                        accessToken = tokens.access,
-                        refreshToken = tokens.refresh,
+                        accessToken = newTokens.access,
+                        refreshToken = newTokens.refresh,
                     )
                 }
             }

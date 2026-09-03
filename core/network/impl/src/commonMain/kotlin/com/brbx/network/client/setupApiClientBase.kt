@@ -19,6 +19,12 @@ import java.util.concurrent.TimeUnit
 private const val UserAgent = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36"
 private const val DefaultTimeout = 30L
 
+private val networkJson = Json {
+    ignoreUnknownKeys = true
+    prettyPrint = true
+    isLenient = true
+}
+
 internal fun setupApiClient(
     baseUrl: String,
     connectTimeout: Long = DefaultTimeout,
@@ -41,13 +47,7 @@ internal fun setupApiClient(
                 header(HttpHeaders.UserAgent, UserAgent)
             }
             install(plugin = ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                        prettyPrint = true
-                        isLenient = true
-                    }
-                )
+                json(json = networkJson)
             }
             install(plugin = Logging) {
                 logger = Logger.DEFAULT

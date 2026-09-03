@@ -8,5 +8,5 @@ data class AuthRequestDto(
     val clientId: String = AuthConfig.clientId,
     val clientSecret: String = AuthConfig.clientSecret,
     val redirectUri: String = AuthConfig.androidRedirectUri,
-    val grantType: String = AuthConfig.authGrantType
+    val grantType: String = AuthConfig.authGrantType,
 )

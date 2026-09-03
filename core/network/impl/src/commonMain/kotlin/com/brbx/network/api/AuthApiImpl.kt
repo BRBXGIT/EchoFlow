@@ -18,10 +18,10 @@ internal class AuthApiImpl(
     override suspend fun refreshTokens(refreshToken: String): AuthResponseDto =
         postTokenForm(parameters = refreshForm(refreshToken))
 
-    private suspend inline fun postTokenForm(parameters: Parameters): AuthResponseDto =
+    private suspend fun postTokenForm(parameters: Parameters): AuthResponseDto =
         clientProvider.client.submitForm(
-            url = EndPoint,
-            formParameters = parameters
+            url = TokenEndpoint,
+            formParameters = parameters,
         ).body()
 
     private fun AuthRequestDto.toFormParameters(): Parameters = formParametersOf(
@@ -41,14 +41,12 @@ internal class AuthApiImpl(
     )
 
     private companion object {
-        const val EndPoint = "oauth/token"
+        const val TokenEndpoint = "oauth/token"
     }
 }
 
 private fun formParametersOf(vararg pairs: Pair<String, String?>): Parameters = Parameters.build {
-    for ((key, value) in pairs) {
-        if (value != null) {
-            append(name = key, value)
-        }
+    pairs.forEach { (key, value) ->
+        if (value != null) append(name = key, value = value)
     }
 }

@@ -14,8 +14,8 @@ internal class AuthResponseHandlerImpl(
     override suspend fun <T> handle(call: suspend () -> T): T =
         try {
             call()
-        } catch (e: Exception) {
-            if (e is ClientRequestException && e.response.status == HttpStatusCode.BadRequest) {
+        } catch (e: ClientRequestException) {
+            if (e.response.status == HttpStatusCode.BadRequest) {
                 tokensInteractor.clearTokens()
             }
             throw e
