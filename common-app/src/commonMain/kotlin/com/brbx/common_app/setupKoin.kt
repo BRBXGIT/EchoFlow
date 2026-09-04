@@ -4,7 +4,7 @@ import com.brbx.common_app.di.commonAppModule
 import com.brbx.core_common.coreCommonModule
 import com.brbx.data.di.dataModule
 import com.brbx.domain.di.domainModule
-import com.brbx.home.homeModule
+import com.brbx.home.di.homeModule
 import com.brbx.local_server.localServerModule
 import com.brbx.network.di.networkModule
 import com.brbx.onboarding.di.onboardingModule

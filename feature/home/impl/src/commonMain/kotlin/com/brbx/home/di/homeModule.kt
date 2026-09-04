@@ -1,4 +1,4 @@
-package com.brbx.home
+package com.brbx.home.di
 
 import org.koin.dsl.module
 

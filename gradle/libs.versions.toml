@@ -18,6 +18,7 @@ androidx-paging = "3.5.1"
 androidx-lifecycle = "2.11.0"
 
 # Jetbrains
+kotlinxCollectionsImmutable = "0.5.2"
 navigation3-runtime = "1.2.0-beta01"
 navigation3-ui = "1.1.1"
 kotlinx-coroutines = "1.11.0"
@@ -69,6 +70,7 @@ androidx-paging-core = { group = "androidx.paging", name = "paging-common", vers
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidx-paging" }
 
 # Jetbrains
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 lifecycle-runtime = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidx-lifecycle" }
 lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
