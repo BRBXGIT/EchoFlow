@@ -34,15 +34,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
-import com.brbx.design_system.components.utils.safeStringResource
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.model.createAuthPage
+import com.brbx.onboarding.model.createGreetingPage
 import echoflow.feature.onboarding.impl.generated.resources.Res
 import echoflow.feature.onboarding.impl.generated.resources.label_skip_button
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun OnboardingPage(
@@ -208,7 +211,7 @@ private fun SkipButton(
         modifier = modifier,
     ) {
         Text(
-            text = safeStringResource(textRes),
+            text = stringResource(textRes),
             style = mTypography.bodyLarge,
             fontWeight = FontWeight.W600,
         )
@@ -231,7 +234,7 @@ private fun ActionButton(
         } else {
             val textRes = rememberActionButtonText(action.enabled, action.disabledText, action.enabledText)
             Text(
-                text = safeStringResource(textRes),
+                text = stringResource(textRes),
                 style = mTypography.bodyLarge,
             )
         }
@@ -285,7 +288,7 @@ private fun TextWrapper(
     textAlign: TextAlign = TextAlign.Center,
 ) =
     Text(
-        text = safeStringResource(res),
+        text = stringResource(res),
         modifier = modifier,
         style = style,
         textAlign = textAlign,
@@ -382,3 +385,34 @@ private fun CollageIconWrapper(
             modifier = Modifier.size(iconSize)
         )
     }
+
+
+@Composable
+@EchoFlowPreview
+private fun WithSkipPagePreview() =
+    OnboardingPage(
+        page = createAuthPage(payload = 0).copy(action = createAuthPage(payload = 0).action?.copy(canSkip = true)),
+        onSkip = {},
+        onAction = {},
+        modifier = Modifier.fillMaxSize().padding(all = mDimens.micro8)
+    )
+
+@Composable
+@EchoFlowPreview
+private fun WithActionPagePreview() =
+    OnboardingPage(
+        page = createAuthPage(payload = 0),
+        onSkip = {},
+        onAction = {},
+        modifier = Modifier.fillMaxSize().padding(all = mDimens.micro8)
+    )
+
+@Composable
+@EchoFlowPreview
+private fun NoActionPagePreview() =
+    OnboardingPage(
+        page = createGreetingPage(payload = 0),
+        onSkip = {},
+        onAction = {},
+        modifier = Modifier.fillMaxSize().padding(all = mDimens.micro8)
+    )

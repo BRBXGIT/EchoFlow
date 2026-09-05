@@ -1,5 +1,6 @@
 package com.brbx.network.client
 
+import com.brbx.debug.logger.logD
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.okhttp.OkHttp
@@ -50,7 +51,11 @@ internal fun setupApiClient(
                 json(json = networkJson)
             }
             install(plugin = Logging) {
-                logger = Logger.DEFAULT
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        logD(tag = "HttpClient", message)
+                    }
+                }
                 level = LogLevel.BODY // TODO make NONE in release
             }
             block()

@@ -10,6 +10,7 @@ kotlin {
         commonMain.dependencies {
             // Api
             implementation(projects.core.network.api)
+            implementation(projects.core.debug.api)
 
             // Libs
             implementation(libs.ktor.client.content.negotiation)
