@@ -14,9 +14,11 @@ kotlin {
             api(projects.feature.home.api)
             implementation(projects.core.domain.api)
             implementation(projects.core.common.api)
+            implementation(projects.core.debug.api)
             // Other
             implementation(projects.feature.common)
             implementation(projects.core.designSystem.theme)
+            implementation(projects.core.designSystem.components)
 
             // Libs
             implementation(libs.koin.compose.viewmodel)

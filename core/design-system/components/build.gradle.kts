@@ -18,6 +18,7 @@ kotlin {
             implementation(libs.compose.resources)
             implementation(libs.coil.compose)
             implementation(libs.coil.core)
+            implementation(libs.coil.network.ktor)
         }
     }
 }

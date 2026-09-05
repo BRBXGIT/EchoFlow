@@ -24,7 +24,7 @@ import com.brbx.design_system.theme.mTypography
 @Composable
 fun MediaCard(
     title: String,
-    description: String,
+    description: String?,
     poster: String?,
 ) =
     CardBase(
@@ -51,7 +51,7 @@ fun UserCard(
 @Composable
 private fun CardBase(
     title: String,
-    description: String,
+    description: String?,
     poster: String?,
     posterShape: Shape = mShapes.medium,
     alignment: Alignment.Horizontal = Alignment.Start,
@@ -81,12 +81,14 @@ private fun CardBase(
                 )
             )
 
-            CardText(
-                text = description,
-                style = mTypography.bodyMedium.copy(
-                    color = mColors.onBackground.copy(alpha = 0.7f)
+            description?.let {
+                CardText(
+                    text = description,
+                    style = mTypography.bodyMedium.copy(
+                        color = mColors.onBackground.copy(alpha = 0.7f)
+                    )
                 )
-            )
+            }
         }
     }
 
