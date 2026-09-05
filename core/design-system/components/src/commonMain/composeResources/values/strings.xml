@@ -1,0 +1,6 @@
+<resources>
+    <plurals name="user_card_followers_label">
+        <item quantity="one">%1$s follower</item>
+        <item quantity="other">%1$s followers</item>
+    </plurals>
+</resources>

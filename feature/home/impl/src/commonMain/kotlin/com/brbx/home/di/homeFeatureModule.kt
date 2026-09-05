@@ -6,7 +6,9 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import com.brbx.design_system.theme.mTypography
 import com.brbx.home.HomeRoute
+import com.brbx.home.view_model.HomeViewModel
 import com.brbx.navigation.singleSerializer
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.module
 import org.koin.dsl.navigation3.navigation
@@ -17,6 +19,7 @@ internal val homeFeatureModule = module {
         subclass(HomeRoute::class, serializer = HomeRoute.serializer())
     }
     navigation<HomeRoute> {
+        val vm = koinViewModel<HomeViewModel>()
         Box(
             modifier = Modifier
                 .fillMaxSize()

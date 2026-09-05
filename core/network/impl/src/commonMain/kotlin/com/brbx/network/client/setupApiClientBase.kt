@@ -51,7 +51,7 @@ internal fun setupApiClient(
             }
             install(plugin = Logging) {
                 logger = Logger.DEFAULT
-                level = LogLevel.ALL // TODO make NONE in release
+                level = LogLevel.BODY // TODO make NONE in release
             }
             block()
         }

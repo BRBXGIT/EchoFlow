@@ -9,10 +9,15 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Api
-            api(libs.compose.material3)
+            implementation(projects.core.debug.api)
+            // Other
+            implementation(projects.core.designSystem.theme)
 
             // Libs
+            api(libs.compose.material3)
             implementation(libs.compose.resources)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.core)
         }
     }
 }
