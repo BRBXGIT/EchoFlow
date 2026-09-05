@@ -7,15 +7,17 @@ import com.brbx.mvi_core.helpers.launchAction
 import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.view_model.base.OnboardingMviScope
+import kotlinx.coroutines.CoroutineDispatcher
 
 internal class JvmAuthLinkHandler(
     override val scope: OnboardingMviScope<Any?>,
     private val getAuthLinkUseCase: GetAuthLinkUseCase,
     private val getCurrentAuthUrlUseCase: GetCurrentAuthUrlUseCase,
+    private val dispatcherDefault: CoroutineDispatcher,
 ) : AuthLinkHandler {
     override fun invoke(intent: OnboardingIntent.OpenAuthLink) {
         postEffect(EchoFlowEffect.OpenLink(getAuthLinkUseCase()))
-        launchAction {
+        launchAction(context = dispatcherDefault) {
             val link = getCurrentAuthUrlUseCase()
             scope.dispatchIntent(OnboardingIntent.Authenticate(deeplink = link))
         }

@@ -26,8 +26,10 @@ fun MediaCard(
     title: String,
     description: String?,
     poster: String?,
+    modifier: Modifier = Modifier,
 ) =
     CardBase(
+        modifier = modifier,
         title = title,
         description = description,
         poster = poster,
@@ -38,8 +40,10 @@ fun UserCard(
     name: String,
     followersDescription: String,
     poster: String?,
+    modifier: Modifier = Modifier,
 ) =
     CardBase(
+        modifier = modifier,
         title = name,
         description = followersDescription,
         poster = poster,
@@ -53,12 +57,14 @@ private fun CardBase(
     title: String,
     description: String?,
     poster: String?,
+    modifier: Modifier = Modifier,
     posterShape: Shape = mShapes.medium,
     alignment: Alignment.Horizontal = Alignment.Start,
     innerColumnAlignment: Alignment.Horizontal = Alignment.Start,
 ) =
     Column(
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro6),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro4),
         horizontalAlignment = alignment,
     ) {
         EchoFlowRemoteImage(
@@ -75,7 +81,7 @@ private fun CardBase(
         ) {
             CardText(
                 text = title,
-                style = mTypography.bodyLarge.copy(
+                style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
                     color = mColors.onBackground,
                 )
@@ -84,7 +90,7 @@ private fun CardBase(
             description?.let {
                 CardText(
                     text = description,
-                    style = mTypography.bodyMedium.copy(
+                    style = mTypography.labelMedium.copy(
                         color = mColors.onBackground.copy(alpha = 0.7f)
                     )
                 )

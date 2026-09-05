@@ -1,6 +1,6 @@
 package com.brbx.home.di
 
-import com.brbx.core_common.dispatchers.getIoDispatcher
+import com.brbx.core_common.dispatchers.getDefaultDispatcher
 import com.brbx.feature_common.view_model.delegateFactory
 import com.brbx.home.view_model.FeedLoader
 import com.brbx.home.view_model.FeedLoaderImpl
@@ -14,7 +14,7 @@ internal val viewModelModule = module {
         FeedLoaderImpl(
             scope = it,
             recentlyPlayedUseCase = get(),
-            dispatchedIo = getIoDispatcher(),
+            dispatchedDefault = getDefaultDispatcher(),
         )
     }
 

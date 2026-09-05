@@ -1,6 +1,6 @@
 package com.brbx.onboarding.di
 
-import com.brbx.core_common.dispatchers.getIoDispatcher
+import com.brbx.core_common.dispatchers.getDefaultDispatcher
 import com.brbx.feature_common.view_model.delegateFactory
 import com.brbx.onboarding.view_model.Authenticator
 import com.brbx.onboarding.view_model.AuthenticatorImpl
@@ -16,7 +16,7 @@ internal fun <T> Module.viewModelModuleInternal() {
         AuthenticatorImpl(
             scope = it,
             authUseCase = get(),
-            dispatcherIo = getIoDispatcher(),
+            dispatcherDefault = getDefaultDispatcher(),
         )
     }
 

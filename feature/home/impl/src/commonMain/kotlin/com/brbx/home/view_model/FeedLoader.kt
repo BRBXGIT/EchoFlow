@@ -18,10 +18,10 @@ internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.LoadFeed>
 internal class FeedLoaderImpl(
     override val scope: HomeMviScope,
     private val recentlyPlayedUseCase: GetUserRecentlyPlayedUseCase,
-    private val dispatchedIo: CoroutineDispatcher,
+    private val dispatchedDefault: CoroutineDispatcher,
 ) : FeedLoader {
     override fun invoke(intent: HomeIntent.LoadFeed) {
-        launchAction(context = dispatchedIo) {
+        launchAction(context = dispatchedDefault) {
             coroutineScope {
                 loadRecentlyPlayed()
             }

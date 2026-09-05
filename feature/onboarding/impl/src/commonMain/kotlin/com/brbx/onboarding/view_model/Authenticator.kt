@@ -22,10 +22,10 @@ internal interface Authenticator :
 internal class AuthenticatorImpl(
     override val scope: OnboardingMviScope<Any?>,
     private val authUseCase: AuthenticateUserUseCase,
-    private val dispatcherIo: CoroutineDispatcher,
+    private val dispatcherDefault: CoroutineDispatcher,
 ) : Authenticator {
     override fun invoke(intent: OnboardingIntent.Authenticate) {
-        launchAction(context = dispatcherIo) {
+        launchAction(context = dispatcherDefault) {
             reduce { copy(loading = true) }
             delay(duration = 1_500.milliseconds) // Show user that something loading (antipattern)
             authUseCase(rawUri = intent.deeplink)
