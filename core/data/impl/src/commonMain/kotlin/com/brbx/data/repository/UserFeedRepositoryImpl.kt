@@ -4,17 +4,17 @@ import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.RequestResult
 import com.brbx.domain.model.Track
 import com.brbx.domain.model.User
-import com.brbx.network.api.UserLibraryApi
+import com.brbx.network.api.UserFeedApi
 import com.brbx.network.model.RecentlyPlayedResponseDto
 import com.brbx.network.model.TrackDto
 import com.brbx.network.model.UserDto
 
-internal class UserLibraryRepositoryImpl(
-    private val userLibraryApi: UserLibraryApi,
+internal class UserFeedRepositoryImpl(
+    private val userFeedApi: UserFeedApi,
     private val responseHandler: NetworkResponseHandler,
-) : UserLibraryRepository {
+) : UserFeedRepository {
     override suspend fun getRecentlyPlayedTracks(): RequestResult<List<Track>> =
-        responseHandler.handle { userLibraryApi.getRecentlyPlayedTracks().toDomain() }
+        responseHandler.handle { userFeedApi.getRecentlyPlayedTracks().toDomain() }
 
     private fun RecentlyPlayedResponseDto.toDomain() =
         collection.map { it.toDomain() }

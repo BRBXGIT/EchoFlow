@@ -1,11 +1,11 @@
 package com.brbx.domain.use_case
 
-import com.brbx.data.repository.UserLibraryRepository
+import com.brbx.data.repository.UserFeedRepository
 import com.brbx.domain.model.RequestResult
 import com.brbx.domain.model.Track
 
 internal class GetUserRecentlyPlayedUseCaseImpl(
-    private val repository: UserLibraryRepository
+    private val repository: UserFeedRepository
 ) : GetUserRecentlyPlayedUseCase {
     override suspend fun invoke(): RequestResult<List<Track>> =
         repository.getRecentlyPlayedTracks()

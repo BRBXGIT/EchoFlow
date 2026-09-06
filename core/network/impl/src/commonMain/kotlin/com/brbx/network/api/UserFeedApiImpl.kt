@@ -5,23 +5,11 @@ import com.brbx.network.model.RecentlyPlayedResponseDto
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-internal class UserLibraryApiImpl(
+internal class UserFeedApiImpl(
     private val clientProvider: ApiClientProvider,
-) : UserLibraryApi {
+) : UserFeedApi {
     override suspend fun getRecentlyPlayedTracks(): RecentlyPlayedResponseDto =
         clientProvider.client.get(urlString = RecentlyPlayedEndPoint).body()
-
-    override suspend fun getFollowingFeed() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getLikedTracks() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getLikedPlaylists() {
-        TODO("Not yet implemented")
-    }
 
     private companion object {
         const val RecentlyPlayedEndPoint = "/me/recently-played/tracks"
