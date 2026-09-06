@@ -4,15 +4,15 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.utils.fold
-import com.brbx.network.api.UserFeedApi
 import com.brbx.network.model.TrackDto
+import com.brbx.network.model.base.PaginatedResult
 
 internal class TracksPagingSource(
-    private val feedApi: UserFeedApi,
+    private val call: suspend (nextHref: String?) -> PaginatedResult<TrackDto>,
     private val handler: NetworkResponseHandler,
 ) : PagingSource<String, TrackDto>() {
     override suspend fun load(params: LoadParams<String>): LoadResult<String, TrackDto> =
-        handler.handle { feedApi.getRecentlyPlayedTracks(url = params.key) }
+        handler.handle { call(params.key) }
             .fold(
                 onSuccess = { dto ->
                     LoadResult.Page(
