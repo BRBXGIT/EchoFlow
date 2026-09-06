@@ -4,9 +4,9 @@ import com.brbx.data.repository.UserFeedRepository
 import com.brbx.domain.model.Track
 import com.brbx.domain.model.utils.RequestResult
 
-internal class GetRecentlyPlayedTracksSnapshotUseCaseImpl(
+internal class GetRecentTracksUseCaseImpl(
     private val feedRepository: UserFeedRepository,
-) : GetRecentlyPlayedTracksSnapshotUseCase {
+) : GetRecentTracksUseCase {
     override suspend fun invoke(count: Int): RequestResult<List<Track>> =
-        feedRepository.getRecentlyPlayedTracksSnapshot(count)
+        feedRepository.getRecentlyPlayedTracks(count)
 }

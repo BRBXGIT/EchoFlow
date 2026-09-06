@@ -5,7 +5,7 @@ import com.brbx.domain.model.paging.TrackFlow
 import com.brbx.domain.model.utils.RequestResult
 
 interface UserFeedRepository {
-    fun getRecentlyPlayedTracks(): TrackFlow
+    fun getPagedRecentlyPlayedTracks(): TrackFlow
 
-    suspend fun getRecentlyPlayedTracksSnapshot(count: Int): RequestResult<List<Track>>
+    suspend fun getRecentlyPlayedTracks(count: Int): RequestResult<List<Track>>
 }
