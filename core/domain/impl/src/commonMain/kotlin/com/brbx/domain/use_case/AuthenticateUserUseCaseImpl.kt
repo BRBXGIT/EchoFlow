@@ -5,11 +5,11 @@ import com.brbx.data.handler.AuthLinkHandler
 import com.brbx.data.interactor.UserAuthInteractor
 import com.brbx.data.repository.UserAuthRepository
 import com.brbx.domain.model.AuthTokens
-import com.brbx.domain.model.RequestResult
+import com.brbx.domain.model.utils.RequestResult
 import com.brbx.domain.model.enums.RequestException
-import com.brbx.domain.model.failure
-import com.brbx.domain.model.map
-import com.brbx.domain.model.onSuccess
+import com.brbx.domain.model.utils.failure
+import com.brbx.domain.model.utils.map
+import com.brbx.domain.model.utils.onSuccess
 
 internal class AuthenticateUserUseCaseImpl(
     private val authLinkHandler: AuthLinkHandler,

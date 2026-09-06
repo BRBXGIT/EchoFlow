@@ -1,6 +1,6 @@
 package com.brbx.data.repository
 
-import com.brbx.domain.model.RequestResult
+import com.brbx.domain.model.utils.RequestResult
 import com.brbx.domain.model.Track
 
 interface UserFeedRepository {

@@ -1,7 +1,7 @@
 package com.brbx.data.repository
 
 import com.brbx.data.handler.NetworkResponseHandler
-import com.brbx.domain.model.RequestResult
+import com.brbx.domain.model.utils.RequestResult
 import com.brbx.domain.model.Track
 import com.brbx.domain.model.User
 import com.brbx.network.api.UserFeedApi

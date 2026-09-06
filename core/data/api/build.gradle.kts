@@ -8,6 +8,9 @@ kotlin {
         commonMain.dependencies {
             // Api
             api(projects.core.domain.api)
+
+            // Libs
+            implementation(libs.androidx.paging.core)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.brbx.domain.use_case
 
 import com.brbx.data.repository.UserFeedRepository
-import com.brbx.domain.model.RequestResult
+import com.brbx.domain.model.utils.RequestResult
 import com.brbx.domain.model.Track
 
 internal class GetUserRecentlyPlayedUseCaseImpl(
