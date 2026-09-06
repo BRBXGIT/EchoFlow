@@ -1,5 +1,5 @@
 package com.brbx.domain.use_case
 
-fun interface GetAuthLinkUseCase {
+fun interface GetAuthUrlUseCase {
     operator fun invoke(): String
 }

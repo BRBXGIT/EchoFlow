@@ -5,5 +5,5 @@ import com.brbx.network.model.PaginatedTracksResponseDto
 interface UserFeedApi {
     suspend fun getRecentlyPlayedTracks(url: String? = null): PaginatedTracksResponseDto
 
-    suspend fun getRecommendedTracksByRecentlyPlayed(userId: Int): PaginatedTracksResponseDto
+
 }

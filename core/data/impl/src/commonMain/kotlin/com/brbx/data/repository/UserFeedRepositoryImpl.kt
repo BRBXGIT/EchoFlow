@@ -6,7 +6,7 @@ import com.brbx.data.paging.TracksPagingSource
 import com.brbx.data.paging.createPagingFlow
 import com.brbx.domain.model.Track
 import com.brbx.domain.model.User
-import com.brbx.domain.model.`typealias`.TrackFlow
+import com.brbx.domain.model.paging.TrackFlow
 import com.brbx.domain.model.utils.RequestResult
 import com.brbx.domain.model.utils.map
 import com.brbx.network.api.UserFeedApi

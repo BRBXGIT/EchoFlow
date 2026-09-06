@@ -10,8 +10,8 @@ val dataModule = module {
         repositoryModule,
         builderModule,
         handlerModule,
-        interactorModule,
+        dataSourceModule,
         platformModule,
-        inversionModule,
+        storageModule,
     )
 }

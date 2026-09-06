@@ -2,25 +2,25 @@ package com.brbx.data.builder
 
 import com.brbx.core.data.impl.AuthConfig
 
-internal expect fun AuthLinkBuilderImpl.platformState(state: String): String
+internal expect fun AuthUrlBuilderImpl.platformState(state: String): String
 
-internal class AuthLinkBuilderImpl(
+internal class AuthUrlBuilderImpl(
     private val pkceGenerator: PkceGenerator,
-) : AuthLinkBuilder {
-    private var cachedLink: String? = null
+) : AuthUrlBuilder {
+    private var cachedUrl: String? = null
 
     override var currentCodeVerifier: String? = null
     override var currentState: String? = null
 
-    override fun getLink(): String = cachedLink ?: generateLink().also { cachedLink = it }
+    override fun buildUrl(): String = cachedUrl ?: generateUrl().also { cachedUrl = it }
 
     override fun clear() {
-        cachedLink = null
+        cachedUrl = null
         currentCodeVerifier = null
         currentState = null
     }
 
-    private fun generateLink(): String = run {
+    private fun generateUrl(): String = run {
         val state = pkceGenerator.generateRandomString()
         val codeVerifier = pkceGenerator.generateRandomString(length = VERIFIER_LENGTH)
         val codeChallenge = pkceGenerator.generateCodeChallenge(codeVerifier)

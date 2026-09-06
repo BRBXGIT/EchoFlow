@@ -2,7 +2,7 @@ package com.brbx.home.view_model
 
 import com.brbx.domain.model.utils.onException
 import com.brbx.domain.model.utils.onSuccess
-import com.brbx.domain.use_case.GetUserRecentlyPlayedSnapshotUseCase
+import com.brbx.domain.use_case.GetRecentlyPlayedTracksSnapshotUseCase
 import com.brbx.feature_common.view_model.sendRetrySnackbar
 import com.brbx.home.model.HomeIntent
 import com.brbx.home.view_model.base.HomeMviScope
@@ -17,7 +17,7 @@ internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.LoadFeed>
 internal class FeedLoaderImpl(
     override val scope: HomeMviScope,
     private val dispatchedDefault: CoroutineDispatcher,
-    private val recentlyPlayedSnapshot: GetUserRecentlyPlayedSnapshotUseCase,
+    private val recentlyPlayedSnapshot: GetRecentlyPlayedTracksSnapshotUseCase,
 ) : FeedLoader {
     override fun invoke(intent: HomeIntent.LoadFeed) {
         launchAction(context = dispatchedDefault) {

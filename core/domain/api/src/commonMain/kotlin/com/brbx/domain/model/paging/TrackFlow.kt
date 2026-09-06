@@ -1,4 +1,4 @@
-package com.brbx.domain.model.`typealias`
+package com.brbx.domain.model.paging
 
 import androidx.paging.PagingData
 import com.brbx.domain.model.Track

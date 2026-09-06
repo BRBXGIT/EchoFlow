@@ -1,12 +1,12 @@
-package com.brbx.data.interactor
+package com.brbx.data.datasource
 
 import com.brbx.domain.model.AuthTokens
 import com.brbx.preferences.AuthPrefsManager
 import kotlinx.coroutines.flow.combine
 
-internal class UserAuthInteractorImpl(
+internal class AuthTokenDataSourceImpl(
     private val authPrefsManager: AuthPrefsManager,
-) : UserAuthInteractor {
+) : AuthTokenDataSource {
     override val tokens = combine(
         flow = authPrefsManager.accessToken,
         flow2 = authPrefsManager.refreshToken,

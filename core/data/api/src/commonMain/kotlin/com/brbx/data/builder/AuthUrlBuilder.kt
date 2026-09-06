@@ -1,9 +1,9 @@
 package com.brbx.data.builder
 
-interface AuthLinkBuilder {
+interface AuthUrlBuilder {
     val currentCodeVerifier: String?
     val currentState: String?
 
-    fun getLink(): String
+    fun buildUrl(): String
     fun clear()
 }

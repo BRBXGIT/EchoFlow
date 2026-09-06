@@ -4,7 +4,7 @@ import com.brbx.core.data.impl.AuthConfig
 import com.brbx.domain.model.AuthCallbackPayload
 import io.ktor.http.Url
 
-internal class AuthLinkHandlerImpl : AuthLinkHandler {
+internal class AuthCallbackHandlerImpl : AuthCallbackHandler {
     override fun handle(rawUri: String): AuthCallbackPayload? {
         val jvmUri = "${AuthConfig.jvmScheme}${AuthConfig.jvmHost}:${AuthConfig.jvmPort}${AuthConfig.jvmPath}"
         val isUriCorrect = rawUri.startsWith(prefix = AuthConfig.androidRedirectUri)
@@ -15,13 +15,12 @@ internal class AuthLinkHandlerImpl : AuthLinkHandler {
         val code = url.parameters[code]
         val state = url.parameters[state]
 
-        val payload = if (code != null && state != null) {
+        return if (code != null && state != null) {
             AuthCallbackPayload(code = code, state = state)
         } else null
-        return payload
     }
 
-    companion object {
+    private companion object {
         const val code = "code"
         const val state = "state"
     }

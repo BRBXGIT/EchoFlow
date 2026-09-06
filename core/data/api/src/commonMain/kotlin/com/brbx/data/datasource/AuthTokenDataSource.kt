@@ -1,9 +1,9 @@
-package com.brbx.data.interactor
+package com.brbx.data.datasource
 
 import com.brbx.domain.model.AuthTokens
 import kotlinx.coroutines.flow.Flow
 
-interface UserAuthInteractor {
+interface AuthTokenDataSource {
     val tokens: Flow<AuthTokens?>
 
     suspend fun saveTokens(tokens: AuthTokens)

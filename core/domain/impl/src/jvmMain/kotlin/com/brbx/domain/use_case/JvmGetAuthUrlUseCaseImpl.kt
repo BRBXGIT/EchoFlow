@@ -1,14 +1,14 @@
 package com.brbx.domain.use_case
 
-import com.brbx.data.builder.AuthLinkBuilder
+import com.brbx.data.builder.AuthUrlBuilder
 import com.brbx.data.repository.AuthServerRepository
 
-internal class JvmGetAuthLinkUseCaseImpl(
-    private val builder: AuthLinkBuilder,
+internal class JvmGetAuthUrlUseCaseImpl(
+    private val builder: AuthUrlBuilder,
     private val serverRepository: AuthServerRepository,
-) : GetAuthLinkUseCase {
+) : GetAuthUrlUseCase {
     override fun invoke(): String {
         serverRepository.openServer()
-        return builder.getLink()
+        return builder.buildUrl()
     }
 }

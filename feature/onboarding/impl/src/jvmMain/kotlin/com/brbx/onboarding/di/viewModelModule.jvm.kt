@@ -17,7 +17,7 @@ internal actual val viewModelModule = module {
     delegateFactory<AuthLinkHandler, OnboardingMviScope<Any?>> {
         JvmAuthLinkHandler(
             scope = it,
-            getAuthLinkUseCase = get(),
+            getAuthUrlUseCase = get(),
             getCurrentAuthUrlUseCase = get(),
             dispatcherDefault = getDefaultDispatcher(),
         )

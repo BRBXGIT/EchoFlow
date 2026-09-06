@@ -13,8 +13,8 @@ internal val viewModelModule = module {
     delegateFactory<FeedLoader, HomeMviScope> {
         FeedLoaderImpl(
             scope = it,
-            recentlyPlayedUseCase = get(),
             dispatchedDefault = getDefaultDispatcher(),
+            recentlyPlayedSnapshot = get(),
         )
     }
 

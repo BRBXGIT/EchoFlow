@@ -1,6 +1,6 @@
 package com.brbx.network.handler
 
-import com.brbx.network.inversion.TokensInteractor
+import com.brbx.network.storage.AuthTokenStorage
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.http.HttpStatusCode
 
@@ -9,14 +9,14 @@ internal interface AuthResponseHandler {
 }
 
 internal class AuthResponseHandlerImpl(
-    private val tokensInteractor: TokensInteractor,
+    private val tokenStorage: AuthTokenStorage,
 ) : AuthResponseHandler {
     override suspend fun <T> handle(call: suspend () -> T): T =
         try {
             call()
         } catch (e: ClientRequestException) {
             if (e.response.status == HttpStatusCode.BadRequest) {
-                tokensInteractor.clearTokens()
+                tokenStorage.clearTokens()
             }
             throw e
         }
