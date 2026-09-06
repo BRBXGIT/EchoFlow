@@ -13,11 +13,4 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun HomeContent(
     recentlyPlayed: ImmutableList<Track>,
     modifier: Modifier = Modifier,
-) =
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
-        contentPadding = PaddingValues(vertical = mDimens.micro8),
-        modifier = modifier,
-    ) {
-        recentlyPlayedTracks(recentlyPlayed)
-    }
+) {}
