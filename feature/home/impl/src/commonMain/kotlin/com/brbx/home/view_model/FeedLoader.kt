@@ -1,5 +1,6 @@
 package com.brbx.home.view_model
 
+import androidx.paging.cachedIn
 import com.brbx.domain.model.UserFeed
 import com.brbx.domain.model.util.onException
 import com.brbx.domain.model.util.onSuccess
@@ -40,6 +41,6 @@ internal class FeedLoaderImpl(
     private fun UserFeed.toUi(): UiFeed =
         UiFeed(
             recentPlayed = recentlyPlayed.toPersistentList(),
-            relatedToRecent = relatedToRecently,
+            relatedToRecent = relatedToRecently?.cachedIn(scope.viewModelScope),
         )
 }

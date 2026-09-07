@@ -14,7 +14,7 @@ internal val viewModelModule = module {
         FeedLoaderImpl(
             scope = it,
             dispatchedDefault = getDefaultDispatcher(),
-            recentlyPlayedSnapshot = get(),
+            feedUseCase = get(),
         )
     }
 

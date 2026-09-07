@@ -1,8 +1,3 @@
 <resources>
-    <plurals name="user_card_followers_label">
-        <item quantity="one">%1$s подписчик</item>
-        <item quantity="few">%1$s подписчика</item>
-        <item quantity="many">%1$s подписчиков</item>
-        <item quantity="other">%1$s подписчиков</item>
-    </plurals>
+    <string name="unknown_artist_label">Неизвестен</string>
 </resources>

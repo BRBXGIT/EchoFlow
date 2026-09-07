@@ -27,6 +27,9 @@ import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
+import echoflow.core.design_system.components.generated.resources.Res
+import echoflow.core.design_system.components.generated.resources.unknown_artist_label
+import org.jetbrains.compose.resources.stringResource
 
 private val PlayingCorner = 100.dp
 
@@ -35,7 +38,7 @@ fun TrackItem(
     isPlaying: Boolean,
     poster: String?,
     title: String,
-    artist: String,
+    artist: String?,
     modifier: Modifier = Modifier,
     isFirst: Boolean = false,
     isLast: Boolean = false,
@@ -56,7 +59,7 @@ fun TrackItem(
             isPlaying = isPlaying,
             poster = poster,
             title = title,
-            artist = artist
+            artist = artist ?: stringResource(Res.string.unknown_artist_label)
         )
     }
 
