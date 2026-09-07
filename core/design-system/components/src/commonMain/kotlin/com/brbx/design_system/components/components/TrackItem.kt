@@ -2,12 +2,14 @@ package com.brbx.design_system.components.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -43,7 +45,7 @@ fun TrackItem(
     isFirst: Boolean = false,
     isLast: Boolean = false,
     outerCorner: Dp = mShapes.extraLargeRadius,
-    innerCorner: Dp = mShapes.largeRadius,
+    innerCorner: Dp = mShapes.mediumRadius,
     playingCorner: Dp = PlayingCorner,
 ) =
     TrackItemContainer(
@@ -53,14 +55,32 @@ fun TrackItem(
         outerCorner = outerCorner,
         innerCorner = innerCorner,
         playingCorner = playingCorner,
-        modifier = modifier
+        modifier = modifier,
     ) {
         TrackItemContent(
             isPlaying = isPlaying,
             poster = poster,
             title = title,
-            artist = artist ?: stringResource(Res.string.unknown_artist_label)
+            artist = artist ?: stringResource(resource = Res.string.unknown_artist_label),
         )
+    }
+
+@Composable
+fun TrackItemShimmer(
+    modifier: Modifier = Modifier,
+    isFirst: Boolean = false,
+    isLast: Boolean = false,
+    outerCorner: Dp = mShapes.extraLargeRadius,
+    innerCorner: Dp = mShapes.mediumRadius,
+) =
+    TrackItemShimmerContainer(
+        isFirst = isFirst,
+        isLast = isLast,
+        outerCorner = outerCorner,
+        innerCorner = innerCorner,
+        modifier = modifier,
+    ) {
+        TrackItemShimmerContent()
     }
 
 @Composable
@@ -72,7 +92,7 @@ private fun TrackItemContainer(
     innerCorner: Dp,
     playingCorner: Dp,
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val backgroundColorState = animateColorAsState(
         targetValue = if (isPlaying) mColors.primary else mColors.surfaceContainerHigh,
@@ -117,7 +137,7 @@ private fun TrackItemContainer(
             .drawBehind {
                 drawRect(color = backgroundColorState.value)
             },
-        content = content
+        content = content,
     )
 }
 
@@ -127,24 +147,24 @@ private fun TrackItemContent(
     poster: String?,
     title: String,
     artist: String,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = mDimens.micro8, vertical = mDimens.micro6),
+        modifier = modifier
+            .padding(horizontal = mDimens.micro6, vertical = mDimens.micro5),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(mDimens.micro6),
+        horizontalArrangement = Arrangement.spacedBy(space = mDimens.micro6),
     ) {
         EchoFlowRemoteImage(
             model = poster,
             modifier = Modifier
-                .size(mDimens.macro8)
-                .clip(shape = mShapes.large)
+                .size(size = mDimens.macro8)
+                .clip(shape = mShapes.large),
         )
 
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier.weight(weight = 1f),
+            verticalArrangement = Arrangement.Center,
         ) {
             val textColorState by animateColorAsState(
                 targetValue = if (isPlaying) mColors.onPrimary else mColors.onSurface,
@@ -155,25 +175,107 @@ private fun TrackItemContent(
                 style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
                     color = textColorState,
-                )
+                ),
             )
             TextWithEllipsis(
                 text = artist,
                 style = mTypography.labelMedium.copy(
-                    color = textColorState.copy(alpha = 0.7f)
-                )
+                    color = textColorState.copy(alpha = 0.7f),
+                ),
             )
         }
     }
 }
 
 @Composable
+private fun TrackItemShimmerContainer(
+    isFirst: Boolean,
+    isLast: Boolean,
+    outerCorner: Dp,
+    innerCorner: Dp,
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit,
+) {
+    val topCorner = if (isFirst) outerCorner else innerCorner
+    val bottomCorner = if (isLast) outerCorner else innerCorner
+
+    Box(
+        modifier = modifier
+            .clip(
+                shape = RoundedCornerShape(
+                    topStart = topCorner,
+                    topEnd = topCorner,
+                    bottomEnd = bottomCorner,
+                    bottomStart = bottomCorner,
+                ),
+            )
+            .background(
+                color = mColors.surfaceContainerHigh.copy(alpha = 0.6f),
+            ),
+        content = content,
+    )
+}
+
+@Composable
+private fun TrackItemShimmerContent(
+    modifier: Modifier = Modifier,
+) =
+    Row(
+        modifier = modifier
+            .padding(horizontal = mDimens.micro8, vertical = mDimens.micro6),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(space = mDimens.micro6),
+    ) {
+        Box(
+            modifier = Modifier
+                .size(size = mDimens.macro8)
+                .background(
+                    color = mColors.surfaceContainerHighest,
+                    shape = mShapes.large,
+                ),
+        )
+
+        Column(
+            modifier = Modifier.weight(weight = 1f),
+            verticalArrangement = Arrangement.spacedBy(space = mDimens.micro2),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.6f)
+                    .height(height = mDimens.micro7)
+                    .background(
+                        color = mColors.surfaceContainerHighest,
+                        shape = mShapes.small,
+                    ),
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.35f)
+                    .height(height = mDimens.micro5)
+                    .background(
+                        color = mColors.surfaceContainerHighest,
+                        shape = mShapes.small,
+                    ),
+            )
+        }
+    }
+
+@Composable
 @EchoFlowPreview
 private fun TrackItemPreview() =
     TrackItem(
-        isPlaying = true,
+        isPlaying = false,
         poster = null,
         title = "143 ways to lose yourself",
         artist = "usedcvnt",
-        isFirst = true
+        isFirst = true,
+    )
+
+@Composable
+@EchoFlowPreview
+private fun TrackItemShimmerPreview() =
+    TrackItemShimmer(
+        isFirst = true,
+        isLast = false,
+        modifier = Modifier.fillMaxWidth(),
     )
