@@ -22,7 +22,7 @@ import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 
 @Composable
-fun MediaCard(
+fun PlaylistCard(
     title: String,
     description: String?,
     poster: String?,
@@ -58,7 +58,7 @@ private fun CardBase(
     description: String?,
     poster: String?,
     modifier: Modifier = Modifier,
-    posterShape: Shape = mShapes.medium,
+    posterShape: Shape = mShapes.extraLarge,
     alignment: Alignment.Horizontal = Alignment.Start,
     innerColumnAlignment: Alignment.Horizontal = Alignment.Start,
 ) =
@@ -79,7 +79,7 @@ private fun CardBase(
             horizontalAlignment = innerColumnAlignment,
             modifier = Modifier.width(120.dp)
         ) {
-            CardText(
+            TextWithEllipsis(
                 text = title,
                 style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
@@ -88,7 +88,7 @@ private fun CardBase(
             )
 
             description?.let {
-                CardText(
+                TextWithEllipsis(
                     text = description,
                     style = mTypography.labelMedium.copy(
                         color = mColors.onBackground.copy(alpha = 0.7f)
@@ -99,21 +99,9 @@ private fun CardBase(
     }
 
 @Composable
-private fun CardText(
-    text: String,
-    style: TextStyle,
-) =
-    Text(
-        text = text,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        style = style,
-    )
-
-@Composable
 @EchoFlowPreview
-private fun MediaCardPreview() =
-    MediaCard(
+private fun PlaylistCardPreview() =
+    PlaylistCard(
         title = "143 ways to lose yourself",
         description = "usedcvnt",
         poster = null,

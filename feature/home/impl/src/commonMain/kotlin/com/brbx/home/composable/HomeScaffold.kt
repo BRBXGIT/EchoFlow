@@ -18,11 +18,6 @@ internal fun HomeScaffold() {
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        HomeContent(
-            recentlyPlayed = state.recentlyPlayed,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = innerPadding),
-        )
+
     }
 }
