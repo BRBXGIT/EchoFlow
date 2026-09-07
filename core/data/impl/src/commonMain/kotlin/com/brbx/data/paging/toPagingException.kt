@@ -1,8 +1,8 @@
 package com.brbx.data.paging
 
 import com.brbx.domain.model.enums.RequestException
-import com.brbx.domain.model.utils.PagingException
-import com.brbx.domain.model.utils.PagingException.*
+import com.brbx.domain.model.util.PagingException
+import com.brbx.domain.model.util.PagingException.*
 
 internal fun RequestException.toPagingException(): PagingException =
     when (this) {

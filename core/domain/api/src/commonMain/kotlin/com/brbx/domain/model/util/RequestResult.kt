@@ -1,4 +1,4 @@
-package com.brbx.domain.model.utils
+package com.brbx.domain.model.util
 
 import com.brbx.domain.model.enums.RequestException
 

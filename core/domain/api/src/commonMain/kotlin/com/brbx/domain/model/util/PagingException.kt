@@ -1,4 +1,4 @@
-package com.brbx.domain.model.utils
+package com.brbx.domain.model.util
 
 sealed class PagingException : Exception() {
     class Conflict : PagingException()

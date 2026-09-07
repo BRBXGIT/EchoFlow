@@ -8,8 +8,8 @@ import io.ktor.client.request.get
 internal class UserFeedApiImpl(
     private val clientProvider: ApiClientProvider,
 ) : UserFeedApi {
-    override suspend fun getRecentlyPlayedTracks(url: String?): PaginatedTracksResponseDto =
-        clientProvider.client.get(urlString = url ?: RecentlyPlayedEndPoint).body()
+    override suspend fun getRecentlyPlayedTracks(): PaginatedTracksResponseDto =
+        clientProvider.client.get(urlString = RecentlyPlayedEndPoint).body()
 
     private companion object {
         const val RecentlyPlayedEndPoint = "/me/recently-played/tracks"

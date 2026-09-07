@@ -1,8 +1,7 @@
 package com.brbx.home.view_model
 
-import com.brbx.domain.model.utils.onException
-import com.brbx.domain.model.utils.onSuccess
-import com.brbx.domain.use_case.GetRecentTracksUseCase
+import com.brbx.domain.model.util.onException
+import com.brbx.domain.model.util.onSuccess
 import com.brbx.feature_common.view_model.sendRetrySnackbar
 import com.brbx.home.model.HomeIntent
 import com.brbx.home.view_model.base.HomeMviScope

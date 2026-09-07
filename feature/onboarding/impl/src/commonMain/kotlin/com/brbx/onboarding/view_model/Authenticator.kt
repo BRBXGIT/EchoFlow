@@ -1,7 +1,7 @@
 package com.brbx.onboarding.view_model
 
-import com.brbx.domain.model.utils.onException
-import com.brbx.domain.model.utils.onSuccess
+import com.brbx.domain.model.util.onException
+import com.brbx.domain.model.util.onSuccess
 import com.brbx.domain.use_case.AuthenticateUserUseCase
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.feature_common.view_model.sendRetrySnackbar

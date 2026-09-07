@@ -2,7 +2,7 @@ package com.brbx.data.repository
 
 import com.brbx.domain.model.AuthTokens
 import com.brbx.domain.model.enums.UserAuthState
-import com.brbx.domain.model.utils.RequestResult
+import com.brbx.domain.model.util.RequestResult
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

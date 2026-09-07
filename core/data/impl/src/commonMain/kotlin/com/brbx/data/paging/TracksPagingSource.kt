@@ -3,12 +3,12 @@ package com.brbx.data.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.brbx.data.handler.NetworkResponseHandler
-import com.brbx.domain.model.utils.fold
+import com.brbx.domain.model.util.fold
+import com.brbx.network.model.PaginatedTracksResponseDto
 import com.brbx.network.model.TrackDto
-import com.brbx.network.model.base.PaginatedResponse
 
 internal class TracksPagingSource(
-    private val call: suspend (nextHref: String?) -> PaginatedResponse<TrackDto>,
+    private val call: suspend (nextHref: String?) -> PaginatedTracksResponseDto,
     private val handler: NetworkResponseHandler,
 ) : PagingSource<String, TrackDto>() {
     override suspend fun load(params: LoadParams<String>): LoadResult<String, TrackDto> =

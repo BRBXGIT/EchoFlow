@@ -3,7 +3,7 @@ package com.brbx.data.repository
 import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.AuthTokens
 import com.brbx.domain.model.enums.UserAuthState
-import com.brbx.domain.model.utils.RequestResult
+import com.brbx.domain.model.util.RequestResult
 import com.brbx.network.api.AuthApi
 import com.brbx.network.model.AuthRequestDto
 import com.brbx.network.model.AuthResponseDto

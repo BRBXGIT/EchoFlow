@@ -4,7 +4,7 @@ import com.brbx.network.model.PaginatedTracksResponseDto
 
 interface RelatedApi {
     suspend fun getSimilarTracks(
-        id: Int,
+        id: Long,
         url: String?,
     ): PaginatedTracksResponseDto
 }

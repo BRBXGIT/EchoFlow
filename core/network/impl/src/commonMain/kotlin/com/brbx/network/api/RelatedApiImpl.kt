@@ -10,7 +10,7 @@ internal class RelatedApiImpl(
     private val clientProvider: ApiClientProvider,
 ) : RelatedApi {
     override suspend fun getSimilarTracks(
-        id: Int,
+        id: Long,
         url: String?,
     ): PaginatedTracksResponseDto =
         clientProvider.client.get(urlString = url ?: "tracks/$id/related").body()
