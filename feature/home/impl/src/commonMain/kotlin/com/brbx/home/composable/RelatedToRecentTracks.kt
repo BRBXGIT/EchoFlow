@@ -49,10 +49,17 @@ import com.brbx.domain.model.User
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
-import dev.chiksmedina.solar.OutlineSolar
-import dev.chiksmedina.solar.outline.ElectronicDevices
-import dev.chiksmedina.solar.outline.electronicdevices.TurntableMusicNote
+import dev.chiksmedina.solar.BrokenSolar
+import dev.chiksmedina.solar.broken.ElectronicDevices
+import dev.chiksmedina.solar.broken.electronicdevices.TurntableMusicNote
+import echoflow.feature.home.impl.generated.resources.Res
+import echoflow.feature.home.impl.generated.resources.related_to_recently_full_playlist_button_label
+import echoflow.feature.home.impl.generated.resources.related_to_recently_no_recently_description
+import echoflow.feature.home.impl.generated.resources.related_to_recently_no_recently_title
+import echoflow.feature.home.impl.generated.resources.related_to_recently_subtitle
+import echoflow.feature.home.impl.generated.resources.related_to_recently_title
 import kotlinx.coroutines.flow.flowOf
+import org.jetbrains.compose.resources.stringResource
 
 private const val RelatedToRecentTracksKey = "RelatedToRecentTracks"
 
@@ -72,7 +79,7 @@ private fun RelatedToRecentTracks(
     modifier: Modifier = Modifier,
     onShowFullPlaylistClick: () -> Unit = {},
 ) =
-    MixContainerCard(modifier = modifier) {
+    MixContainerCard(modifier) {
         RelatedToRecentTracksContent(
             tracks = tracks,
             onShowFullPlaylistClick = onShowFullPlaylistClick,
@@ -110,17 +117,18 @@ private fun RelatedToRecentTracksContent(
     val itemsToShow = remember(key1 = count) { minOf(a = 4, b = count) }
 
     val posters = remember(key1 = count, key2 = isLoading) {
-        if (tracks == null || count == 0) emptyList()
+        if (tracks == null || count == 0) emptySet()
         else (0 until minOf(a = 3, b = count))
             .mapNotNull { index -> tracks[index]?.highResArtworkUrl }
             .filter { artwork -> artwork.isNotBlank() }
+            .toSet()
     }
 
-    Column(modifier = modifier) {
+    Column(modifier) {
         TodayMixHeader(
             posters = posters,
-            title = "TODAY MIX",
-            subtitle = "Based on history",
+            title = stringResource(Res.string.related_to_recently_title),
+            subtitle = stringResource(Res.string.related_to_recently_subtitle),
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -151,7 +159,7 @@ private fun RelatedToRecentTracksContent(
 
 @Composable
 private fun TodayMixHeader(
-    posters: List<String>,
+    posters: Set<String>,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
@@ -192,7 +200,7 @@ private fun TodayMixHeaderContainer(
 
 @Composable
 private fun TodayMixHeaderContent(
-    posters: List<String>,
+    posters: Set<String>,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
@@ -222,7 +230,7 @@ private fun TodayMixHeaderContent(
 
 @Composable
 private fun HeaderCollage(
-    posters: List<String>,
+    posters: Set<String>,
     modifier: Modifier = Modifier,
 ) =
     if (posters.isEmpty()) {
@@ -247,7 +255,7 @@ private fun HeaderCollageContainer(
 
 @Composable
 private fun HeaderCollageContent(
-    posters: List<String>,
+    posters: Set<String>,
 ) =
     posters.forEach { posterUrl ->
         Box(
@@ -298,9 +306,11 @@ private fun MixTracksList(
 private fun ShowFullPlaylistButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    text: String = "Show full playlist",
+    enabled: Boolean = false,
+    text: String = stringResource(Res.string.related_to_recently_full_playlist_button_label),
 ) =
     TextButton(
+        enabled = enabled,
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(
@@ -345,7 +355,10 @@ private fun MixEmptyStateContainer(
     }
 
 @Composable
-private fun MixEmptyStateContent() {
+private fun MixEmptyStateContent(
+    title: String = stringResource(Res.string.related_to_recently_no_recently_title),
+    description: String = stringResource(Res.string.related_to_recently_no_recently_description),
+) {
     Box(
         modifier = Modifier
             .size(size = 56.dp)
@@ -356,21 +369,21 @@ private fun MixEmptyStateContent() {
         contentAlignment = Alignment.Center,
     ) {
         EchoFlowIcon(
-            imageVector = OutlineSolar.ElectronicDevices.TurntableMusicNote,
+            imageVector = BrokenSolar.ElectronicDevices.TurntableMusicNote,
             tint = mColors.primary,
             modifier = Modifier.size(size = mDimens.macro3),
         )
     }
 
     Text(
-        text = "Пока нет истории прослушиваний",
+        text = title,
         style = mTypography.titleSmall.copy(fontWeight = FontWeight.Bold),
         color = mColors.onSurface,
         textAlign = TextAlign.Center,
     )
 
     Text(
-        text = "Слушайте треки, чтобы сформировать ваш персональный Today Mix",
+        text = description,
         style = mTypography.bodySmall,
         color = mColors.onSurfaceVariant,
         textAlign = TextAlign.Center,
@@ -396,59 +409,11 @@ private fun MixShimmerLoading(
                 modifier = Modifier.fillMaxWidth(),
             )
         }
-        Box(
+        ShowFullPlaylistButton(
+            enabled = false,
+            onClick = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .height(height = mDimens.macro6)
-                .background(
-                    color = mColors.surfaceContainerHighest.copy(alpha = 0.5f),
-                    shape = mShapes.large,
-                ),
         )
     }
-}
-
-private val MockTracks = listOf(
-    Track(id = 1L, title = "sleepy f...", description = null, artworkUrl = null, user = User(id = 1L, name = "CODE80", avatarUrl = null)),
-    Track(id = 2L, title = "ebanuty melodya", description = null, artworkUrl = null, user = User(id = 2L, name = "Unknown", avatarUrl = null)),
-    Track(id = 3L, title = "Over the Horizon", description = null, artworkUrl = null, user = User(id = 3L, name = "Samsung", avatarUrl = null)),
-    Track(id = 4L, title = "samsung_galaxy_morning...", description = null, artworkUrl = null, user = User(id = 4L, name = "Samsung", avatarUrl = null)),
-)
-
-@Composable
-@EchoFlowPreview
-private fun RelatedToRecentTracksLoadingPreview() =
-    RelatedToRecentTracks(
-        tracks = null,
-        modifier = Modifier.padding(all = mDimens.micro8),
-    )
-
-@Composable
-@EchoFlowPreview
-private fun RelatedToRecentTracksEmptyPreview() {
-    val tracks = flowOf(PagingData.empty<Track>()).collectAsLazyPagingItems()
-    RelatedToRecentTracks(
-        tracks = tracks,
-        modifier = Modifier.padding(all = mDimens.micro8),
-    )
-}
-
-@Composable
-@EchoFlowPreview
-private fun RelatedToRecentTracksContentPreview() {
-    val tracks = flowOf(PagingData.from(MockTracks)).collectAsLazyPagingItems()
-    RelatedToRecentTracks(
-        tracks = tracks,
-        modifier = Modifier.padding(all = mDimens.micro8),
-    )
-}
-
-@Composable
-@EchoFlowPreview
-private fun RelatedToRecentTracksPartialPreview() {
-    val tracks = flowOf(PagingData.from(MockTracks.take(n = 2))).collectAsLazyPagingItems()
-    RelatedToRecentTracks(
-        tracks = tracks,
-        modifier = Modifier.padding(all = mDimens.micro8),
-    )
 }

@@ -221,7 +221,7 @@ private fun TrackItemShimmerContent(
     modifier: Modifier = Modifier,
 ) =
     Row(
-        modifier = modifier
+        modifier = modifier // TODO Move dimens to top level val
             .padding(horizontal = mDimens.micro8, vertical = mDimens.micro6),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = mDimens.micro6),
