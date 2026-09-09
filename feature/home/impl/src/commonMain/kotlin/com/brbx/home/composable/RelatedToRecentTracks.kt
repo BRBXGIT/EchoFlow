@@ -417,3 +417,97 @@ private fun MixShimmerLoading(
         )
     }
 }
+
+private val MockUser = User(
+    id = 1L,
+    name = "Artist Name",
+    avatarUrl = null,
+)
+
+private val MockTracksWithArtwork = listOf(
+    Track(
+        id = 1L,
+        title = "Track Title 1",
+        description = "Description 1",
+        artworkUrl = "https://example.com/artwork1.jpg",
+        user = MockUser,
+    ),
+    Track(
+        id = 2L,
+        title = "Track Title 2",
+        description = "Description 2",
+        artworkUrl = "https://example.com/artwork2.jpg",
+        user = MockUser,
+    ),
+    Track(
+        id = 3L,
+        title = "Track Title 3",
+        description = "Description 3",
+        artworkUrl = "https://example.com/artwork3.jpg",
+        user = MockUser,
+    ),
+    Track(
+        id = 4L,
+        title = "Track Title 4",
+        description = "Description 4",
+        artworkUrl = "https://example.com/artwork4.jpg",
+        user = MockUser,
+    ),
+)
+
+private val MockTracksWithoutArtwork = listOf(
+    Track(
+        id = 1L,
+        title = "Track Title 1",
+        description = null,
+        artworkUrl = null,
+        user = MockUser,
+    ),
+    Track(
+        id = 2L,
+        title = "Track Title 2",
+        description = null,
+        artworkUrl = null,
+        user = MockUser,
+    ),
+)
+
+@Composable
+@EchoFlowPreview
+private fun RelatedToRecentTracksLoadingPreview() {
+    RelatedToRecentTracks(
+        tracks = null,
+        modifier = Modifier.padding(all = mDimens.micro8),
+    )
+}
+
+@Composable
+@EchoFlowPreview
+private fun RelatedToRecentTracksEmptyPreview() {
+    val tracks = flowOf(PagingData.from(emptyList<Track>())).collectAsLazyPagingItems()
+    RelatedToRecentTracks(
+        tracks = tracks,
+        modifier = Modifier.padding(all = mDimens.micro8),
+    )
+}
+
+@Composable
+@EchoFlowPreview
+private fun RelatedToRecentTracksContentWithPostersPreview() {
+    val tracks = flowOf(PagingData.from(MockTracksWithArtwork)).collectAsLazyPagingItems()
+    RelatedToRecentTracks(
+        tracks = tracks,
+        modifier = Modifier.padding(all = mDimens.micro8),
+    )
+}
+
+@Composable
+@EchoFlowPreview
+private fun RelatedToRecentTracksContentNoPostersPreview() {
+    val tracks = flowOf(PagingData.from(MockTracksWithoutArtwork)).collectAsLazyPagingItems()
+    RelatedToRecentTracks(
+        tracks = tracks,
+        modifier = Modifier.padding(all = mDimens.micro8),
+    )
+}
+
