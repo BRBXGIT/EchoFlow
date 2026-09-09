@@ -1,7 +1,7 @@
 package com.brbx.data.handler
 
 import com.brbx.core.data.impl.AuthConfig
-import com.brbx.domain.model.AuthCallbackPayload
+import com.brbx.domain.model.auth.AuthCallbackPayload
 import io.ktor.http.Url
 
 internal class AuthCallbackHandlerImpl : AuthCallbackHandler {

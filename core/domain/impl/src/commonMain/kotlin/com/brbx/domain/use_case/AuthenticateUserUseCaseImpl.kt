@@ -4,12 +4,12 @@ import com.brbx.data.builder.AuthUrlBuilder
 import com.brbx.data.datasource.AuthTokenDataSource
 import com.brbx.data.handler.AuthCallbackHandler
 import com.brbx.data.repository.AuthRepository
-import com.brbx.domain.model.AuthTokens
+import com.brbx.domain.model.auth.AuthTokens
 import com.brbx.domain.model.enums.RequestException
-import com.brbx.domain.model.util.RequestResult
-import com.brbx.domain.model.util.failure
-import com.brbx.domain.model.util.map
-import com.brbx.domain.model.util.onSuccess
+import com.brbx.domain.model.common.RequestResult
+import com.brbx.domain.model.common.failure
+import com.brbx.domain.model.common.map
+import com.brbx.domain.model.common.onSuccess
 
 internal class AuthenticateUserUseCaseImpl(
     private val authCallbackHandler: AuthCallbackHandler,

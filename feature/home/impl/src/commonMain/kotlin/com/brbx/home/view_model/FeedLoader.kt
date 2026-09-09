@@ -1,9 +1,8 @@
 package com.brbx.home.view_model
 
 import androidx.paging.cachedIn
-import com.brbx.domain.model.UserFeed
-import com.brbx.domain.model.util.onException
-import com.brbx.domain.model.util.onSuccess
+import com.brbx.domain.model.common.onException
+import com.brbx.domain.model.common.onSuccess
 import com.brbx.domain.use_case.GetUserFeedUseCase
 import com.brbx.feature_common.view_model.sendRetrySnackbar
 import com.brbx.home.model.HomeIntent

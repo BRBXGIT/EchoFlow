@@ -1,4 +1,4 @@
-package com.brbx.domain.model
+package com.brbx.domain.model.common
 
 data class Track(
     val id: Long,

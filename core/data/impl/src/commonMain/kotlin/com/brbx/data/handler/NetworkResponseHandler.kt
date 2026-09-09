@@ -1,6 +1,6 @@
 package com.brbx.data.handler
 
-import com.brbx.domain.model.util.RequestResult
+import com.brbx.domain.model.common.RequestResult
 import com.brbx.domain.model.enums.RequestException
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpRequestTimeoutException

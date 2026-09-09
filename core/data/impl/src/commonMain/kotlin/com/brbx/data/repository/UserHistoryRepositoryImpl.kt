@@ -3,7 +3,7 @@ package com.brbx.data.repository
 import com.brbx.data.common.toDomain
 import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.`typealias`.TrackList
-import com.brbx.domain.model.util.RequestResult
+import com.brbx.domain.model.common.RequestResult
 import com.brbx.network.api.UserFeedApi
 
 internal class UserHistoryRepositoryImpl(

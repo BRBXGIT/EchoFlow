@@ -1,6 +1,6 @@
 package com.brbx.data.datasource
 
-import com.brbx.domain.model.AuthTokens
+import com.brbx.domain.model.auth.AuthTokens
 import kotlinx.coroutines.flow.Flow
 
 interface AuthTokenDataSource {

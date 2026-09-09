@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import com.brbx.design_system.theme.mDimens
-import com.brbx.domain.model.Track
+import com.brbx.domain.model.common.Track
 
 @Composable
 internal fun HomeContent(

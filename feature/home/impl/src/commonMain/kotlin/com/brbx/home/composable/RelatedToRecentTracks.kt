@@ -44,8 +44,8 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.domain.model.Track
-import com.brbx.domain.model.User
+import com.brbx.domain.model.common.Track
+import com.brbx.domain.model.common.User
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
