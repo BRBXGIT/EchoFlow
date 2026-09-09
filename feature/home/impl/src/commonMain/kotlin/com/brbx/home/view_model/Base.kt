@@ -7,5 +7,5 @@ import com.brbx.home.model.HomeState
 
 internal typealias HomeMviScope = EchoFlowMviScope<HomeState, HomeIntent, Unit>
 
-internal typealias HomeViewModelDelegate<Intent> =
+internal interface HomeViewModelDelegate<Intent : HomeIntent> :
         EchoFlowMviDelegate<HomeState, Intent, Unit>

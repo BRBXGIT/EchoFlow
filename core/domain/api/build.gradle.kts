@@ -8,7 +8,6 @@ kotlin {
         commonMain.dependencies {
             // Libs
             api(libs.kotlinx.coroutines.core)
-            api(libs.androidx.paging.core)
         }
     }
 }

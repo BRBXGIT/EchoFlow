@@ -23,7 +23,6 @@ kotlin {
             // Libs
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlinx.collections.immutable)
-            implementation(libs.androidx.paging.compose)
             implementation(libs.solar)
             implementation(libs.shimmer.compose)
             implementation(libs.compose.resources)

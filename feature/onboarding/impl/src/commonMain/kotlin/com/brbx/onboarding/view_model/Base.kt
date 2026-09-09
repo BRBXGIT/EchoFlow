@@ -8,5 +8,5 @@ import com.brbx.onboarding.model.OnboardingState
 internal typealias OnboardingMviScope<T> =
         EchoFlowMviScope<OnboardingState<T>, OnboardingIntent, Unit>
 
-internal typealias OnboardingDelegate<T, Intent> =
+internal interface OnboardingDelegate<T, Intent : OnboardingIntent> :
         EchoFlowMviDelegate<OnboardingState<T>, Intent, Unit>

@@ -17,7 +17,6 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.okio)
             implementation(libs.ktor.http)
-            implementation(libs.androidx.paging.core)
         }
         jvmMain.dependencies {
             // Api
