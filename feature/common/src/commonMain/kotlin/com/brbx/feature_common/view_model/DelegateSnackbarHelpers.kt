@@ -10,7 +10,7 @@ fun EchoFlowMviDelegate<*, *, *>.sendRetrySnackbar(
     e: RequestException,
     duration: SnackbarDuration = SnackbarDuration.Indefinite,
     dismissable: Boolean = false,
-    callback: () -> Unit,
+    callback: suspend () -> Unit,
 ) =
     postEffect(
         EchoFlowEffect.Snackbar(

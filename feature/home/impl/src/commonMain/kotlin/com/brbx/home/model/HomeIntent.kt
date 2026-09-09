@@ -1,5 +1,8 @@
 package com.brbx.home.model
 
 internal sealed interface HomeIntent {
-    data object LoadFeed : HomeIntent
+    sealed interface Feed : HomeIntent {
+        data object Load : Feed
+        data object Refresh : Feed
+    }
 }

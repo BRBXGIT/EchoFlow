@@ -23,8 +23,8 @@ sealed interface EchoFlowEffect {
     ) : EchoFlowEffect {
         data class Action(
             val text: CommonText,
-            val onClick: () -> Unit,
-            val onDismiss: () -> Unit = {},
+            val onClick: suspend () -> Unit,
+            val onDismiss: suspend () -> Unit = {},
         )
     }
 }
