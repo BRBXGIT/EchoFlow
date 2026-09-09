@@ -7,8 +7,7 @@ import org.koin.core.scope.Scope
 
 inline fun <reified T : Any, reified S : EchoFlowMviScope<*, *, *>> Module.delegateFactory(
     crossinline factoryBlock: Scope.(mviScope: S) -> T
-) =
-    factory<T> { params ->
+) = factory<T> { params ->
         this.factoryBlock(params.get())
     }
 

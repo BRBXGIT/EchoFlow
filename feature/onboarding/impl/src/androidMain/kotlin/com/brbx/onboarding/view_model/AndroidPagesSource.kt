@@ -15,7 +15,6 @@ import com.brbx.onboarding.model.createAuthPage
 import com.brbx.onboarding.model.createBatteryOptimizationPage
 import com.brbx.onboarding.model.createGreetingPage
 import com.brbx.onboarding.model.createNotificationsPage
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class AndroidPagesSource(
     override val scope: OnboardingMviScope<AndroidPagePayload>,

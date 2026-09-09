@@ -10,14 +10,12 @@ import com.brbx.mvi_core.helpers.launchAction
 import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.mvi_core.helpers.reduce
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
-import com.brbx.onboarding.view_model.base.OnboardingViewModelDelegate
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
 internal interface Authenticator :
-    OnboardingViewModelDelegate<Any?, OnboardingIntent.Authenticate>
+    OnboardingDelegate<Any?, OnboardingIntent.Authenticate>
 
 internal class AuthenticatorImpl(
     override val scope: OnboardingMviScope<Any?>,

@@ -8,7 +8,6 @@ import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.createAuthPage
 import com.brbx.onboarding.model.createGreetingPage
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class JvmPagesSource(
     override val scope: OnboardingMviScope<DesktopPagePayload>,

@@ -5,7 +5,7 @@ import com.brbx.feature_common.view_model.delegateFactory
 import com.brbx.onboarding.view_model.Authenticator
 import com.brbx.onboarding.view_model.AuthenticatorImpl
 import com.brbx.onboarding.view_model.OnboardingViewModel
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
+import com.brbx.onboarding.view_model.OnboardingMviScope
 import org.koin.core.module.Module
 import org.koin.plugin.module.dsl.viewModel
 

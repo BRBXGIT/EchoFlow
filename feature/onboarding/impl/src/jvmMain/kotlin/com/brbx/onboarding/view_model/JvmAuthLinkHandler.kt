@@ -6,7 +6,6 @@ import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.mvi_core.helpers.launchAction
 import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
 import kotlinx.coroutines.CoroutineDispatcher
 
 internal class JvmAuthLinkHandler(

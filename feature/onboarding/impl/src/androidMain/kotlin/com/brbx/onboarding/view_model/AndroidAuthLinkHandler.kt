@@ -4,7 +4,6 @@ import com.brbx.domain.use_case.GetAuthUrlUseCase
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.onboarding.model.OnboardingIntent
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
 
 internal class AndroidAuthLinkHandler(
     override val scope: OnboardingMviScope<Any?>,

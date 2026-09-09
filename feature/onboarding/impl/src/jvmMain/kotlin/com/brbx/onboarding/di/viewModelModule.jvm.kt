@@ -7,7 +7,7 @@ import com.brbx.onboarding.view_model.AuthLinkHandler
 import com.brbx.onboarding.view_model.JvmAuthLinkHandler
 import com.brbx.onboarding.view_model.JvmPagesSource
 import com.brbx.onboarding.view_model.PagesSource
-import com.brbx.onboarding.view_model.base.OnboardingMviScope
+import com.brbx.onboarding.view_model.OnboardingMviScope
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
