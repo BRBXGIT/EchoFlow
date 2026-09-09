@@ -15,7 +15,7 @@ internal class GetUserFeedUseCaseImpl(
     private var cachedRelated: TrackFlow? = null
 
     override suspend fun invoke(): RequestResult<UserFeed> =
-        historyRepository.getRecentTracks().fold(
+        historyRepository.loadRecentTracks().fold(
             onSuccess = { recent ->
                 if (cachedRelated == null && recent.isNotEmpty()) {
                     cachedRelated = relatedRepository.getSimilarTracks(recent.first().id)
