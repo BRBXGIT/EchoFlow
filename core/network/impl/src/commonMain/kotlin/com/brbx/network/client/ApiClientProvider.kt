@@ -2,7 +2,7 @@ package com.brbx.network.client
 
 import com.brbx.network.api.AuthApi
 import com.brbx.network.handler.AuthResponseHandler
-import com.brbx.network.model.AuthTokensDto
+import com.brbx.network.model.auth.AuthTokensDto
 import com.brbx.network.storage.AuthTokenStorage
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens

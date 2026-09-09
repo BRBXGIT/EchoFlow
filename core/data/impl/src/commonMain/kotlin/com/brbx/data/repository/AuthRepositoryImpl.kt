@@ -5,8 +5,8 @@ import com.brbx.domain.model.AuthTokens
 import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.domain.model.util.RequestResult
 import com.brbx.network.api.AuthApi
-import com.brbx.network.model.AuthRequestDto
-import com.brbx.network.model.AuthResponseDto
+import com.brbx.network.model.auth.AuthRequestDto
+import com.brbx.network.model.auth.AuthResponseDto
 import com.brbx.preferences.AuthPrefsManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

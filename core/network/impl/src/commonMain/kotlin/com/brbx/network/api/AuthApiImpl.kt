@@ -2,8 +2,8 @@ package com.brbx.network.api
 
 import com.brbx.core.network.impl.AuthConfig
 import com.brbx.network.client.AuthApiClientProvider
-import com.brbx.network.model.AuthRequestDto
-import com.brbx.network.model.AuthResponseDto
+import com.brbx.network.model.auth.AuthRequestDto
+import com.brbx.network.model.auth.AuthResponseDto
 import io.ktor.client.call.body
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters

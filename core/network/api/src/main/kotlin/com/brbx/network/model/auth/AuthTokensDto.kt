@@ -1,4 +1,4 @@
-package com.brbx.network.model
+package com.brbx.network.model.auth
 
 data class AuthTokensDto(
     val access: String,

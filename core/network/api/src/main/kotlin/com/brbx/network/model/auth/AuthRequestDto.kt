@@ -1,4 +1,4 @@
-package com.brbx.network.model
+package com.brbx.network.model.auth
 
 import com.brbx.core.network.api.AuthConfig
 

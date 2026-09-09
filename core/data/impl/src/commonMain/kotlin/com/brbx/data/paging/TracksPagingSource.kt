@@ -4,8 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.util.fold
-import com.brbx.network.model.PaginatedTracksResponseDto
-import com.brbx.network.model.TrackDto
+import com.brbx.network.model.common.TrackDto
 
 internal class TracksPagingSource(
     private val call: suspend (nextHref: String?) -> PaginatedTracksResponseDto,

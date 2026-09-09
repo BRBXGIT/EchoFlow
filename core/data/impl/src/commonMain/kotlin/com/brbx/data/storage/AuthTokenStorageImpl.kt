@@ -2,7 +2,7 @@ package com.brbx.data.storage
 
 import com.brbx.data.datasource.AuthTokenDataSource
 import com.brbx.domain.model.AuthTokens
-import com.brbx.network.model.AuthTokensDto
+import com.brbx.network.model.auth.AuthTokensDto
 import com.brbx.network.storage.AuthTokenStorage
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first

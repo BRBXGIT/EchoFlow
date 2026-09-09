@@ -1,4 +1,4 @@
-package com.brbx.network.model
+package com.brbx.network.model.auth
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
