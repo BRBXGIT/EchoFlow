@@ -6,7 +6,7 @@ import com.brbx.domain.model.common.Track
 import kotlinx.coroutines.flow.StateFlow
 
 interface UserHistoryRepository {
-    val recentTracks: StateFlow<ItemsCollection<Track>>
+    val recentTracks: StateFlow<ItemsCollection<Track>?>
 
-    suspend fun loadRecentTracks(): RequestResult<Unit>
+    suspend fun loadRecentTracks(): RequestResult<ItemsCollection<Track>>
 }

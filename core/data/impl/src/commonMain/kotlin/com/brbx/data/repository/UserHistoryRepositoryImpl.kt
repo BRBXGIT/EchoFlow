@@ -19,17 +19,18 @@ internal class UserHistoryRepositoryImpl(
     private val handler: NetworkResponseHandler,
 ) : UserHistoryRepository {
 
-    private val _recentTracks = MutableStateFlow(value = ItemsCollection<Track>())
+    private val _recentTracks = MutableStateFlow<ItemsCollection<Track>?>(value = ItemsCollection())
     override val recentTracks = _recentTracks.asStateFlow()
 
-    override suspend fun loadRecentTracks(): RequestResult<Unit> =
+    override suspend fun loadRecentTracks(): RequestResult<ItemsCollection<Track>> =
         handler.handle { userFeedApi.getRecentlyPlayedTracks() }
             .fold(
+                onException = { e -> failure(exception = e) },
                 onSuccess = { dto ->
-                    _recentTracks.value = dto.toDomain()
-                    success(value = Unit)
+                    val mapped = dto.toDomain()
+                    _recentTracks.value = mapped
+                    success(value = mapped)
                 },
-                onException = { e -> failure(exception = e) }
             )
 
     private fun CollectionDto<TrackDto>.toDomain() =
