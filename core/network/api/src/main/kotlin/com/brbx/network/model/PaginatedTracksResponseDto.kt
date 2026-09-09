@@ -7,5 +7,4 @@ import kotlinx.serialization.Serializable
 data class PaginatedTracksResponseDto(
     val collection: List<TrackDto>,
     @SerialName("next_href") val nextHref: String? = null,
-    @SerialName("future_href") val futureHref: String? = null
 )
