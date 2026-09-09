@@ -12,6 +12,10 @@ internal class HomeViewModel : EchoFlowViewModel<HomeState, HomeIntent, Unit>(
 ) {
     private val feedLoader by injectDelegate<FeedLoader>()
 
+    init {
+        dispatchIntent(HomeIntent.Feed.Load)
+    }
+
     override fun dispatchIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.Feed -> feedLoader(intent)

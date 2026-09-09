@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.paging.compose.LazyPagingItems
 import com.brbx.design_system.theme.mDimens
 import com.brbx.domain.model.common.Track
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun HomeContent(
-    relatedToRecent: LazyPagingItems<Track>?,
+    relatedLoading: Boolean,
+    relatedToRecentTracks: ImmutableList<Track>,
+    recentlyPosters: ImmutableList<String?>,
     modifier: Modifier = Modifier,
 ) =
     LazyColumn(
@@ -19,5 +21,5 @@ internal fun HomeContent(
         contentPadding = PaddingValues(vertical = mDimens.micro8),
         modifier = modifier,
     ) {
-        relatedToRecentTracks(relatedToRecent)
+        relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
     }

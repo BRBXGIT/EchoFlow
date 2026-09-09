@@ -19,6 +19,7 @@ kotlin {
             api(libs.brbx.mvi)
             implementation(libs.koin.core)
             implementation(libs.compose.resources)
+            implementation(libs.kotlinx.collections.immutable)
         }
     }
 }

@@ -31,10 +31,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowIcon
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
@@ -58,15 +54,22 @@ import echoflow.feature.home.impl.generated.resources.related_to_recently_no_rec
 import echoflow.feature.home.impl.generated.resources.related_to_recently_no_recently_title
 import echoflow.feature.home.impl.generated.resources.related_to_recently_subtitle
 import echoflow.feature.home.impl.generated.resources.related_to_recently_title
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 
 private const val RelatedToRecentTracksKey = "RelatedToRecentTracks"
 
-internal fun LazyListScope.relatedToRecentTracks(tracks: LazyPagingItems<Track>?) =
+internal fun LazyListScope.relatedToRecentTracks(
+    relatedLoading: Boolean,
+    tracks: ImmutableList<Track>,
+    posters: ImmutableList<String?>,
+) =
     item(key = RelatedToRecentTracksKey) {
         RelatedToRecentTracks(
+            relatedLoading = relatedLoading,
             tracks = tracks,
+            posters = posters,
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8),
@@ -75,13 +78,17 @@ internal fun LazyListScope.relatedToRecentTracks(tracks: LazyPagingItems<Track>?
 
 @Composable
 private fun RelatedToRecentTracks(
-    tracks: LazyPagingItems<Track>?,
+    relatedLoading: Boolean,
+    posters: ImmutableList<String?>,
+    tracks: ImmutableList<Track>,
     modifier: Modifier = Modifier,
     onShowFullPlaylistClick: () -> Unit = {},
 ) =
     MixContainerCard(modifier) {
         RelatedToRecentTracksContent(
+            relatedLoading = relatedLoading,
             tracks = tracks,
+            posters = posters,
             onShowFullPlaylistClick = onShowFullPlaylistClick,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -107,24 +114,16 @@ private fun MixContainerCard(
 
 @Composable
 private fun RelatedToRecentTracksContent(
-    tracks: LazyPagingItems<Track>?,
+    relatedLoading: Boolean,
+    posters: ImmutableList<String?>,
+    tracks: ImmutableList<Track>,
     onShowFullPlaylistClick: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    val count = tracks?.itemCount ?: 0
-    val isLoading = tracks == null || tracks.loadState.refresh is LoadState.Loading
-    val isEmpty = !isLoading && count == 0
-    val itemsToShow = remember(key1 = count) { minOf(a = 4, b = count) }
-
-    val posters = remember(key1 = count, key2 = isLoading) {
-        if (tracks == null || count == 0) emptySet()
-        else (0 until minOf(a = 3, b = count))
-            .mapNotNull { index -> tracks[index]?.highResArtworkUrl }
-            .filter { artwork -> artwork.isNotBlank() }
-            .toSet()
-    }
-
-    Column(modifier) {
+) =
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro6)
+    ) {
         TodayMixHeader(
             posters = posters,
             title = stringResource(Res.string.related_to_recently_title),
@@ -132,39 +131,38 @@ private fun RelatedToRecentTracksContent(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        Box(
-            modifier = Modifier
+        val micro6 = mDimens.micro6
+        val modifier = remember {
+            Modifier
                 .fillMaxWidth()
-                .padding(all = mDimens.micro6),
-        ) {
-            when {
-                isLoading -> MixShimmerLoading(modifier = Modifier.fillMaxWidth())
-                isEmpty -> MixEmptyState(modifier = Modifier.fillMaxWidth())
-                else -> MixTracksList(
-                    tracks = tracks,
-                    itemsToShow = itemsToShow,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+                .padding(horizontal = micro6)
+        }
+        when {
+            relatedLoading -> MixShimmerLoading(modifier)
+            tracks.isEmpty() -> MixEmptyState(modifier)
+            else -> MixTracksList(tracks, modifier)
         }
 
-        if (!isLoading && !isEmpty) {
+        if (!relatedLoading && tracks.isNotEmpty()) {
             ShowFullPlaylistButton(
                 onClick = onShowFullPlaylistClick,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = mDimens.micro6),
             )
+
+            Spacer(Modifier)
         }
     }
-}
 
 @Composable
 private fun TodayMixHeader(
-    posters: Set<String>,
+    posters: ImmutableList<String?>,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
 ) =
-    TodayMixHeaderContainer(modifier = modifier) {
+    TodayMixHeaderContainer(modifier) {
         TodayMixHeaderContent(
             posters = posters,
             title = title,
@@ -184,7 +182,7 @@ private fun TodayMixHeaderContainer(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
                         mColors.primary,
-                        mColors.secondary.copy(alpha = 0.5f),
+                        mColors.tertiary,
                     ),
                 ),
             )
@@ -200,15 +198,12 @@ private fun TodayMixHeaderContainer(
 
 @Composable
 private fun TodayMixHeaderContent(
-    posters: Set<String>,
+    posters: ImmutableList<String?>,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(space = mDimens.micro1),
-    ) {
+    Column(modifier) {
         Text(
             text = title,
             style = mTypography.titleMedium.copy(
@@ -225,19 +220,19 @@ private fun TodayMixHeaderContent(
         )
     }
 
-    HeaderCollage(posters = posters)
+    HeaderCollage(posters)
 }
 
 @Composable
 private fun HeaderCollage(
-    posters: Set<String>,
+    posters: ImmutableList<String?>,
     modifier: Modifier = Modifier,
 ) =
     if (posters.isEmpty()) {
         Spacer(modifier = Modifier.size(size = mDimens.zero))
     } else {
-        HeaderCollageContainer(modifier = modifier) {
-            HeaderCollageContent(posters = posters)
+        HeaderCollageContainer(modifier) {
+            HeaderCollageContent(posters)
         }
     }
 
@@ -255,7 +250,7 @@ private fun HeaderCollageContainer(
 
 @Composable
 private fun HeaderCollageContent(
-    posters: Set<String>,
+    posters: ImmutableList<String?>,
 ) =
     posters.forEach { posterUrl ->
         Box(
@@ -267,36 +262,32 @@ private fun HeaderCollageContent(
                     shape = CircleShape,
                 )
                 .clip(shape = CircleShape)
-                .background(color = mColors.primaryContainer),
+                .background(color = mColors.onTertiaryContainer)
         ) {
             EchoFlowRemoteImage(
                 model = posterUrl,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = mColors.primary),
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }
 
 @Composable
 private fun MixTracksList(
-    tracks: LazyPagingItems<Track>?,
-    itemsToShow: Int,
+    tracks: ImmutableList<Track>,
     modifier: Modifier = Modifier,
 ) =
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(space = mDimens.micro2),
     ) {
-        for (index in 0 until itemsToShow) {
-            val track = tracks?.get(index) ?: continue
+        tracks.forEachIndexed { index, track ->
             TrackItem(
                 isPlaying = false,
                 poster = track.highResArtworkUrl,
                 title = track.title,
                 artist = track.user?.name,
                 isFirst = index == 0,
-                isLast = (index == itemsToShow - 1),
+                isLast = (index == tracks.lastIndex),
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -306,7 +297,7 @@ private fun MixTracksList(
 private fun ShowFullPlaylistButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = false,
+    enabled: Boolean = true,
     text: String = stringResource(Res.string.related_to_recently_full_playlist_button_label),
 ) =
     TextButton(
@@ -314,8 +305,8 @@ private fun ShowFullPlaylistButton(
         onClick = onClick,
         modifier = modifier,
         shape = RoundedCornerShape(
-            bottomEnd = mShapes.largeRadius,
-            bottomStart = mShapes.largeRadius,
+            bottomEnd = mShapes.extraLargeRadius,
+            bottomStart = mShapes.extraLargeRadius,
             topEnd = mShapes.smallRadius,
             topStart = mShapes.smallRadius,
         ),
@@ -418,96 +409,63 @@ private fun MixShimmerLoading(
     }
 }
 
-private val MockUser = User(
-    id = 1L,
-    name = "Artist Name",
-    avatarUrl = null,
-)
-
-private val MockTracksWithArtwork = listOf(
+private val PreviewTracks = persistentListOf(
     Track(
         id = 1L,
-        title = "Track Title 1",
-        description = "Description 1",
+        title = "Midnight City",
+        description = null,
         artworkUrl = "https://example.com/artwork1.jpg",
-        user = MockUser,
+        user = User(id = 1L, name = "M83", avatarUrl = null),
     ),
     Track(
         id = 2L,
-        title = "Track Title 2",
-        description = "Description 2",
+        title = "Starboy",
+        description = null,
         artworkUrl = "https://example.com/artwork2.jpg",
-        user = MockUser,
+        user = User(id = 2L, name = "The Weeknd", avatarUrl = null),
     ),
     Track(
         id = 3L,
-        title = "Track Title 3",
-        description = "Description 3",
+        title = "Get Lucky",
+        description = null,
         artworkUrl = "https://example.com/artwork3.jpg",
-        user = MockUser,
+        user = User(id = 3L, name = "Daft Punk", avatarUrl = null),
     ),
     Track(
         id = 4L,
-        title = "Track Title 4",
-        description = "Description 4",
+        title = "Resonance",
+        description = null,
         artworkUrl = "https://example.com/artwork4.jpg",
-        user = MockUser,
-    ),
-)
-
-private val MockTracksWithoutArtwork = listOf(
-    Track(
-        id = 1L,
-        title = "Track Title 1",
-        description = null,
-        artworkUrl = null,
-        user = MockUser,
-    ),
-    Track(
-        id = 2L,
-        title = "Track Title 2",
-        description = null,
-        artworkUrl = null,
-        user = MockUser,
+        user = User(id = 4L, name = "HOME", avatarUrl = null),
     ),
 )
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksLoadingPreview() {
+private fun RelatedToRecentTracksContentWithPostersPreview() =
     RelatedToRecentTracks(
-        tracks = null,
+        relatedLoading = false,
+        tracks = PreviewTracks,
+        posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
     )
-}
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksEmptyPreview() {
-    val tracks = flowOf(PagingData.from(emptyList<Track>())).collectAsLazyPagingItems()
+private fun RelatedToRecentTracksLoadingPreview() =
     RelatedToRecentTracks(
-        tracks = tracks,
+        relatedLoading = true,
+        tracks = persistentListOf(),
+        posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
     )
-}
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksContentWithPostersPreview() {
-    val tracks = flowOf(PagingData.from(MockTracksWithArtwork)).collectAsLazyPagingItems()
+private fun RelatedToRecentTracksEmptyPreview() =
     RelatedToRecentTracks(
-        tracks = tracks,
+        relatedLoading = false,
+        tracks = persistentListOf(),
+        posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
     )
-}
-
-@Composable
-@EchoFlowPreview
-private fun RelatedToRecentTracksContentNoPostersPreview() {
-    val tracks = flowOf(PagingData.from(MockTracksWithoutArtwork)).collectAsLazyPagingItems()
-    RelatedToRecentTracks(
-        tracks = tracks,
-        modifier = Modifier.padding(all = mDimens.micro8),
-    )
-}
-

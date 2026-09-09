@@ -29,7 +29,7 @@ internal data class DefaultEchoFlowShapes(
     override val smallRadius: Dp = 8.dp,
     override val mediumRadius: Dp = 12.dp,
     override val largeRadius: Dp = 16.dp,
-    override val extraLargeRadius: Dp = 28.dp,
+    override val extraLargeRadius: Dp = 24.dp,
 ) : EchoFlowShapes {
     override val zero = RoundedCornerShape(size = zeroRadius)
     override val extraSmall = RoundedCornerShape(size = extraSmallRadius)
