@@ -9,67 +9,63 @@ import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import echoflow.core.design_system.theme.generated.resources.Res
 import echoflow.core.design_system.theme.generated.resources.gsans_variable
+import echoflow.core.design_system.theme.generated.resources.gflex_variable
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
-private const val GoogleSansFlexRond = 100f
-private val baseline = Typography()
+private const val GoogleRond = 100f
+private val Weights = (100..900 step 100).map(::FontWeight)
 
 @Composable
-internal fun echoFlowType(): Typography {
+fun gFlexFontFamily(): FontFamily = rememberVariableFontFamily(resource = Res.font.gflex_variable)
+
+@Composable
+fun gSansFontFamily(): FontFamily = rememberVariableFontFamily(resource = Res.font.gsans_variable)
+
+@Composable
+private fun rememberVariableFontFamily(
+    resource: FontResource,
+    width: Float = 100f,
+    style: FontStyle = FontStyle.Normal,
+): FontFamily {
+    val fonts = Weights.map { fontWeight ->
+        Font(
+            resource = resource,
+            weight = fontWeight,
+            style = style,
+            variationSettings = FontVariation.Settings(
+                FontVariation.weight(value = fontWeight.weight),
+                FontVariation.width(value = width),
+                FontVariation.Setting(name = "ROND", GoogleRond),
+            ),
+        )
+    }
+
+    return remember(key1 = resource, key2 = width, key3 = style) { FontFamily(fonts) }
+}
+
+@Composable
+internal fun rememberEchoFlowType(): Typography {
     val fontFamily = gSansFontFamily()
 
     return remember(key1 = fontFamily) {
+        val base = Typography()
         Typography(
-            displayLarge = baseline.displayLarge.copy(fontFamily = fontFamily),
-            displayMedium = baseline.displayMedium.copy(fontFamily = fontFamily),
-            displaySmall = baseline.displaySmall.copy(fontFamily = fontFamily),
-            headlineLarge = baseline.headlineLarge.copy(fontFamily = fontFamily),
-            headlineMedium = baseline.headlineMedium.copy(fontFamily = fontFamily),
-            headlineSmall = baseline.headlineSmall.copy(fontFamily = fontFamily),
-            titleLarge = baseline.titleLarge.copy(fontFamily = fontFamily),
-            titleMedium = baseline.titleMedium.copy(fontFamily = fontFamily),
-            titleSmall = baseline.titleSmall.copy(fontFamily = fontFamily),
-            bodyLarge = baseline.bodyLarge.copy(fontFamily = fontFamily),
-            bodyMedium = baseline.bodyMedium.copy(fontFamily = fontFamily),
-            bodySmall = baseline.bodySmall.copy(fontFamily = fontFamily),
-            labelLarge = baseline.labelLarge.copy(fontFamily = fontFamily),
-            labelMedium = baseline.labelMedium.copy(fontFamily = fontFamily),
-            labelSmall = baseline.labelSmall.copy(fontFamily = fontFamily),
+            displayLarge = base.displayLarge.copy(fontFamily = fontFamily),
+            displayMedium = base.displayMedium.copy(fontFamily = fontFamily),
+            displaySmall = base.displaySmall.copy(fontFamily = fontFamily),
+            headlineLarge = base.headlineLarge.copy(fontFamily = fontFamily),
+            headlineMedium = base.headlineMedium.copy(fontFamily = fontFamily),
+            headlineSmall = base.headlineSmall.copy(fontFamily = fontFamily),
+            titleLarge = base.titleLarge.copy(fontFamily = fontFamily),
+            titleMedium = base.titleMedium.copy(fontFamily = fontFamily),
+            titleSmall = base.titleSmall.copy(fontFamily = fontFamily),
+            bodyLarge = base.bodyLarge.copy(fontFamily = fontFamily),
+            bodyMedium = base.bodyMedium.copy(fontFamily = fontFamily),
+            bodySmall = base.bodySmall.copy(fontFamily = fontFamily),
+            labelLarge = base.labelLarge.copy(fontFamily = fontFamily),
+            labelMedium = base.labelMedium.copy(fontFamily = fontFamily),
+            labelSmall = base.labelSmall.copy(fontFamily = fontFamily),
         )
     }
 }
-
-@Composable
-private fun gSansFontFamily(): FontFamily {
-    val w100 = fontVariable(weight = 100)
-    val w200 = fontVariable(weight = 200)
-    val w300 = fontVariable(weight = 300)
-    val w400 = fontVariable(weight = 400)
-    val w500 = fontVariable(weight = 500)
-    val w600 = fontVariable(weight = 600)
-    val w700 = fontVariable(weight = 700)
-    val w800 = fontVariable(weight = 800)
-    val w900 = fontVariable(weight = 900)
-
-    return remember(w100, w200, w300, w400, w500, w600, w700, w800, w900) {
-        FontFamily(w100, w200, w300, w400, w500, w600, w700, w800, w900)
-    }
-}
-
-@Composable
-private fun fontVariable(
-    weight: Int,
-    resource: FontResource = Res.font.gsans_variable,
-    width: Float = 100f,
-    style: FontStyle = FontStyle.Normal,
-) = Font(
-    resource = resource,
-    weight = FontWeight(weight),
-    style = style,
-    variationSettings = FontVariation.Settings(
-        FontVariation.weight(value = weight),
-        FontVariation.width(value = width),
-        FontVariation.Setting(name = "rond", value = GoogleSansFlexRond)
-    )
-)

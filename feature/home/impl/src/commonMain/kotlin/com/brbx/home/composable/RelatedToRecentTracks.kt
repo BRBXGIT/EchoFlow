@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -36,6 +37,7 @@ import com.brbx.design_system.components.components.EchoFlowIcon
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.components.components.TrackItemShimmer
+import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
@@ -238,11 +240,7 @@ private fun TodayMixHeaderContent(
     Column(modifier) {
         Text(
             text = title,
-            style = mTypography.titleLarge.copy(
-                fontWeight = FontWeight.W800,
-                color = mColors.onPrimary,
-                fontSize = 20.sp
-            ),
+            style = rememberTodayMixTitleStyle(),
         )
         Text(
             text = subtitle,
@@ -253,6 +251,29 @@ private fun TodayMixHeaderContent(
     }
 
     HeaderCollage(posters)
+}
+
+@Composable
+private fun rememberTodayMixTitleStyle(): TextStyle {
+    val gFlex = gFlexFontFamily()
+    val baseStyle = mTypography.titleLarge
+    val color = mColors.onPrimary
+    return remember(key1 = baseStyle, key2 = color, key3 = gFlex) {
+        baseStyle.copy(
+            fontFamily = gFlex,
+            color = color,
+            fontWeight = FontWeight(630),
+            fontSize = 20.sp,
+            lineHeight = 22.sp,
+            letterSpacing = (-0.35).sp,
+            fontFeatureSettings = """
+                "GRAD" 40,
+                "XTRA" 520,
+                "YOPQ" 90,
+                "YTLC" 505
+            """.trimIndent().replace("\n", " "),
+        )
+    }
 }
 
 @Composable

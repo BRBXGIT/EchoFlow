@@ -32,7 +32,7 @@ fun EchoFlowTheme(
     ) {
         MaterialTheme(
             colorScheme = dynamicColorScheme,
-            typography = echoFlowType(),
+            typography = rememberEchoFlowType(),
             motionScheme = LocalMotion.current,
             content = content,
             shapes = Shapes(
