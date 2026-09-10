@@ -14,34 +14,56 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
 
 private const val GoogleRond = 100f
-private val Weights = (100..900 step 100).map(::FontWeight)
+private val Weights = (100..900 step 100).map(transform = ::FontWeight)
 
 @Composable
-fun gFlexFontFamily(): FontFamily = rememberVariableFontFamily(resource = Res.font.gflex_variable)
+fun gFlexFontFamily(
+    vararg variationSettings: FontVariation.Setting,
+): FontFamily = rememberVariableFontFamily(
+    resource = Res.font.gflex_variable,
+    additionalVariationSettings = variationSettings,
+)
 
 @Composable
-fun gSansFontFamily(): FontFamily = rememberVariableFontFamily(resource = Res.font.gsans_variable)
+fun gSansFontFamily(
+    vararg variationSettings: FontVariation.Setting,
+): FontFamily = rememberVariableFontFamily(
+    resource = Res.font.gsans_variable,
+    additionalVariationSettings = variationSettings,
+)
 
 @Composable
 private fun rememberVariableFontFamily(
     resource: FontResource,
     width: Float = 100f,
     style: FontStyle = FontStyle.Normal,
+    vararg additionalVariationSettings: FontVariation.Setting,
 ): FontFamily {
     val fonts = Weights.map { fontWeight ->
+        val defaultSettings = listOf(
+            FontVariation.weight(value = fontWeight.weight),
+            FontVariation.width(value = width),
+            FontVariation.Setting(name = "ROND", value = GoogleRond),
+        )
+        val additionalAxes = additionalVariationSettings.map { it.axisName }.toSet()
+        val filteredDefaults = defaultSettings.filterNot { it.axisName in additionalAxes }
+        val allSettings = filteredDefaults + additionalVariationSettings
         Font(
             resource = resource,
             weight = fontWeight,
             style = style,
-            variationSettings = FontVariation.Settings(
-                FontVariation.weight(value = fontWeight.weight),
-                FontVariation.width(value = width),
-                FontVariation.Setting(name = "ROND", GoogleRond),
-            ),
+            variationSettings = FontVariation.Settings(*allSettings.toTypedArray()),
         )
     }
 
-    return remember(key1 = resource, key2 = width, key3 = style) { FontFamily(fonts) }
+    return remember(
+        resource,
+        width,
+        style,
+        additionalVariationSettings.contentHashCode(),
+    ) {
+        FontFamily(fonts)
+    }
 }
 
 @Composable

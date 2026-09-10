@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -255,23 +256,23 @@ private fun TodayMixHeaderContent(
 
 @Composable
 private fun rememberTodayMixTitleStyle(): TextStyle {
-    val gFlex = gFlexFontFamily()
+    val gFlex = gFlexFontFamily(
+        FontVariation.width(value = 136f),
+        FontVariation.grade(value = 40),
+        FontVariation.Setting(name = "XTRA", value = 520f),
+        FontVariation.Setting(name = "YOPQ", value = 90f),
+        FontVariation.Setting(name = "YTLC", value = 505f),
+    )
     val baseStyle = mTypography.titleLarge
     val color = mColors.onPrimary
     return remember(key1 = baseStyle, key2 = color, key3 = gFlex) {
         baseStyle.copy(
             fontFamily = gFlex,
             color = color,
-            fontWeight = FontWeight(630),
+            fontWeight = FontWeight.W800,
             fontSize = 20.sp,
             lineHeight = 22.sp,
             letterSpacing = (-0.35).sp,
-            fontFeatureSettings = """
-                "GRAD" 40,
-                "XTRA" 520,
-                "YOPQ" 90,
-                "YTLC" 505
-            """.trimIndent().replace("\n", " "),
         )
     }
 }
