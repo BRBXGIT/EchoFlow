@@ -10,6 +10,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.home.view_model.HomeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+internal const val RelatedToRecentlySnapshotCount = 4
+
 @Composable
 internal fun HomeScaffold() {
     val viewModel = koinViewModel<HomeViewModel>()
@@ -20,7 +22,7 @@ internal fun HomeScaffold() {
     ) { innerPadding ->
         HomeContent(
             relatedLoading = state.relatedToRecently.isLoadingOrRefreshing,
-            relatedToRecentTracks = state.relatedToRecently.itemsSnapshot(n = 3),
+            relatedToRecentTracks = state.relatedToRecently.itemsSnapshot(n = RelatedToRecentlySnapshotCount),
             recentlyPosters = state.recentlyPosters,
             modifier = Modifier
                 .fillMaxSize()

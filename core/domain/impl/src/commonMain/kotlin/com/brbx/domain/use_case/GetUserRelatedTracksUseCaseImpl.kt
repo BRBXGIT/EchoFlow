@@ -15,5 +15,5 @@ internal class GetUserRelatedTracksUseCaseImpl(
         historyRepository.recentTracks
             .filterNotNull()
             .first { it.collection.isNotEmpty() }
-            .run { relatedRepository.getSimilarTracks(collection.first().id) }
+            .run { relatedRepository.getSimilarTracksPaginator(collection.first().id) }
 }

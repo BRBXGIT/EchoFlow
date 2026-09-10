@@ -307,8 +307,8 @@ private fun ShowFullPlaylistButton(
         shape = RoundedCornerShape(
             bottomEnd = mShapes.extraLargeRadius,
             bottomStart = mShapes.extraLargeRadius,
-            topEnd = mShapes.smallRadius,
-            topStart = mShapes.smallRadius,
+            topEnd = mShapes.extraSmallRadius,
+            topStart = mShapes.extraSmallRadius,
         ),
     ) {
         Text(
@@ -393,7 +393,7 @@ private fun MixShimmerLoading(
             .shimmer(customShimmer = shimmerInstance),
         verticalArrangement = Arrangement.spacedBy(space = mDimens.micro2),
     ) {
-        repeat(times = 4) { index ->
+        repeat(times = RelatedToRecentlySnapshotCount) { index ->
             TrackItemShimmer(
                 isFirst = index == 0,
                 isLast = index == 3,
