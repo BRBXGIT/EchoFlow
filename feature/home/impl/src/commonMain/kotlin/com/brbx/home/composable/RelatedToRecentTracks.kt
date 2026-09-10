@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -207,15 +206,15 @@ private fun TodayMixHeaderContent(
     Column(modifier) {
         Text(
             text = title,
-            style = mTypography.titleMedium.copy(
+            style = mTypography.titleLarge.copy(
                 fontWeight = FontWeight.W800,
                 color = mColors.onPrimary,
-                letterSpacing = 1.sp,
+                fontSize = 20.sp
             ),
         )
         Text(
             text = subtitle,
-            style = mTypography.labelMedium.copy(
+            style = mTypography.labelLarge.copy(
                 color = mColors.onPrimary.copy(alpha = 0.75f),
             ),
         )
@@ -305,12 +304,6 @@ private fun ShowFullPlaylistButton(
         enabled = enabled,
         onClick = onClick,
         modifier = modifier,
-        shape = RoundedCornerShape(
-            bottomEnd = mShapes.extraLargeRadius,
-            bottomStart = mShapes.extraLargeRadius,
-            topEnd = mShapes.extraSmallRadius,
-            topStart = mShapes.extraSmallRadius,
-        ),
     ) {
         Text(
             text = text,

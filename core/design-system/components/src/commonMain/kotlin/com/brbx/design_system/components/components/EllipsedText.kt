@@ -6,7 +6,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
-fun TextWithEllipsis(
+fun EllipsedText(
     text: String,
     style: TextStyle,
     maxLines: Int = 1,

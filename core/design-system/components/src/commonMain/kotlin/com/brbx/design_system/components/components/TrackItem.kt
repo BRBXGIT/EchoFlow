@@ -14,11 +14,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -34,6 +36,16 @@ import echoflow.core.design_system.components.generated.resources.unknown_artist
 import org.jetbrains.compose.resources.stringResource
 
 private val PlayingCorner = 100.dp
+private val ItemHorizontalPadding: Dp
+    @Composable @ReadOnlyComposable get() = mDimens.micro6
+private val ItemVerticalPadding: Dp
+    @Composable @ReadOnlyComposable get() = mDimens.micro5
+private val ItemSpacing: Dp
+    @Composable @ReadOnlyComposable get() = mDimens.micro6
+private val ItemPosterSize: Dp get() = 52.dp
+
+private val ItemPosterShape: Shape
+    @Composable @ReadOnlyComposable get() = mShapes.medium
 
 @Composable
 fun TrackItem(
@@ -151,15 +163,15 @@ private fun TrackItemContent(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = mDimens.micro6, vertical = mDimens.micro5),
+            .padding(horizontal = ItemHorizontalPadding, vertical = ItemVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(space = mDimens.micro6),
+        horizontalArrangement = Arrangement.spacedBy(space = ItemSpacing),
     ) {
         EchoFlowRemoteImage(
             model = poster,
             modifier = Modifier
-                .size(size = mDimens.macro8)
-                .clip(shape = mShapes.large),
+                .size(size = ItemPosterSize)
+                .clip(shape = ItemPosterShape),
         )
 
         Column(
@@ -170,14 +182,14 @@ private fun TrackItemContent(
                 targetValue = if (isPlaying) mColors.onPrimary else mColors.onSurface,
                 animationSpec = mMotion.nonSpatialFastSpec(),
             )
-            TextWithEllipsis(
+            EllipsedText(
                 text = title,
-                style = mTypography.bodyMedium.copy(
+                style = mTypography.bodyLarge.copy(
                     fontWeight = FontWeight.W600,
                     color = textColorState,
                 ),
             )
-            TextWithEllipsis(
+            EllipsedText(
                 text = artist,
                 style = mTypography.labelMedium.copy(
                     color = textColorState.copy(alpha = 0.7f),
@@ -221,17 +233,17 @@ private fun TrackItemShimmerContent(
     modifier: Modifier = Modifier,
 ) =
     Row(
-        modifier = modifier // TODO Move dimens to top level val
-            .padding(horizontal = mDimens.micro8, vertical = mDimens.micro5),
+        modifier = modifier
+            .padding(horizontal = ItemHorizontalPadding, vertical = ItemVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(space = mDimens.micro6),
+        horizontalArrangement = Arrangement.spacedBy(space = ItemSpacing),
     ) {
         Box(
             modifier = Modifier
-                .size(size = mDimens.macro8)
+                .size(size = ItemPosterSize)
                 .background(
                     color = mColors.surfaceContainerHighest,
-                    shape = mShapes.large,
+                    shape = ItemPosterShape,
                 ),
         )
 

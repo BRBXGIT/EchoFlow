@@ -5,15 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mColors
@@ -79,7 +76,7 @@ private fun CardBase(
             horizontalAlignment = innerColumnAlignment,
             modifier = Modifier.width(120.dp)
         ) {
-            TextWithEllipsis(
+            EllipsedText(
                 text = title,
                 style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
@@ -88,7 +85,7 @@ private fun CardBase(
             )
 
             description?.let {
-                TextWithEllipsis(
+                EllipsedText(
                     text = description,
                     style = mTypography.labelMedium.copy(
                         color = mColors.onBackground.copy(alpha = 0.7f)
