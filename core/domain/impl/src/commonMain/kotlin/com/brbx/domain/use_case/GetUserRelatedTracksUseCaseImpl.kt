@@ -14,6 +14,6 @@ internal class GetUserRelatedTracksUseCaseImpl(
     override suspend fun invoke(): Paginator<Track> =
         historyRepository.recentTracks
             .filterNotNull()
-            .first { it.collection.isNotEmpty() }
+            .first { it.collection.isNotEmpty() } // TODO Maybe rewrite
             .run { relatedRepository.getSimilarTracksPaginator(collection.first().id) }
 }
