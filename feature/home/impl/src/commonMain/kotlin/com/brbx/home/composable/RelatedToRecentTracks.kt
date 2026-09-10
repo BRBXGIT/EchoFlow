@@ -143,8 +143,9 @@ private fun RelatedToRecentTracksContent(
             else -> MixTracksList(tracks, modifier)
         }
 
-        if (!relatedLoading && tracks.isNotEmpty()) {
+        if (relatedLoading || tracks.isNotEmpty()) {
             ShowFullPlaylistButton(
+                enabled = !relatedLoading,
                 onClick = onShowFullPlaylistClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -389,23 +390,16 @@ private fun MixShimmerLoading(
 
     Column(
         modifier = modifier
-            .height(height = 356.dp)
             .shimmer(customShimmer = shimmerInstance),
         verticalArrangement = Arrangement.spacedBy(space = mDimens.micro2),
     ) {
         repeat(times = RelatedToRecentlySnapshotCount) { index ->
             TrackItemShimmer(
                 isFirst = index == 0,
-                isLast = index == 3,
+                isLast = index == RelatedToRecentlySnapshotCount - 1,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
-        ShowFullPlaylistButton(
-            enabled = false,
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-        )
     }
 }
 
