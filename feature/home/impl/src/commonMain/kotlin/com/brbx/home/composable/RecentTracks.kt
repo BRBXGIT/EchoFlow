@@ -11,10 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -43,7 +43,6 @@ import echoflow.core.design_system.components.generated.resources.unknown_artist
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
-import kotlin.random.Random
 
 private val ItemPadding: Dp
     @Composable @ReadOnlyComposable get() = mDimens.micro5
@@ -58,21 +57,39 @@ private val ItemPosterShape: Shape get() = CircleShape
 private val randomLowerChar = ('a'..'z').random()
 private val randomUpperChar = ('A'..'Z').random()
 
-@Composable
-private fun RecentTracksContent(
+private const val RecentTracksKey = "RecentTracksKey"
+
+internal fun LazyListScope.recentTracks(
     recentLoading: Boolean,
     tracks: ImmutableList<Track>,
+) =
+    item(key = RecentTracksKey) {
+        RecentTracks(
+            recentLoading = recentLoading,
+            tracks = tracks,
+            modifier = Modifier
+                .animateItem()
+                .fillMaxWidth()
+        )
+    }
+
+@Composable
+private fun RecentTracks(
+    recentLoading: Boolean,
+    tracks: ImmutableList<Track>,
+    modifier: Modifier = Modifier,
 ) {
-    val modifier = remember { Modifier.fillMaxWidth() }
+    val contentModifier = remember { Modifier.fillMaxWidth() }
     TracksCrossfade(
+        modifier = modifier,
         loading = recentLoading,
         tracks = tracks,
         emptyContent = { Empty() },
-        listContent = { tracks -> RecentTracksContainer(modifier) { tracks(tracks) } },
+        listContent = { tracks -> RecentTracksContainer(contentModifier) { tracks(tracks) } },
         loadingContent = {
             RecentTracksContainer(
                 withScroll = false,
-                modifier = modifier,
+                modifier = contentModifier,
             ) { loading() }
         },
     )

@@ -21,12 +21,14 @@ internal fun HomeScaffold() {
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         HomeContent(
+            recentLoading = state.recentlyListened.isLoading,
             relatedLoading = state.relatedToRecently.isLoadingOrRefreshing,
+            recentTracks = state.recentlyListened.collection,
             relatedToRecentTracks = state.relatedToRecently.itemsSnapshot(n = RelatedToRecentlySnapshotCount),
             recentlyPosters = state.recentlyPosters,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues = innerPadding)
+                .padding(paddingValues = innerPadding),
         )
     }
 }

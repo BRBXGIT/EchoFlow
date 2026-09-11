@@ -11,8 +11,10 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun HomeContent(
+    recentLoading: Boolean,
     relatedLoading: Boolean,
     relatedToRecentTracks: ImmutableList<Track>,
+    recentTracks: ImmutableList<Track>,
     recentlyPosters: ImmutableList<String?>,
     modifier: Modifier = Modifier,
 ) =
@@ -22,4 +24,6 @@ internal fun HomeContent(
         modifier = modifier,
     ) {
         relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
+
+        recentTracks(recentLoading, recentTracks)
     }
