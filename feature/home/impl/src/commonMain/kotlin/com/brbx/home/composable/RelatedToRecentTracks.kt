@@ -404,7 +404,6 @@ private fun MixShimmerLoading(
     modifier: Modifier = Modifier,
 ) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
-
     Column(
         modifier = modifier
             .shimmer(customShimmer = shimmerInstance),

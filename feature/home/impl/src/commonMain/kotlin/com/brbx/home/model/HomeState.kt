@@ -8,7 +8,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
 internal data class HomeState(
-    val recentlyListened: LoadingCollection<Track> = LoadingCollection(),
+    val recentlyListened: LoadingCollection<Track> = LoadingCollection(isLoading = true),
     val relatedToRecently: UiPaginationState<Track> = UiPaginationState(isLoading = true),
 ) {
     val recentlyPosters get() = recentlyListened

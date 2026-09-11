@@ -222,7 +222,7 @@ private fun TrackItemShimmerContainer(
                 ),
             )
             .background(
-                color = mColors.surfaceContainerHigh.copy(alpha = 0.6f),
+                color = mColors.surfaceContainerHigh.copy(alpha = 0.75f),
             ),
         content = content,
     )

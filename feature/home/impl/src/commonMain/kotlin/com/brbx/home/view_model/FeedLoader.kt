@@ -42,8 +42,10 @@ internal class FeedLoaderImpl(
     }
 
     private suspend fun loadRecently() {
+        reduce { copy(recentlyListened = recentlyListened.copy(isLoading = true)) }
         userRecentlyTracksUseCase() onSuccess { tracks ->
             reduce { copy(recentlyListened = tracks.toUi()) }
+            reduce { copy(recentlyListened = recentlyListened.copy(isLoading = false)) }
         } onException { e ->
             sendRetrySnackbar(e) { loadRecently() }
         }

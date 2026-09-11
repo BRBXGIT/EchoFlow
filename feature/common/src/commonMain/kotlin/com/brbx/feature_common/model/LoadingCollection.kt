@@ -13,4 +13,6 @@ data class LoadingCollection<T>(
 )
 
 fun <T> ItemsCollection<T>.toUi() =
-    LoadingCollection(collection = collection.toPersistentList())
+    LoadingCollection(
+        collection = collection.toPersistentList(),
+    )

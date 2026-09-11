@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,6 +39,9 @@ import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import com.brbx.domain.model.common.Track
+import com.valentinilk.shimmer.ShimmerBounds
+import com.valentinilk.shimmer.rememberShimmer
+import com.valentinilk.shimmer.shimmer
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
 import kotlinx.collections.immutable.ImmutableList
@@ -47,15 +51,12 @@ import kotlin.math.abs
 private val ItemPadding: Dp
     @Composable @ReadOnlyComposable get() = mDimens.micro5
 private val ItemSpacing: Dp
-    @Composable @ReadOnlyComposable get() = mDimens.micro4
+    @Composable @ReadOnlyComposable get() = mDimens.micro5
 private val ItemPosterSize
-    @Composable @ReadOnlyComposable get() = mDimens.macro5
+    @Composable @ReadOnlyComposable get() = mDimens.macro7
 
 private val ItemShape: Shape get() = CircleShape
 private val ItemPosterShape: Shape get() = CircleShape
-
-private val randomLowerChar = ('a'..'z').random()
-private val randomUpperChar = ('A'..'Z').random()
 
 private const val RecentTracksKey = "RecentTracksKey"
 
@@ -87,9 +88,10 @@ private fun RecentTracks(
         emptyContent = { Empty() },
         listContent = { tracks -> RecentTracksContainer(contentModifier) { tracks(tracks) } },
         loadingContent = {
+            val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
             RecentTracksContainer(
                 withScroll = false,
-                modifier = contentModifier,
+                modifier = contentModifier.shimmer(customShimmer = shimmerInstance),
             ) { loading() }
         },
     )
@@ -109,7 +111,10 @@ private fun Empty() =
     }
 
 private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<Track>) =
-    itemsIndexed(tracks) { index, track ->
+    itemsIndexed(
+        items = tracks,
+        key = { _, track -> track.id },
+    ) { index, track ->
         RecentTrackItem(
             title = track.title,
             poster = track.highResArtworkUrl,
@@ -121,7 +126,7 @@ private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<Track>) =
     }
 
 private fun LazyStaggeredGridScope.loading() =
-    items(count = 3, key = { it }) { index ->
+    items(count = 10, key = { it }) { index ->
         RecentTrackItemShimmer(
             modifier = Modifier
                 .animateItem()
@@ -134,24 +139,30 @@ private fun RecentTracksContainer(
     modifier: Modifier = Modifier,
     withScroll: Boolean = true,
     content: LazyStaggeredGridScope.() -> Unit,
-) =
+) {
+    val recentTrackItemHeight = ItemPosterSize + (ItemPadding * 2)
+    val recentTracksGridHeight = (recentTrackItemHeight * 3) + (mDimens.micro8 * 2)
     LazyHorizontalStaggeredGrid(
         userScrollEnabled = withScroll,
         rows = StaggeredGridCells.Fixed(count = 3),
-        modifier = modifier,
+        modifier = modifier.height(recentTracksGridHeight),
         contentPadding = PaddingValues(horizontal = mDimens.micro8),
         horizontalItemSpacing = mDimens.micro8,
         verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
         content = content,
     )
+}
 
-private fun calculateTrackContentWidth(key: Int): Dp {
-    val finalKey = "$randomLowerChar-$randomUpperChar-$key"
-    val hash = abs(n = finalKey.hashCode())
-    val minWidth = 100
-    val maxWidth = 190
-    val widthPx = minWidth + (hash % (maxWidth - minWidth + 1))
-    return widthPx.dp
+private fun calculateTrackContentWidth(key: Any): Dp {
+    var hash = key.hashCode() xor 0x45d9f3b
+    hash = (hash xor (hash ushr 16)) * 0x45d9f3b
+    hash = (hash xor (hash ushr 16)) * 0x45d9f3b
+    hash = hash xor (hash ushr 16)
+
+    val minWidth = 120
+    val maxWidth = 210
+    val widthDp = minWidth + (abs(hash) % (maxWidth - minWidth + 1))
+    return widthDp.dp
 }
 
 @Composable
@@ -232,14 +243,14 @@ private fun RecentTrackItemContent(
         ) {
             EllipsedText(
                 text = title,
-                style = mTypography.labelLarge.copy(
+                style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
                     color = textColorState,
                 ),
             )
             EllipsedText(
                 text = artist,
-                style = mTypography.labelSmall.copy(
+                style = mTypography.labelMedium.copy(
                     color = textColorState.copy(alpha = 0.7f),
                 ),
             )
@@ -255,7 +266,7 @@ private fun RecentTrackItemShimmerContainer(
         modifier = modifier
             .clip(shape = ItemShape)
             .background(
-                color = mColors.surfaceContainerHigh.copy(alpha = 0.6f),
+                color = mColors.surfaceContainerHigh.copy(alpha = 0.75f),
             ),
     ) {
         content()
