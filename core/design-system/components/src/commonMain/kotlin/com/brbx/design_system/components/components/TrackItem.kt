@@ -31,7 +31,7 @@ import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import echoflow.core.design_system.components.generated.resources.Res
+import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
 import org.jetbrains.compose.resources.stringResource
 
@@ -73,7 +73,7 @@ fun TrackItem(
             isPlaying = isPlaying,
             poster = poster,
             title = title,
-            artist = artist ?: stringResource(resource = Res.string.unknown_artist_label),
+            artist = artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
         )
     }
 

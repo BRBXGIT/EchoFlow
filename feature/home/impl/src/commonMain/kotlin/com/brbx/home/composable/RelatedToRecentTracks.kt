@@ -1,6 +1,5 @@
 package com.brbx.home.composable
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -41,7 +40,6 @@ import com.brbx.design_system.components.components.TrackItemShimmer
 import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
-import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import com.brbx.domain.model.common.Track
@@ -135,7 +133,19 @@ private fun RelatedToRecentTracksContent(
             modifier = Modifier.fillMaxWidth(),
         )
 
-        ContentCrossfade(relatedLoading, tracks)
+        val micro6 = mDimens.micro6
+        val modifier = remember {
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = micro6)
+        }
+        TracksCrossfade(
+            loading = relatedLoading,
+            tracks = tracks,
+            loadingContent = { MixShimmerLoading(modifier) },
+            emptyContent = { MixEmptyState(modifier) },
+            listContent = { tracks -> MixTracksList(tracks, modifier) }
+        )
 
         if (relatedLoading || tracks.isNotEmpty()) {
             ShowFullPlaylistButton(
@@ -149,46 +159,6 @@ private fun RelatedToRecentTracksContent(
             Spacer(Modifier)
         }
     }
-
-private sealed interface ContentState {
-    data object Loading : ContentState
-    data object Empty : ContentState
-    data class Content(val tracks: ImmutableList<Track>) : ContentState
-}
-
-@Composable
-private fun rememberContentState(loading: Boolean, tracks: ImmutableList<Track>): ContentState =
-    remember(key1 = loading, key2 = tracks) {
-        when {
-            loading -> ContentState.Loading
-            tracks.isEmpty() -> ContentState.Empty
-            else -> ContentState.Content(tracks)
-        }
-    }
-
-@Composable
-private fun ContentCrossfade(
-    relatedLoading: Boolean,
-    tracks: ImmutableList<Track>
-) {
-    val micro6 = mDimens.micro6
-    val modifier = remember {
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = micro6)
-    }
-    val state = rememberContentState(relatedLoading, tracks)
-    Crossfade(
-        targetState = state,
-        animationSpec = mMotion.nonSpatialExtraFastSpec(),
-    ) { target ->
-        when (target) {
-            ContentState.Loading -> MixShimmerLoading(modifier)
-            ContentState.Empty -> MixEmptyState(modifier)
-            is ContentState.Content -> MixTracksList(target.tracks, modifier)
-        }
-    }
-}
 
 @Composable
 private fun TodayMixHeader(

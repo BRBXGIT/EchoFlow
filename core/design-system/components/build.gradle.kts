@@ -5,6 +5,11 @@ plugins {
     alias(libs.plugins.echoflow.compose.multiplatform)
 }
 
+compose.resources {
+    publicResClass = true
+    nameOfResClass = "DesignComponentsRes"
+}
+
 kotlin {
     sourceSets {
         commonMain.dependencies {
