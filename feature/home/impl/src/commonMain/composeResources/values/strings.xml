@@ -4,4 +4,5 @@
     <string name="related_to_recently_full_playlist_button_label">Show full playlist</string>
     <string name="related_to_recently_no_recently_title">No history yet</string>
     <string name="related_to_recently_no_recently_description">Listen tracks to create your own Today Mix</string>
+    <string name="recent_tracks_divider_label">Recent tracks</string>
 </resources>

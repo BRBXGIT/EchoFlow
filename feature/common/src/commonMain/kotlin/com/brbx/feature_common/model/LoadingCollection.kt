@@ -10,7 +10,10 @@ import kotlinx.collections.immutable.toPersistentList
 data class LoadingCollection<T>(
     val collection: ImmutableList<T> = persistentListOf(),
     val isLoading: Boolean = false,
-)
+) {
+    fun collectionSnapshot(n: Int): ImmutableList<T> =
+        collection.take(n).toPersistentList()
+}
 
 fun <T> ItemsCollection<T>.toUi() =
     LoadingCollection(

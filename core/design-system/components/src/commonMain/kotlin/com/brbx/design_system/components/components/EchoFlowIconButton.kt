@@ -1,5 +1,6 @@
 package com.brbx.design_system.components.components
 
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +14,21 @@ fun EchoFlowIconButton(
     onClick: () -> Unit,
 ) =
     IconButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+    ) {
+        EchoFlowIcon(imageVector = imageVector)
+    }
+
+@Composable
+fun EchoFlowFilledIconButton(
+    imageVector: ImageVector,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) =
+    FilledIconButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,

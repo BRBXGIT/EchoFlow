@@ -4,4 +4,5 @@
     <string name="related_to_recently_full_playlist_button_label">Весь плейлист</string>
     <string name="related_to_recently_no_recently_title">Пока что нет истории</string>
     <string name="related_to_recently_no_recently_description">Слушайте треки, чтобы сформировать ваш персональный Today Mix</string>
+    <string name="recent_tracks_divider_label">Недавние</string>
 </resources>

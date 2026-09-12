@@ -31,8 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.design_system.components.components.EchoFlowFilledIconButton
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
+import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
@@ -42,8 +44,13 @@ import com.brbx.domain.model.common.Track
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
+import dev.chiksmedina.solar.BrokenSolar
+import dev.chiksmedina.solar.broken.Arrows
+import dev.chiksmedina.solar.broken.arrows.AltArrowRight
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
+import echoflow.feature.home.impl.generated.resources.Res
+import echoflow.feature.home.impl.generated.resources.recent_tracks_divider_label
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
@@ -59,6 +66,18 @@ private val ItemShape: Shape get() = CircleShape
 private val ItemPosterShape: Shape get() = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
+private const val RecentTracksDividerKey = "RecentTracksDividerKey"
+
+internal fun LazyListScope.recentTracksDivider(recentLoading: Boolean) =
+    item(key = RecentTracksDividerKey) {
+        RecentTracksDivider(
+            recentLoading = recentLoading,
+            modifier = Modifier
+                .animateItem()
+                .fillMaxWidth()
+                .padding(horizontal = mDimens.micro8)
+        )
+    }
 
 internal fun LazyListScope.recentTracks(
     recentLoading: Boolean,
@@ -71,6 +90,31 @@ internal fun LazyListScope.recentTracks(
             modifier = Modifier
                 .animateItem()
                 .fillMaxWidth()
+        )
+    }
+
+@Composable
+private fun RecentTracksDivider(
+    recentLoading: Boolean,
+    modifier: Modifier = Modifier,
+) =
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(Res.string.recent_tracks_divider_label),
+            style = mTypography.headlineMedium.copy(
+                fontWeight = FontWeight.W700,
+                fontFamily = gFlexFontFamily(),
+            ),
+        )
+
+        EchoFlowFilledIconButton(
+            enabled = !recentLoading,
+            onClick = {},
+            imageVector = BrokenSolar.Arrows.AltArrowRight
         )
     }
 

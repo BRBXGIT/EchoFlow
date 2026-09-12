@@ -19,11 +19,12 @@ internal fun HomeContent(
     modifier: Modifier = Modifier,
 ) =
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
-        contentPadding = PaddingValues(vertical = mDimens.micro8),
+        verticalArrangement = Arrangement.spacedBy(mDimens.macro3),
+        contentPadding = PaddingValues(vertical = mDimens.macro3),
         modifier = modifier,
     ) {
         relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
 
+        recentTracksDivider(recentLoading)
         recentTracks(recentLoading, recentTracks)
     }

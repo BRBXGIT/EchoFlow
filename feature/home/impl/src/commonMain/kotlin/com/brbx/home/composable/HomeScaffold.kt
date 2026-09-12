@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.home.view_model.HomeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val RecentSnapshotCount = 15
 internal const val RelatedToRecentlySnapshotCount = 4
 
 @Composable
@@ -23,7 +24,7 @@ internal fun HomeScaffold() {
         HomeContent(
             recentLoading = state.recentlyListened.isLoading,
             relatedLoading = state.relatedToRecently.isLoadingOrRefreshing,
-            recentTracks = state.recentlyListened.collection,
+            recentTracks = state.recentlyListened.collectionSnapshot(n = RecentSnapshotCount),
             relatedToRecentTracks = state.relatedToRecently.itemsSnapshot(n = RelatedToRecentlySnapshotCount),
             recentlyPosters = state.recentlyPosters,
             modifier = Modifier
