@@ -105,9 +105,10 @@ private fun RecentTracksDivider(
     ) {
         Text(
             text = stringResource(Res.string.recent_tracks_divider_label),
-            style = mTypography.headlineMedium.copy(
+            style = mTypography.headlineSmall.copy(
                 fontWeight = FontWeight.W700,
                 fontFamily = gFlexFontFamily(),
+                color = mColors.onBackground,
             ),
         )
 
@@ -147,10 +148,13 @@ private fun Empty() =
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(all = mDimens.micro8)
+            .padding(all = mDimens.micro8),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "Nothing here you did not listen music"
+            text = "Nothing here you did not listen music",
+            style = mTypography.bodyMedium,
+            color = mColors.onSurfaceVariant,
         )
     }
 

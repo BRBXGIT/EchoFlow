@@ -215,8 +215,8 @@ private fun TodayMixHeaderContent(
         )
         Text(
             text = subtitle,
-            style = mTypography.labelLarge.copy(
-                color = mColors.onPrimary.copy(alpha = 0.75f),
+            style = mTypography.bodyMedium.copy(
+                color = mColors.onPrimary.copy(alpha = 0.8f),
             ),
         )
     }
@@ -240,9 +240,9 @@ private fun rememberTodayMixTitleStyle(): TextStyle {
             fontFamily = gFlex,
             color = color,
             fontWeight = FontWeight.W800,
-            fontSize = 20.sp,
-            lineHeight = 22.sp,
-            letterSpacing = (-0.35).sp,
+            fontSize = 22.sp,
+            lineHeight = 28.sp,
+            letterSpacing = (-0.25).sp,
         )
     }
 }
@@ -386,14 +386,14 @@ private fun MixEmptyStateContent(
 
     Text(
         text = title,
-        style = mTypography.titleSmall.copy(fontWeight = FontWeight.Bold),
+        style = mTypography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
         color = mColors.onSurface,
         textAlign = TextAlign.Center,
     )
 
     Text(
         text = description,
-        style = mTypography.bodySmall,
+        style = mTypography.bodyMedium,
         color = mColors.onSurfaceVariant,
         textAlign = TextAlign.Center,
     )
