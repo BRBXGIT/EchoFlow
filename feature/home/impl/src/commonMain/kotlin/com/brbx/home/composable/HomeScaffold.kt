@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.brbx.design_system.theme.mColors
 import com.brbx.home.view_model.HomeViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -19,7 +20,8 @@ internal fun HomeScaffold() {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(
-        modifier = Modifier.fillMaxSize()
+        containerColor = mColors.surface,
+        modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
         HomeContent(
             recentLoading = state.recentlyListened.isLoading,

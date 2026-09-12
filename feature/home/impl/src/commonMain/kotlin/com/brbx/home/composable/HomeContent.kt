@@ -25,6 +25,5 @@ internal fun HomeContent(
     ) {
         relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
 
-        recentTracksDivider(recentLoading)
         recentTracks(recentLoading, recentTracks)
     }

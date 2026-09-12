@@ -9,12 +9,14 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicColorScheme
 
 @Composable
 fun EchoFlowTheme(
     seedColor: Color = EchoFlowSeedColor,
     isDark: Boolean = isSystemInDarkTheme(),
+    style: PaletteStyle = PaletteStyle.Expressive,
     motion: EchoFlowMotion = DefaultMotion(),
     dimens: EchoFlowDimens = DefaultDimens(),
     shapes: EchoFlowShapes = DefaultEchoFlowShapes(),
@@ -23,6 +25,7 @@ fun EchoFlowTheme(
     val dynamicColorScheme = rememberDynamicColorScheme(
         seedColor = seedColor,
         isDark = isDark,
+        style = style,
     )
 
     CompositionLocalProvider(

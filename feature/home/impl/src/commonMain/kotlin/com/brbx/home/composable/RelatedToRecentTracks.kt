@@ -1,5 +1,6 @@
 package com.brbx.home.composable
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
@@ -25,7 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
@@ -108,10 +116,20 @@ private fun MixContainerCard(
         ),
         modifier = modifier,
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            content = content,
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clipToBounds(),
+        ) {
+            TracksContainerBottomRightDecoration(
+                modifier = Modifier.align(Alignment.BottomEnd),
+            )
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                content = content,
+            )
+        }
     }
 
 @Composable
@@ -183,23 +201,110 @@ private fun TodayMixHeaderContainer(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .clipToBounds()
             .background(
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        mColors.primary,
-                        mColors.tertiary,
+                        mColors.primaryContainer,
+                        mColors.tertiaryContainer,
                     ),
                 ),
-            )
-            .padding(horizontal = mDimens.micro8, vertical = mDimens.micro7),
+            ),
     ) {
+        TodayMixBackgroundDecoration(
+            modifier = Modifier.align(Alignment.TopEnd),
+        )
+
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = mDimens.micro8, vertical = mDimens.micro7),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             content = content,
         )
     }
+
+@Composable
+private fun AsymmetricDecoration(
+    modifier: Modifier = Modifier,
+    primaryColor: Color,
+    accentColor: Color = Color.Unspecified,
+    shapePath: Path.(size: Size) -> Unit,
+    accentDraw: (DrawScope.(size: Size) -> Unit)? = null,
+) =
+    Canvas(modifier = modifier) {
+        val path = Path().apply { shapePath(size) }
+        drawPath(path = path, color = primaryColor)
+
+        if (accentColor != Color.Unspecified && accentDraw != null) {
+            accentDraw(size)
+        }
+    }
+
+@Composable
+private fun TodayMixBackgroundDecoration(
+    modifier: Modifier = Modifier,
+    shapeColor: Color = mColors.onPrimaryContainer.copy(alpha = 0.08f),
+    accentDotColor: Color = mColors.onPrimaryContainer.copy(alpha = 0.12f),
+) =
+    AsymmetricDecoration(
+        modifier = modifier
+            .size(width = 110.dp, height = 85.dp)
+            .offset(x = 20.dp, y = (-16).dp),
+        primaryColor = shapeColor,
+        accentColor = accentDotColor,
+        shapePath = { size ->
+            val w = size.width
+            val h = size.height
+            moveTo(w * 0.35f, 0f)
+            cubicTo(w * 0.85f, -h * 0.15f, w * 1.15f, h * 0.45f, w * 0.80f, h * 0.85f)
+            cubicTo(w * 0.55f, h * 1.15f, w * 0.10f, h * 0.90f, 0f, h * 0.55f)
+            cubicTo(-w * 0.08f, h * 0.20f, w * 0.05f, h * 0.05f, w * 0.35f, 0f)
+            close()
+        },
+        accentDraw = { size ->
+            drawCircle(
+                color = accentDotColor,
+                radius = 4.dp.toPx(),
+                center = Offset(size.width * 0.18f, size.height * 0.78f),
+            )
+        },
+    )
+
+@Composable
+private fun TracksContainerBottomRightDecoration(
+    modifier: Modifier = Modifier,
+    primaryColor: Color = mColors.primary.copy(alpha = 0.05f),
+    accentColor: Color = mColors.tertiary.copy(alpha = 0.07f),
+) =
+    AsymmetricDecoration(
+        modifier = modifier
+            .size(width = 95.dp, height = 80.dp)
+            .offset(x = 24.dp, y = 20.dp),
+        primaryColor = primaryColor,
+        accentColor = accentColor,
+        shapePath = { size ->
+            val w = size.width
+            val h = size.height
+            moveTo(w * 0.40f, h * 0.05f)
+            cubicTo(w * 0.95f, -h * 0.15f, w * 1.25f, h * 0.45f, w * 0.90f, h * 0.95f)
+            cubicTo(w * 0.65f, h * 1.15f, w * 0.35f, h * 0.80f, w * 0.15f, h * 0.90f)
+            cubicTo(-w * 0.10f, h * 0.70f, w * 0.05f, h * 0.30f, w * 0.40f, h * 0.05f)
+            close()
+        },
+        accentDraw = { size ->
+            val w = size.width
+            val h = size.height
+            val accentPath = Path().apply {
+                moveTo(w * 0.12f, h * 0.25f)
+                cubicTo(w * 0.32f, h * 0.12f, w * 0.38f, h * 0.42f, w * 0.18f, h * 0.48f)
+                cubicTo(-w * 0.02f, h * 0.52f, -w * 0.02f, h * 0.32f, w * 0.12f, h * 0.25f)
+                close()
+            }
+            drawPath(path = accentPath, color = accentColor)
+        },
+    )
 
 @Composable
 private fun TodayMixHeaderContent(
@@ -216,7 +321,8 @@ private fun TodayMixHeaderContent(
         Text(
             text = subtitle,
             style = mTypography.bodyMedium.copy(
-                color = mColors.onPrimary.copy(alpha = 0.8f),
+                color = mColors.onPrimaryContainer.copy(alpha = 0.8f),
+                fontWeight = FontWeight.W600,
             ),
         )
     }
@@ -234,7 +340,7 @@ private fun rememberTodayMixTitleStyle(): TextStyle {
         FontVariation.Setting(name = "YTLC", value = 505f),
     )
     val baseStyle = mTypography.titleLarge
-    val color = mColors.onPrimary
+    val color = mColors.onPrimaryContainer
     return remember(key1 = baseStyle, key2 = color, key3 = gFlex) {
         baseStyle.copy(
             fontFamily = gFlex,
@@ -282,11 +388,11 @@ private fun HeaderCollageContent(
                 .size(size = mDimens.macro5)
                 .border(
                     width = 1.dp,
-                    color = mColors.onSecondary,
+                    color = mColors.surfaceContainerLow,
                     shape = CircleShape,
                 )
                 .clip(shape = CircleShape)
-                .background(color = mColors.onTertiaryContainer)
+                .background(color = mColors.secondaryContainer)
         ) {
             EchoFlowRemoteImage(
                 model = posterUrl,
@@ -372,14 +478,14 @@ private fun MixEmptyStateContent(
         modifier = Modifier
             .size(size = 56.dp)
             .background(
-                color = mColors.surfaceContainerHigh,
+                color = mColors.primaryContainer,
                 shape = CircleShape,
             ),
         contentAlignment = Alignment.Center,
     ) {
         EchoFlowIcon(
             imageVector = BrokenSolar.ElectronicDevices.TurntableMusicNote,
-            tint = mColors.primary,
+            tint = mColors.onPrimaryContainer,
             modifier = Modifier.size(size = mDimens.macro3),
         )
     }

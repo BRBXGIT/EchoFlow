@@ -35,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.brbx.debug.compose.EchoFlowPreview
-import com.brbx.design_system.components.components.EchoFlowFilledIconButton
+import com.brbx.design_system.components.components.EchoFlowFilledTonalIconButton
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
 import com.brbx.design_system.theme.gFlexFontFamily
@@ -65,23 +65,12 @@ private val ItemSpacing: Dp
     @Composable @ReadOnlyComposable get() = mDimens.micro5
 private val ItemPosterSize
     @Composable @ReadOnlyComposable get() = mDimens.macro7
+private val ItemShape
+    @Composable @ReadOnlyComposable get() = mShapes.extraLarge
 
-private val ItemShape: Shape get() = CircleShape
 private val ItemPosterShape: Shape get() = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
-private const val RecentTracksDividerKey = "RecentTracksDividerKey"
-
-internal fun LazyListScope.recentTracksDivider(recentLoading: Boolean) =
-    item(key = RecentTracksDividerKey) {
-        RecentTracksDivider(
-            recentLoading = recentLoading,
-            modifier = Modifier
-                .animateItem()
-                .fillMaxWidth()
-                .padding(horizontal = mDimens.micro8)
-        )
-    }
 
 internal fun LazyListScope.recentTracks(
     recentLoading: Boolean,
@@ -94,6 +83,29 @@ internal fun LazyListScope.recentTracks(
             modifier = Modifier
                 .animateItem()
                 .fillMaxWidth()
+        )
+    }
+
+@Composable
+private fun RecentTracks(
+    recentLoading: Boolean,
+    tracks: ImmutableList<Track>,
+    modifier: Modifier = Modifier,
+) =
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro4)
+    ) {
+        RecentTracksDivider(
+            recentLoading = recentLoading,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = mDimens.micro8)
+        )
+        RecentTracksGrid(
+            recentLoading = recentLoading,
+            tracks = tracks,
+            modifier = Modifier.fillMaxWidth()
         )
     }
 
@@ -116,7 +128,7 @@ private fun RecentTracksDivider(
             ),
         )
 
-        EchoFlowFilledIconButton(
+        EchoFlowFilledTonalIconButton(
             enabled = !recentLoading,
             onClick = {},
             imageVector = BrokenSolar.Arrows.AltArrowRight
@@ -124,7 +136,7 @@ private fun RecentTracksDivider(
     }
 
 @Composable
-private fun RecentTracks(
+private fun RecentTracksGrid(
     recentLoading: Boolean,
     tracks: ImmutableList<Track>,
     modifier: Modifier = Modifier,
@@ -199,8 +211,8 @@ private fun RecentTracksContainer(
         rows = StaggeredGridCells.Fixed(count = 3),
         modifier = modifier.height(recentTracksGridHeight),
         contentPadding = PaddingValues(horizontal = mDimens.micro8),
-        horizontalItemSpacing = mDimens.micro8,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8),
+        horizontalItemSpacing = mDimens.micro6,
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro6),
         content = content,
     )
 }
@@ -252,10 +264,10 @@ private fun RecentTrackItemContainer(
     content: @Composable () -> Unit,
 ) {
     val backgroundColorState by colorState(
-        targetValue = if (isPlaying) mColors.primary else mColors.secondary,
+        targetValue = if (isPlaying) mColors.primaryContainer else mColors.surfaceContainerHigh,
     )
     val contentColorState by colorState(
-        targetValue = if (isPlaying) mColors.onPrimary else mColors.onSecondary,
+        targetValue = if (isPlaying) mColors.onPrimaryContainer else mColors.onSurface,
     )
 
     Box(

@@ -111,10 +111,10 @@ private fun TrackItemContainer(
     content: @Composable BoxScope.() -> Unit,
 ) {
     val backgroundColorState by colorState(
-        targetValue = if (isPlaying) mColors.primary else mColors.surfaceContainerHigh
+        targetValue = if (isPlaying) mColors.primaryContainer else mColors.surfaceContainerHigh
     )
     val contentColorState by colorState(
-        targetValue = if (isPlaying) mColors.onPrimary else mColors.onSurface
+        targetValue = if (isPlaying) mColors.onPrimaryContainer else mColors.onSurface
     )
 
     val targetTopCorner = when {
