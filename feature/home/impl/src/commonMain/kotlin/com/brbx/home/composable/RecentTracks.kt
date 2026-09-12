@@ -18,14 +18,18 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
@@ -247,9 +251,11 @@ private fun RecentTrackItemContainer(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val backgroundColorState by animateColorAsState(
+    val backgroundColorState by colorState(
         targetValue = if (isPlaying) mColors.primary else mColors.secondary,
-        animationSpec = mMotion.nonSpatialFastSpec(),
+    )
+    val contentColorState by colorState(
+        targetValue = if (isPlaying) mColors.onPrimary else mColors.onSecondary,
     )
 
     Box(
@@ -257,9 +263,17 @@ private fun RecentTrackItemContainer(
             .clip(shape = ItemShape)
             .background(color = backgroundColorState)
     ) {
-        content()
+        CompositionLocalProvider(
+            LocalContentColor provides contentColorState
+        ) {
+            content()
+        }
     }
 }
+
+@Composable
+private fun colorState(targetValue: Color): State<Color> =
+    animateColorAsState(targetValue, animationSpec = mMotion.nonSpatialFastSpec(),)
 
 @Composable
 private fun RecentTrackItemContent(
@@ -274,11 +288,6 @@ private fun RecentTrackItemContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = ItemSpacing),
     ) {
-        val textColorState by animateColorAsState(
-            targetValue = if (isPlaying) mColors.onPrimary else mColors.onSecondary,
-            animationSpec = mMotion.nonSpatialFastSpec(),
-        )
-
         EchoFlowRemoteImage(
             model = poster,
             modifier = Modifier
@@ -293,13 +302,13 @@ private fun RecentTrackItemContent(
                 text = title,
                 style = mTypography.bodyMedium.copy(
                     fontWeight = FontWeight.W600,
-                    color = textColorState,
+                    color = LocalContentColor.current,
                 ),
             )
             EllipsedText(
                 text = artist,
                 style = mTypography.labelMedium.copy(
-                    color = textColorState.copy(alpha = 0.7f),
+                    color = LocalContentColor.current.copy(alpha = 0.7f),
                 ),
             )
         }

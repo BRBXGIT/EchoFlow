@@ -13,13 +13,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
@@ -106,9 +110,11 @@ private fun TrackItemContainer(
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    val backgroundColorState = animateColorAsState(
-        targetValue = if (isPlaying) mColors.primary else mColors.surfaceContainerHigh,
-        animationSpec = mMotion.nonSpatialFastSpec(),
+    val backgroundColorState by colorState(
+        targetValue = if (isPlaying) mColors.primary else mColors.surfaceContainerHigh
+    )
+    val contentColorState by colorState(
+        targetValue = if (isPlaying) mColors.onPrimary else mColors.onSurface
     )
 
     val targetTopCorner = when {
@@ -147,11 +153,18 @@ private fun TrackItemContainer(
                 clip = true
             }
             .drawBehind {
-                drawRect(color = backgroundColorState.value)
+                drawRect(color = backgroundColorState)
             },
-        content = content,
-    )
+    ) {
+        CompositionLocalProvider(
+            LocalContentColor provides contentColorState
+        ) { content() }
+    }
 }
+
+@Composable
+private fun colorState(targetValue: Color): State<Color> =
+    animateColorAsState(targetValue, animationSpec = mMotion.nonSpatialFastSpec())
 
 @Composable
 private fun TrackItemContent(
@@ -178,21 +191,17 @@ private fun TrackItemContent(
             modifier = Modifier.weight(weight = 1f),
             verticalArrangement = Arrangement.Center,
         ) {
-            val textColorState by animateColorAsState(
-                targetValue = if (isPlaying) mColors.onPrimary else mColors.onSurface,
-                animationSpec = mMotion.nonSpatialFastSpec(),
-            )
             EllipsedText(
                 text = title,
                 style = mTypography.bodyLarge.copy(
                     fontWeight = FontWeight.W600,
-                    color = textColorState,
+                    color = LocalContentColor.current,
                 ),
             )
             EllipsedText(
                 text = artist,
                 style = mTypography.labelMedium.copy(
-                    color = textColorState.copy(alpha = 0.7f),
+                    color = LocalContentColor.current,
                 ),
             )
         }
