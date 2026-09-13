@@ -9,5 +9,5 @@ data class Track(
 ) {
     val highResArtworkUrl: String?
         get() = (artworkUrl ?: user?.avatarUrl)
-            ?.replace(oldValue = "-large.", newValue = "-t500x500.")
+            ?.replace(oldValue = "-large.", newValue = "-t300x300.")
 }
