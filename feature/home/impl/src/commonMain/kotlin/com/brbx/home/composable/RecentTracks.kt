@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,7 +41,6 @@ import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowFilledTonalIconButton
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
-import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
@@ -82,7 +84,7 @@ internal fun LazyListScope.recentTracks(
             tracks = tracks,
             modifier = Modifier
                 .animateItem()
-                .fillMaxWidth()
+                .padding(horizontal = mDimens.micro8),
         )
     }
 
@@ -92,46 +94,80 @@ private fun RecentTracks(
     tracks: ImmutableList<Track>,
     modifier: Modifier = Modifier,
 ) =
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro4)
-    ) {
-        RecentTracksDivider(
-            recentLoading = recentLoading,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = mDimens.micro8)
-        )
-        RecentTracksGrid(
+    RecentTracksContainerCard(modifier) {
+        RecentTracksContent(
             recentLoading = recentLoading,
             tracks = tracks,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 
 @Composable
-private fun RecentTracksDivider(
+private fun RecentTracksContainerCard(
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) =
+    Card(
+        shape = mShapes.extraLarge,
+        colors = CardDefaults.cardColors(
+            containerColor = mColors.surfaceContainerLow,
+        ),
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = mDimens.micro6),
+            content = content,
+        )
+    }
+
+@Composable
+private fun RecentTracksContent(
+    recentLoading: Boolean,
+    tracks: ImmutableList<Track>,
+    modifier: Modifier = Modifier,
+) =
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(mDimens.micro5),
+    ) {
+        RecentTracksHeader(
+            recentLoading = recentLoading,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = mDimens.micro8),
+        )
+
+        RecentTracksGrid(
+            recentLoading = recentLoading,
+            tracks = tracks,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+
+@Composable
+private fun RecentTracksHeader(
     recentLoading: Boolean,
     modifier: Modifier = Modifier,
 ) =
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Text(
             text = stringResource(Res.string.recent_tracks_divider_label),
-            style = mTypography.headlineSmall.copy(
-                fontWeight = FontWeight.W700,
-                fontFamily = gFlexFontFamily(),
-                color = mColors.onBackground,
+            style = mTypography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                color = mColors.onSurface,
             ),
         )
 
         EchoFlowFilledTonalIconButton(
             enabled = !recentLoading,
             onClick = {},
-            imageVector = BrokenSolar.Arrows.AltArrowRight
+            imageVector = BrokenSolar.Arrows.AltArrowRight,
         )
     }
 
@@ -313,7 +349,7 @@ private fun RecentTrackItemContent(
             EllipsedText(
                 text = title,
                 style = mTypography.bodyMedium.copy(
-                    fontWeight = FontWeight.W600,
+                    fontWeight = FontWeight.SemiBold,
                     color = LocalContentColor.current,
                 ),
             )
@@ -321,6 +357,7 @@ private fun RecentTrackItemContent(
                 text = artist,
                 style = mTypography.labelMedium.copy(
                     color = LocalContentColor.current.copy(alpha = 0.7f),
+                    fontWeight = FontWeight.Normal
                 ),
             )
         }

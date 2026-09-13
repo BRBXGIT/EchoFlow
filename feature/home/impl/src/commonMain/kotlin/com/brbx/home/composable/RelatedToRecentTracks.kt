@@ -345,7 +345,7 @@ private fun rememberTodayMixTitleStyle(): TextStyle {
         baseStyle.copy(
             fontFamily = gFlex,
             color = color,
-            fontWeight = FontWeight.W800,
+            fontWeight = FontWeight.Bold,
             fontSize = 22.sp,
             lineHeight = 28.sp,
             letterSpacing = (-0.25).sp,

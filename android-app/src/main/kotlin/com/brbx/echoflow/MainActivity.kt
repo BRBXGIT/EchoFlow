@@ -8,6 +8,7 @@ import com.brbx.common_app.EchoFlowApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         val deeplink = if (intent.data == null) {
@@ -16,7 +17,6 @@ class MainActivity : ComponentActivity() {
             intent.data.toString()
         }
 
-        enableEdgeToEdge()
         setContent {
             EchoFlowApp(deeplink)
         }

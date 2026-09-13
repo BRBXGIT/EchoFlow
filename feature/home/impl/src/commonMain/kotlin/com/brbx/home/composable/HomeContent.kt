@@ -23,7 +23,7 @@ internal fun HomeContent(
         contentPadding = PaddingValues(vertical = mDimens.macro3),
         modifier = modifier,
     ) {
-        relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
-
         recentTracks(recentLoading, recentTracks)
+
+        relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters)
     }

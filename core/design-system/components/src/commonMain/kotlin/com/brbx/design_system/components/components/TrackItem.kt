@@ -194,14 +194,15 @@ private fun TrackItemContent(
             EllipsedText(
                 text = title,
                 style = mTypography.bodyLarge.copy(
-                    fontWeight = FontWeight.W600,
+                    fontWeight = FontWeight.SemiBold,
                     color = LocalContentColor.current,
                 ),
             )
             EllipsedText(
                 text = artist,
                 style = mTypography.labelMedium.copy(
-                    color = LocalContentColor.current,
+                    color = LocalContentColor.current.copy(alpha = 0.7f),
+                    fontWeight = FontWeight.Normal
                 ),
             )
         }
