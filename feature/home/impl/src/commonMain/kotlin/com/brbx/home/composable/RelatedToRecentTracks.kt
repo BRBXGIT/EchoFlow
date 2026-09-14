@@ -387,12 +387,12 @@ private fun HeaderCollageContent(
             modifier = Modifier
                 .size(size = mDimens.macro5)
                 .border(
-                    width = 1.dp,
-                    color = mColors.surfaceContainerLow,
+                    width = 2.dp,
+                    color = mColors.tertiary,
                     shape = CircleShape,
                 )
                 .clip(shape = CircleShape)
-                .background(color = mColors.secondaryContainer)
+                .background(color = mColors.secondary)
         ) {
             EchoFlowRemoteImage(
                 model = posterUrl,
