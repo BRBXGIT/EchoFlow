@@ -10,7 +10,7 @@ import com.brbx.design_system.theme.mShapes
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EchoFlowSheet(
-    shape: Shape = mShapes.medium,
+    shape: Shape = mShapes.extraLarge,
     onDismissRequest: () -> Unit,
     content: @Composable ColumnScope.() -> Unit,
 ) =
