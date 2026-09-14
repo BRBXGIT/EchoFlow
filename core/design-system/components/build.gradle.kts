@@ -24,6 +24,8 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.core)
             implementation(libs.coil.network.ktor)
+            implementation(libs.solar)
+            implementation(libs.kotlinx.collections.immutable)
         }
     }
 }

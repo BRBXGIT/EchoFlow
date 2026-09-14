@@ -8,17 +8,19 @@ import com.brbx.home.model.HomeState
 
 @Immutable
 internal class HomeViewModel : EchoFlowViewModel<HomeState, HomeIntent, Unit>(
-    initialState = HomeState()
+    initialState = HomeState(),
 ) {
     private val feedLoader by injectDelegate<FeedLoader>()
+    private val mixInteractor by injectDelegate<TodayMixInteractor>()
 
     init {
-        dispatchIntent(HomeIntent.Feed.Load)
+        feedLoader
     }
 
     override fun dispatchIntent(intent: HomeIntent) {
         when (intent) {
-            is HomeIntent.Feed -> feedLoader(intent)
+            is HomeIntent.Refresh -> feedLoader(intent)
+            is HomeIntent.ToggleMixSheet -> mixInteractor(intent)
         }
     }
 }

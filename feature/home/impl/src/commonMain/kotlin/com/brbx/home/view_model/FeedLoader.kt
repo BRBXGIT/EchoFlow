@@ -14,7 +14,7 @@ import com.brbx.mvi_core.helpers.launchAction
 import com.brbx.mvi_core.helpers.reduce
 import kotlinx.coroutines.CoroutineDispatcher
 
-internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Feed>
+internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Refresh>
 
 internal class FeedLoaderImpl(
     override val scope: HomeMviScope,
@@ -24,11 +24,12 @@ internal class FeedLoaderImpl(
 ) : FeedLoader {
     private var relatedPaginator: Paginator<Track>? = null
 
-    override fun invoke(intent: HomeIntent.Feed) {
-        when (intent) {
-            HomeIntent.Feed.Load -> loadFeed()
-            HomeIntent.Feed.Refresh -> refreshFeed()
-        }
+    init {
+        loadFeed()
+    }
+
+    override fun invoke(intent: HomeIntent.Refresh) {
+        refreshFeed()
     }
 
     private fun refreshFeed() = launchAction(context = dispatcherDefault) {

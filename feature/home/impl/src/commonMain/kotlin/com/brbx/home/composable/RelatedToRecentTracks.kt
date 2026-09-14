@@ -50,6 +50,7 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
+import com.brbx.home.model.HomeIntent
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
@@ -72,12 +73,14 @@ internal fun LazyListScope.relatedToRecentTracks(
     relatedLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     posters: ImmutableList<String?>,
+    dispatchIntent: (HomeIntent) -> Unit,
 ) =
     item(key = RelatedToRecentTracksKey) {
         RelatedToRecentTracks(
             relatedLoading = relatedLoading,
             tracks = tracks,
             posters = posters,
+            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.ToggleMixSheet) },
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8),
@@ -90,7 +93,7 @@ private fun RelatedToRecentTracks(
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
-    onShowFullPlaylistClick: () -> Unit = {},
+    onShowFullPlaylistClick: () -> Unit,
 ) =
     MixContainerCard(modifier) {
         RelatedToRecentTracksContent(
@@ -556,6 +559,7 @@ private fun RelatedToRecentTracksContentWithPostersPreview() =
         tracks = PreviewTracks,
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
+        onShowFullPlaylistClick = {}
     )
 
 @Composable
@@ -566,6 +570,7 @@ private fun RelatedToRecentTracksLoadingPreview() =
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
+        onShowFullPlaylistClick = {}
     )
 
 @Composable
@@ -576,4 +581,5 @@ private fun RelatedToRecentTracksEmptyPreview() =
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
+        onShowFullPlaylistClick = {}
     )

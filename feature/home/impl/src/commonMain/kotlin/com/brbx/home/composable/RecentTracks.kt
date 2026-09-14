@@ -67,9 +67,9 @@ private val ItemSpacing: Dp
     @Composable @ReadOnlyComposable get() = mDimens.micro5
 private val ItemPosterSize
     @Composable @ReadOnlyComposable get() = mDimens.macro7
+
 private val ItemShape
     @Composable @ReadOnlyComposable get() = mShapes.extraLarge
-
 private val ItemPosterShape: Shape get() = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
