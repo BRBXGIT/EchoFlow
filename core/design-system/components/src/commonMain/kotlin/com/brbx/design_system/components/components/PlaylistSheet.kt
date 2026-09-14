@@ -1,30 +1,28 @@
 package com.brbx.design_system.components.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
@@ -37,65 +35,94 @@ import dev.chiksmedina.solar.bold.videoaudiosound.Shuffle
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.playlist_sheet_mix_button_label
 import echoflow.core.design_system.components.generated.resources.playlist_sheet_play_button_label
+import echoflow.core.design_system.components.generated.resources.playlist_sheet_tracks_count
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
-private const val HeaderKey = "HeaderKey"
-private const val SpacerKey = "SpacerKey"
+private val PillCornerSize = 100.dp
 
-private val RoundedCornersSize = 100.dp
+private const val HeaderKey = "HeaderKey"
+private const val ButtonKey = "ButtonsKey"
+private const val PlaylistNameKey = "PlaylistNameKey"
 
 @Composable
 fun PlaylistSheet(
     onDismissRequest: () -> Unit,
-    visible: Boolean,
     playlistName: String,
     tracks: ImmutableList<TrackItem>,
+    modifier: Modifier = Modifier,
+    visible: Boolean = true,
+    playingTrackId: Long? = null,
+    onPlayClick: () -> Unit = {},
+    onMixClick: () -> Unit = {},
+    onTrackClick: ((TrackItem) -> Unit)? = null,
 ) {
-    if (visible) {
-        EchoFlowSheet(
-            onDismissRequest = onDismissRequest,
-        ) { SheetContent(playlistName, tracks) }
-    } else return
+    if (!visible) return
+
+    EchoFlowSheet(
+        modifier = modifier,
+        onDismissRequest = onDismissRequest,
+    ) {
+        PlaylistSheetContent(
+            playlistName = playlistName,
+            tracks = tracks,
+            playingTrackId = playingTrackId,
+            onPlayClick = onPlayClick,
+            onMixClick = onMixClick,
+            onTrackClick = onTrackClick,
+        )
+    }
 }
 
 @Composable
-private fun SheetContent(
+private fun PlaylistSheetContent(
     playlistName: String,
     tracks: ImmutableList<TrackItem>,
+    modifier: Modifier = Modifier,
+    playingTrackId: Long? = null,
+    onPlayClick: () -> Unit = {},
+    onMixClick: () -> Unit = {},
+    onTrackClick: ((TrackItem) -> Unit)? = null,
 ) =
     LazyColumn(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(mDimens.micro2),
         contentPadding = PaddingValues(all = mDimens.micro8),
     ) {
+        item(PlaylistNameKey) { Spacer(Modifier.height(mDimens.macro8)) }
+
         item(HeaderKey) {
             Header(
                 title = playlistName,
-                description = "${tracks.size} songs",
-                onPlayClick = {},
-                onMixClick = {},
+                tracksCount = tracks.size,
+                onPlayClick = onPlayClick,
+                onMixClick = onMixClick,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .animateItem()
+                    .animateItem(),
             )
         }
 
-        item(SpacerKey) {
-            Spacer(
-                modifier = Modifier
-                    .height(mDimens.micro2)
-                    .animateItem()
-            )
-        }
+        item(ButtonKey) { Spacer(Modifier.height(mDimens.micro1)) }
 
         itemsIndexed(
             items = tracks,
-            key = { _, item -> item.id }
+            key = { _, item -> item.id },
         ) { index, track ->
+            val trackModifier = if (onTrackClick != null) {
+                Modifier
+                    .fillMaxWidth()
+                    .clickable { onTrackClick(track) }
+            } else {
+                Modifier.fillMaxWidth()
+            }
+
             TrackItem(
-                isPlaying = false,
+                isPlaying = track.id == playingTrackId,
                 trackItem = track,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = trackModifier,
                 isFirst = index == 0,
                 isLast = index == tracks.lastIndex,
             )
@@ -105,18 +132,18 @@ private fun SheetContent(
 @Composable
 private fun Header(
     title: String,
-    description: String,
+    tracksCount: Int,
     onPlayClick: () -> Unit,
     onMixClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro8)
+        verticalArrangement = Arrangement.spacedBy(mDimens.macro1),
     ) {
         HeaderTitle(
             title = title,
-            description = description,
+            tracksCount = tracksCount,
         )
 
         HeaderButtons(
@@ -129,24 +156,27 @@ private fun Header(
 @Composable
 private fun HeaderTitle(
     title: String,
-    description: String,
+    tracksCount: Int,
     modifier: Modifier = Modifier,
 ) =
     Column(modifier) {
         Text(
             text = title,
-            style = mTypography.headlineLarge.copy(
-                fontWeight = FontWeight.W700,
+            style = mTypography.displaySmall.copy(
+                fontWeight = FontWeight.Bold,
                 fontFamily = gFlexFontFamily(),
-                color = mColors.onBackground,
-            )
+            ),
+            color = mColors.onSurface,
         )
 
         Text(
-            text = description,
-            style = mTypography.bodyMedium.copy(
-                color = mColors.onBackground.copy(alpha = 0.6f),
-            )
+            text = pluralStringResource(
+                resource = DesignComponentsRes.plurals.playlist_sheet_tracks_count,
+                quantity = tracksCount,
+                tracksCount,
+            ),
+            style = mTypography.bodyMedium,
+            color = mColors.onSurfaceVariant,
         )
     }
 
@@ -165,63 +195,87 @@ private fun HeaderButtons(
             onClick = onPlayClick,
             icon = BoldSolar.VideoAudioSound.Play,
             text = stringResource(DesignComponentsRes.string.playlist_sheet_play_button_label),
-            modifier = Modifier.weight(1f),
+            colors = ButtonDefaults.buttonColors(
+                contentColor = mColors.onPrimary,
+                containerColor = mColors.primary,
+            ),
             shape = RoundedCornerShape(
-                topStart = RoundedCornersSize,
-                bottomStart = RoundedCornersSize,
-                bottomEnd = mShapes.smallRadius,
+                topStart = PillCornerSize,
+                bottomStart = PillCornerSize,
                 topEnd = mShapes.smallRadius,
-            )
+                bottomEnd = mShapes.smallRadius,
+            ),
         )
 
         PlaylistButton(
-            contentColor = mColors.onTertiary,
-            color = mColors.tertiary,
             onClick = onMixClick,
-            icon = BoldSolar.VideoAudioSound.Shuffle,
             text = stringResource(DesignComponentsRes.string.playlist_sheet_mix_button_label),
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(
-                bottomEnd = RoundedCornersSize,
-                topEnd = RoundedCornersSize,
-                topStart = mShapes.smallRadius,
-                bottomStart = mShapes.smallRadius,
-            )
+            icon = BoldSolar.VideoAudioSound.Shuffle,
         )
     }
 
 @Composable
-private fun PlaylistButton(
+private fun RowScope.PlaylistButton(
     onClick: () -> Unit,
     icon: ImageVector,
     text: String,
-    modifier: Modifier,
-    shape: Shape,
-    color: Color = mColors.primary,
-    contentColor: Color = mColors.onPrimary
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        contentColor = mColors.onSecondary,
+        containerColor = mColors.secondary,
+    ),
+    shape: Shape = RoundedCornerShape(
+        topStart = mShapes.smallRadius,
+        bottomStart = mShapes.smallRadius,
+        topEnd = PillCornerSize,
+        bottomEnd = PillCornerSize,
+    )
 ) =
-    Button(
-        colors = ButtonDefaults.buttonColors(containerColor = color),
+    ButtonWithIcon(
         onClick = onClick,
-        modifier = modifier,
+        icon = icon,
+        text = text,
+        iconSize = 18.dp,
+        colors = colors,
         shape = shape,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(mDimens.micro4),
-            modifier = Modifier.padding(vertical = mDimens.micro4)
-        ) {
-            CompositionLocalProvider(LocalContentColor provides contentColor) {
-                EchoFlowIcon(
-                    imageVector = icon,
-                    modifier = Modifier.size(mDimens.macro1)
-                )
+        modifier = Modifier
+            .weight(1f)
+            .height(mDimens.macro8),
+    )
 
-                Text(
-                    text = text,
-                    style = mTypography.labelLarge,
-                    color = LocalContentColor.current
-                )
-            }
-        }
-    }
+private val PreviewTracks = persistentListOf(
+    TrackItem(
+        id = 1L,
+        title = "143 ways to lose yourself",
+        poster = null,
+        artist = "usedcvnt",
+    ),
+    TrackItem(
+        id = 2L,
+        title = "Midnight City",
+        poster = null,
+        artist = "M83",
+    ),
+    TrackItem(
+        id = 3L,
+        title = "Starboy",
+        poster = null,
+        artist = "The Weeknd",
+    ),
+)
+
+@Composable
+@EchoFlowPreview
+private fun PlaylistSheetContentPreview() =
+    PlaylistSheetContent(
+        playlistName = "Today's Mix",
+        tracks = PreviewTracks,
+        playingTrackId = 2L,
+    )
+
+@Composable
+@EchoFlowPreview
+private fun PlaylistSheetContentEmptyPreview() =
+    PlaylistSheetContent(
+        playlistName = "Empty Playlist",
+        tracks = persistentListOf(),
+    )

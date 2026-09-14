@@ -3,4 +3,8 @@
 
     <string name="playlist_sheet_play_button_label">Play</string>
     <string name="playlist_sheet_mix_button_label">Mix</string>
+    <plurals name="playlist_sheet_tracks_count">
+        <item quantity="one">%1$d song</item>
+        <item quantity="other">%1$d songs</item>
+    </plurals>
 </resources>

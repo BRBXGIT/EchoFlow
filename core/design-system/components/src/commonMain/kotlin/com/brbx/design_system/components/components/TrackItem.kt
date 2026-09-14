@@ -68,7 +68,7 @@ fun TrackItem(
     isFirst: Boolean = false,
     isLast: Boolean = false,
     outerCorner: Dp = mShapes.extraLargeRadius,
-    innerCorner: Dp = mShapes.extraSmallRadius,
+    innerCorner: Dp = mShapes.smallRadius,
     playingCorner: Dp = PlayingCorner,
 ) =
     TrackItemContainer(
