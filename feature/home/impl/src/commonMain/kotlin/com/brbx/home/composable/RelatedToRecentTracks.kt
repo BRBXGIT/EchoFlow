@@ -50,8 +50,6 @@ import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.domain.model.common.Track
-import com.brbx.domain.model.common.User
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
@@ -72,7 +70,7 @@ private const val RelatedToRecentTracksKey = "RelatedToRecentTracks"
 
 internal fun LazyListScope.relatedToRecentTracks(
     relatedLoading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     posters: ImmutableList<String?>,
 ) =
     item(key = RelatedToRecentTracksKey) {
@@ -90,7 +88,7 @@ internal fun LazyListScope.relatedToRecentTracks(
 private fun RelatedToRecentTracks(
     relatedLoading: Boolean,
     posters: ImmutableList<String?>,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
     onShowFullPlaylistClick: () -> Unit = {},
 ) =
@@ -136,7 +134,7 @@ private fun MixContainerCard(
 private fun RelatedToRecentTracksContent(
     relatedLoading: Boolean,
     posters: ImmutableList<String?>,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     onShowFullPlaylistClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
@@ -403,7 +401,7 @@ private fun HeaderCollageContent(
 
 @Composable
 private fun MixTracksList(
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -412,10 +410,8 @@ private fun MixTracksList(
     ) {
         tracks.forEachIndexed { index, track ->
             TrackItem(
+                trackItem = track,
                 isPlaying = false,
-                poster = track.highResArtworkUrl,
-                title = track.title,
-                artist = track.user?.name,
                 isFirst = index == 0,
                 isLast = (index == tracks.lastIndex),
                 modifier = Modifier.fillMaxWidth(),
@@ -526,33 +522,29 @@ private fun MixShimmerLoading(
 }
 
 private val PreviewTracks = persistentListOf(
-    Track(
+    TrackItem(
         id = 1L,
         title = "Midnight City",
-        description = null,
-        artworkUrl = "https://example.com/artwork1.jpg",
-        user = User(id = 1L, name = "M83", avatarUrl = null),
+        poster = "https://example.com/artwork1.jpg",
+        artist = "M83",
     ),
-    Track(
+    TrackItem(
         id = 2L,
         title = "Starboy",
-        description = null,
-        artworkUrl = "https://example.com/artwork2.jpg",
-        user = User(id = 2L, name = "The Weeknd", avatarUrl = null),
+        poster = "https://example.com/artwork2.jpg",
+        artist = "The Weeknd",
     ),
-    Track(
+    TrackItem(
         id = 3L,
         title = "Get Lucky",
-        description = null,
-        artworkUrl = "https://example.com/artwork3.jpg",
-        user = User(id = 3L, name = "Daft Punk", avatarUrl = null),
+        poster = "https://example.com/artwork3.jpg",
+        artist = "Daft Punk",
     ),
-    Track(
+    TrackItem(
         id = 4L,
         title = "Resonance",
-        description = null,
-        artworkUrl = "https://example.com/artwork4.jpg",
-        user = User(id = 4L, name = "HOME", avatarUrl = null),
+        poster = "https://example.com/artwork4.jpg",
+        artist = "HOME",
     ),
 )
 

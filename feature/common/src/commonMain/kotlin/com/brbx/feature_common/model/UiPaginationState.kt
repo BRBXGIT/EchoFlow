@@ -1,7 +1,6 @@
 package com.brbx.feature_common.model
 
 import androidx.compose.runtime.Immutable
-import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.enums.RequestException
 import com.brbx.domain.pagination.PaginationState
 import kotlinx.collections.immutable.ImmutableList
@@ -22,9 +21,9 @@ data class UiPaginationState<T>(
         items.take(n).toPersistentList()
 }
 
-fun <T> PaginationState<T>.toUi() =
+fun <T, R> PaginationState<T>.toUi(itemsMapper: (T) -> R): UiPaginationState<R> =
     UiPaginationState(
-        items = items.toPersistentList(),
+        items = items.map(transform = itemsMapper).toPersistentList(),
         exception = exception,
         isLoading = isLoading,
         isRefreshing = isRefreshing,

@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -39,6 +40,14 @@ import echoflow.core.design_system.components.generated.resources.DesignComponen
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
 import org.jetbrains.compose.resources.stringResource
 
+@Immutable
+data class TrackItem(
+    val id: Long,
+    val title: String,
+    val poster: String?,
+    val artist: String?,
+)
+
 private val PlayingCorner = 100.dp
 private val ItemHorizontalPadding: Dp
     @Composable @ReadOnlyComposable get() = mDimens.micro6
@@ -54,9 +63,7 @@ private val ItemPosterShape: Shape
 @Composable
 fun TrackItem(
     isPlaying: Boolean,
-    poster: String?,
-    title: String,
-    artist: String?,
+    trackItem: TrackItem,
     modifier: Modifier = Modifier,
     isFirst: Boolean = false,
     isLast: Boolean = false,
@@ -75,9 +82,9 @@ fun TrackItem(
     ) {
         TrackItemContent(
             isPlaying = isPlaying,
-            poster = poster,
-            title = title,
-            artist = artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
+            poster = trackItem.poster,
+            title = trackItem.title,
+            artist = trackItem.artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
         )
     }
 
@@ -286,10 +293,13 @@ private fun TrackItemShimmerContent(
 @EchoFlowPreview
 private fun TrackItemPreview() =
     TrackItem(
+        trackItem = TrackItem(
+            id = 1L,
+            poster = null,
+            title = "143 ways to lose yourself",
+            artist = "usedcvnt",
+        ),
         isPlaying = false,
-        poster = null,
-        title = "143 ways to lose yourself",
-        artist = "usedcvnt",
         isFirst = true,
     )
 

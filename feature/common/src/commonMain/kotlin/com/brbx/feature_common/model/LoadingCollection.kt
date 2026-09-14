@@ -15,7 +15,7 @@ data class LoadingCollection<T>(
         collection.take(n).toPersistentList()
 }
 
-fun <T> ItemsCollection<T>.toUi() =
+fun <T, R> ItemsCollection<T>.toUi(itemsMapper: (T) -> R): LoadingCollection<R> =
     LoadingCollection(
-        collection = collection.toPersistentList(),
+        collection = collection.map(transform = itemsMapper).toPersistentList(),
     )

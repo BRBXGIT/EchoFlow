@@ -4,6 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.theme.mMotion
 import com.brbx.domain.model.common.Track
 import kotlinx.collections.immutable.ImmutableList
@@ -11,11 +12,11 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 internal fun TracksCrossfade(
     loading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
     loadingContent: @Composable () -> Unit,
     emptyContent: @Composable () -> Unit,
-    listContent: @Composable (ImmutableList<Track>) -> Unit,
+    listContent: @Composable (ImmutableList<TrackItem>) -> Unit,
 ) {
     val state = rememberContentState(loading, tracks)
     Crossfade(
@@ -34,11 +35,11 @@ internal fun TracksCrossfade(
 private sealed interface ContentState {
     data object Loading : ContentState
     data object Empty : ContentState
-    data class List(val tracks: ImmutableList<Track>) : ContentState
+    data class List(val tracks: ImmutableList<TrackItem>) : ContentState
 }
 
 @Composable
-private fun rememberContentState(loading: Boolean, tracks: ImmutableList<Track>): ContentState =
+private fun rememberContentState(loading: Boolean, tracks: ImmutableList<TrackItem>): ContentState =
     remember(key1 = loading, key2 = tracks) {
         when {
             loading -> ContentState.Loading

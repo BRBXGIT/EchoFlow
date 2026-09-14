@@ -41,12 +41,12 @@ import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowFilledTonalIconButton
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
+import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
-import com.brbx.domain.model.common.Track
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
@@ -76,7 +76,7 @@ private const val RecentTracksKey = "RecentTracksKey"
 
 internal fun LazyListScope.recentTracks(
     recentLoading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
 ) =
     item(key = RecentTracksKey) {
         RecentTracks(
@@ -91,7 +91,7 @@ internal fun LazyListScope.recentTracks(
 @Composable
 private fun RecentTracks(
     recentLoading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
 ) =
     RecentTracksContainerCard(modifier) {
@@ -125,7 +125,7 @@ private fun RecentTracksContainerCard(
 @Composable
 private fun RecentTracksContent(
     recentLoading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -174,7 +174,7 @@ private fun RecentTracksHeader(
 @Composable
 private fun RecentTracksGrid(
     recentLoading: Boolean,
-    tracks: ImmutableList<Track>,
+    tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
 ) {
     val contentModifier = remember { Modifier.fillMaxWidth() }
@@ -210,15 +210,15 @@ private fun Empty() =
         )
     }
 
-private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<Track>) =
+private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<TrackItem>) =
     itemsIndexed(
         items = tracks,
         key = { _, track -> track.id },
     ) { index, track ->
         RecentTrackItem(
             title = track.title,
-            poster = track.highResArtworkUrl,
-            artist = track.user?.name,
+            poster = track.poster,
+            artist = track.artist,
             modifier = Modifier
                 .animateItem()
                 .width(calculateTrackContentWidth(key = index)),

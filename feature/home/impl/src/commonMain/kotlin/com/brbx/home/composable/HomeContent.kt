@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.theme.mDimens
 import com.brbx.domain.model.common.Track
 import kotlinx.collections.immutable.ImmutableList
@@ -13,8 +14,8 @@ import kotlinx.collections.immutable.ImmutableList
 internal fun HomeContent(
     recentLoading: Boolean,
     relatedLoading: Boolean,
-    relatedToRecentTracks: ImmutableList<Track>,
-    recentTracks: ImmutableList<Track>,
+    relatedToRecentTracks: ImmutableList<TrackItem>,
+    recentTracks: ImmutableList<TrackItem>,
     recentlyPosters: ImmutableList<String?>,
     modifier: Modifier = Modifier,
 ) =
