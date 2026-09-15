@@ -11,16 +11,14 @@ internal class HomeViewModel : EchoFlowViewModel<HomeState, HomeIntent, Unit>(
     initialState = HomeState(),
 ) {
     private val feedLoader by injectDelegate<FeedLoader>()
-    private val mixInteractor by injectDelegate<TodayMixInteractor>()
+    private val sheetsInteractor by injectDelegate<SheetsInteractor>()
 
-    init {
-        feedLoader
-    }
+    init { feedLoader }
 
     override fun dispatchIntent(intent: HomeIntent) {
         when (intent) {
             is HomeIntent.Refresh -> feedLoader(intent)
-            is HomeIntent.ToggleMixSheet -> mixInteractor(intent)
+            is HomeIntent.Sheets -> sheetsInteractor(intent)
         }
     }
 }

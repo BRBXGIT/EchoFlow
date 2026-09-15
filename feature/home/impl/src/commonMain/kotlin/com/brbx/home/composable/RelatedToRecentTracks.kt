@@ -80,7 +80,7 @@ internal fun LazyListScope.relatedToRecentTracks(
             relatedLoading = relatedLoading,
             tracks = tracks,
             posters = posters,
-            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.ToggleMixSheet) },
+            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Sheets.ToggleMixSheet) },
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8),

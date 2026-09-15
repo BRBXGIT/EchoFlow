@@ -11,6 +11,7 @@ internal data class HomeState(
     val recentlyListened: LoadingCollection<TrackItem> = LoadingCollection(isLoading = true),
     val relatedToRecently: UiPaginationState<TrackItem> = UiPaginationState(isLoading = true),
     val todayMixVisible: Boolean = false,
+    val recentSheetsVisible: Boolean = false,
 ) {
     val recentlyPosters get() = recentlyListened
         .collection

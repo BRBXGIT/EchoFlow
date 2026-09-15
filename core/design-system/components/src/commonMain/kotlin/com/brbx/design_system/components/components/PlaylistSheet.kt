@@ -91,7 +91,7 @@ private fun PlaylistSheetContent(
         verticalArrangement = Arrangement.spacedBy(mDimens.micro2),
         contentPadding = PaddingValues(all = mDimens.micro8),
     ) {
-        item(PlaylistNameKey) { Spacer(Modifier.height(mDimens.macro8)) }
+        item(PlaylistNameKey) { Spacer(Modifier.height(100.dp)) }
 
         item(HeaderKey) {
             Header(
@@ -239,7 +239,7 @@ private fun RowScope.PlaylistButton(
         shape = shape,
         modifier = Modifier
             .weight(1f)
-            .height(mDimens.macro8),
+            .height(58.dp),
     )
 
 private val PreviewTracks = persistentListOf(

@@ -27,5 +27,5 @@ internal fun HomeContent(
     ) {
         relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters, dispatchIntent)
 
-        recentTracks(recentLoading, recentTracks)
+        recentTracks(recentLoading, recentTracks, dispatchIntent)
     }

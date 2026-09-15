@@ -47,6 +47,7 @@ import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
+import com.brbx.home.model.HomeIntent
 import com.valentinilk.shimmer.ShimmerBounds
 import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
@@ -77,11 +78,13 @@ private const val RecentTracksKey = "RecentTracksKey"
 internal fun LazyListScope.recentTracks(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
+    dispatchIntent: (HomeIntent) -> Unit,
 ) =
     item(key = RecentTracksKey) {
         RecentTracks(
             recentLoading = recentLoading,
             tracks = tracks,
+            onFullClick = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8),
@@ -92,12 +95,14 @@ internal fun LazyListScope.recentTracks(
 private fun RecentTracks(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
+    onFullClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     RecentTracksContainerCard(modifier) {
         RecentTracksContent(
             recentLoading = recentLoading,
             tracks = tracks,
+            onFullClick = onFullClick,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -126,6 +131,7 @@ private fun RecentTracksContainerCard(
 private fun RecentTracksContent(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
+    onFullClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -134,6 +140,7 @@ private fun RecentTracksContent(
     ) {
         RecentTracksHeader(
             recentLoading = recentLoading,
+            onFullClick = onFullClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = mDimens.micro8),
@@ -149,6 +156,7 @@ private fun RecentTracksContent(
 @Composable
 private fun RecentTracksHeader(
     recentLoading: Boolean,
+    onFullClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Row(
@@ -166,7 +174,7 @@ private fun RecentTracksHeader(
 
         EchoFlowFilledTonalIconButton(
             enabled = !recentLoading,
-            onClick = {},
+            onClick = onFullClick,
             imageVector = BrokenSolar.Arrows.AltArrowRight,
         )
     }
