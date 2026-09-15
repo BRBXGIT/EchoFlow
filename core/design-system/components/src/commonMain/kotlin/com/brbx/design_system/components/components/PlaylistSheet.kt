@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -71,16 +73,20 @@ fun PlaylistSheet(
 ) {
     if (!visible) return
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     EchoFlowSheet(
+        scrollBehavior = scrollBehavior,
         modifier = modifier,
         onDismissRequest = onDismissRequest,
     ) {
         SheetContent(
             playlistName = playlistName,
             tracks = tracks,
-            modifier = Modifier.fillMaxSize(),
             onPlayClick = onPlayClick,
             onMixClick = onMixClick,
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection),
         )
     }
 }
@@ -240,12 +246,12 @@ private fun HeaderCollage(
                 .size(135.dp)
                 .rotate(degrees = 4f)
                 .clip(shape = mShapes.extraLarge)
+                .background(color = mColors.secondary)
                 .border(
                     width = 4.dp,
-                    color = mColors.surface,
+                    color = mColors.surfaceContainerLow,
                     shape = mShapes.extraLarge
                 )
-                .background(color = mColors.secondary)
                 .zIndex(2f)
         )
     }
