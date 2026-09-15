@@ -1,6 +1,7 @@
 package com.brbx.home.composable
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -57,6 +58,7 @@ import dev.chiksmedina.solar.broken.arrows.AltArrowRight
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
 import echoflow.feature.home.impl.generated.resources.Res
+import echoflow.feature.home.impl.generated.resources.no_songs_in_history_label
 import echoflow.feature.home.impl.generated.resources.recent_tracks_divider_label
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -88,7 +90,8 @@ internal fun LazyListScope.recentTracks(
             onFullClick = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
             modifier = Modifier
                 .animateItem()
-                .padding(horizontal = mDimens.micro8),
+                .padding(horizontal = mDimens.micro8)
+                .animateContentSize(animationSpec = mMotion.mediumSpatialSpec()),
         )
     }
 
@@ -140,7 +143,7 @@ private fun RecentTracksContent(
         verticalArrangement = Arrangement.spacedBy(mDimens.micro5),
     ) {
         RecentTracksHeader(
-            recentLoading = recentLoading,
+            fullButtonEnabled = !recentLoading && tracks.isNotEmpty(),
             onFullClick = onFullClick,
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,7 +159,7 @@ private fun RecentTracksContent(
 
 @Composable
 private fun RecentTracksHeader(
-    recentLoading: Boolean,
+    fullButtonEnabled: Boolean,
     onFullClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) =
@@ -174,7 +177,7 @@ private fun RecentTracksHeader(
         )
 
         EchoFlowFilledTonalIconButton(
-            enabled = !recentLoading,
+            enabled = fullButtonEnabled,
             onClick = onFullClick,
             imageVector = BrokenSolar.Arrows.AltArrowRight,
         )
@@ -203,7 +206,6 @@ private fun RecentTracksGrid(
     )
 }
 
-// TODO Rewrite to something more interesting
 @Composable
 private fun Empty() =
     Box(
@@ -213,8 +215,8 @@ private fun Empty() =
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "Nothing here you did not listen music",
-            style = mTypography.bodyMedium,
+            text = stringResource(Res.string.no_songs_in_history_label),
+            style = mTypography.bodyLarge,
             color = mColors.onSurfaceVariant,
         )
     }
