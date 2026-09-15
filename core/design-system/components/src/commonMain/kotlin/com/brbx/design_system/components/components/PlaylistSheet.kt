@@ -3,6 +3,7 @@ package com.brbx.design_system.components.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -206,54 +208,88 @@ private fun Header(
 @Composable
 private fun HeaderCollage(
     firstPoster: String?,
-    secondPoster: String?,
+    secondPoster: String ?,
     thirdPoster: String?,
     modifier: Modifier = Modifier,
 ) =
+    HeaderCollageContainer(modifier) {
+        HeaderCollageContent(firstPoster, secondPoster, thirdPoster)
+    }
+
+@Composable
+private fun HeaderCollageContainer(
+    modifier: Modifier = Modifier,
+    content: @Composable BoxScope.() -> Unit,
+) =
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .height(160.dp)
             .fillMaxWidth(),
-        contentAlignment = Alignment.Center
     ) {
-        EchoFlowRemoteImage(
-            model = firstPoster,
-            modifier = Modifier
-                .offset(x = (-45).dp, y = 15.dp)
-                .size(120.dp)
-                .rotate(degrees = -12f)
-                .clip(shape = mShapes.extraLarge)
-                .background(color = mColors.primary)
-                .zIndex(1f)
-        )
+        content()
 
-        EchoFlowRemoteImage(
-            model = thirdPoster,
+        Box(
             modifier = Modifier
-                .offset(x = 55.dp, y = (-20).dp)
-                .size(110.dp)
-                .rotate(degrees = 15f)
-                .clip(shape = CircleShape)
-                .background(color = mColors.tertiaryContainer)
-                .zIndex(0f)
-        )
-
-        EchoFlowRemoteImage(
-            model = secondPoster,
-            modifier = Modifier
-                .offset(x = 5.dp, y = 5.dp)
-                .size(135.dp)
-                .rotate(degrees = 4f)
+                .align(Alignment.BottomCenter)
+                .zIndex(3f)
+                .fillMaxWidth()
+                .height(90.dp)
                 .background(
-                    color = mColors.surfaceContainerLow,
-                    shape = mShapes.extraLarge,
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            mColors.surfaceContainerLow.copy(alpha = 0f),
+                            mColors.surfaceContainerLow,
+                        )
+                    )
                 )
-                .padding(all = 4.dp)
-                .clip(shape = RoundedCornerShape(mShapes.extraLargeRadius - 4.dp))
-                .background(color = mColors.secondary)
-                .zIndex(2f)
         )
     }
+
+@Composable
+private fun HeaderCollageContent(
+    firstPoster: String?,
+    secondPoster: String?,
+    thirdPoster: String?,
+) {
+    EchoFlowRemoteImage(
+        model = firstPoster,
+        modifier = Modifier
+            .offset(x = (-60).dp, y = 15.dp)
+            .size(120.dp)
+            .rotate(degrees = -7f)
+            .clip(shape = mShapes.extraLarge)
+            .background(color = mColors.primary)
+            .zIndex(1f)
+    )
+
+    EchoFlowRemoteImage(
+        model = thirdPoster,
+        modifier = Modifier
+            .offset(x = 70.dp, y = (-20).dp)
+            .size(110.dp)
+            .rotate(degrees = 15f)
+            .clip(shape = CircleShape)
+            .background(color = mColors.tertiaryContainer)
+            .zIndex(0f)
+    )
+
+    EchoFlowRemoteImage(
+        model = secondPoster,
+        modifier = Modifier
+            .offset(x = 5.dp, y = 5.dp)
+            .size(135.dp)
+            .rotate(degrees = 4f)
+            .background(
+                color = mColors.surfaceContainerLow,
+                shape = mShapes.extraLarge,
+            )
+            .padding(all = 4.dp)
+            .clip(shape = RoundedCornerShape(mShapes.extraLargeRadius - 4.dp))
+            .background(color = mColors.secondary)
+            .zIndex(2f)
+    )
+}
 
 @Composable
 private fun HeaderTitle(
