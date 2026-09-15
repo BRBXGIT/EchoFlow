@@ -1,7 +1,6 @@
 package com.brbx.design_system.components.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -245,13 +244,13 @@ private fun HeaderCollage(
                 .offset(x = 5.dp, y = 5.dp)
                 .size(135.dp)
                 .rotate(degrees = 4f)
-                .clip(shape = mShapes.extraLarge)
-                .background(color = mColors.secondary)
-                .border(
-                    width = 4.dp,
+                .background(
                     color = mColors.surfaceContainerLow,
-                    shape = mShapes.extraLarge
+                    shape = mShapes.extraLarge,
                 )
+                .padding(all = 4.dp)
+                .clip(shape = RoundedCornerShape(mShapes.extraLargeRadius - 4.dp))
+                .background(color = mColors.secondary)
                 .zIndex(2f)
         )
     }
