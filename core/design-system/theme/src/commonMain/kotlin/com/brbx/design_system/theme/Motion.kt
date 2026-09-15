@@ -276,7 +276,7 @@ private object MotionTokens {
         const val MediumBouncy = 0.65f
         const val SlightBouncy = 0.6f
         const val Snappy = 0.65f
-        const val Organic = 0.7f
+        const val Organic = 0.75f
         const val Subtle = 0.8f
         const val LowBouncy = 0.95f
     }
