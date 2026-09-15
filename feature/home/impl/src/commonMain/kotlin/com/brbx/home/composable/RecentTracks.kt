@@ -59,6 +59,7 @@ import echoflow.core.design_system.components.generated.resources.unknown_artist
 import echoflow.feature.home.impl.generated.resources.Res
 import echoflow.feature.home.impl.generated.resources.recent_tracks_divider_label
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import kotlin.math.abs
 
@@ -443,3 +444,16 @@ private fun RecentTrackItemPreview() =
             artist = "Samsung",
         )
     }
+
+@Composable
+@EchoFlowPreview
+private fun RecentTracksPreview() =
+    RecentTracks(
+        recentLoading = false,
+        tracks = persistentListOf(
+            TrackItem(id = 1L, title = "Song 1", poster = null, artist = "Artist 1"),
+            TrackItem(id = 2L, title = "Song 2", poster = null, artist = "Artist 2"),
+        ),
+        onFullClick = {},
+    )
+

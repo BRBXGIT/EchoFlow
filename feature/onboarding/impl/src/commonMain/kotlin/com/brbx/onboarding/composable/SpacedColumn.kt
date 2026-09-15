@@ -3,9 +3,11 @@ package com.brbx.onboarding.composable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
 
 @Composable
@@ -21,3 +23,11 @@ internal fun SpacedColumn(
         horizontalAlignment = horizontalAlignment,
         content = content,
     )
+
+@Composable
+@EchoFlowPreview
+private fun SpacedColumnPreview() =
+    SpacedColumn {
+        Text("Item 1")
+        Text("Item 2")
+    }

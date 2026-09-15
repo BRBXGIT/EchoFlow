@@ -15,10 +15,26 @@ import com.brbx.design_system.theme.mColors
 
 @Preview(uiMode = UI_MODE_NIGHT_NO, name = "Light theme", showBackground = true)
 @Preview(uiMode = UI_MODE_NIGHT_YES, name = "Dark theme", showBackground = true)
-@PreviewWrapper(ThemeWrapper::class)
+@PreviewWrapper(ComponentThemeWrapper::class)
 annotation class EchoFlowPreview
 
-private class ThemeWrapper : PreviewWrapperProvider {
+@Preview(uiMode = UI_MODE_NIGHT_NO, name = "Light theme", showBackground = true)
+@Preview(uiMode = UI_MODE_NIGHT_YES, name = "Dark theme", showBackground = true)
+@PreviewWrapper(ScreenThemeWrapper::class)
+annotation class EchoFlowScreenPreview
+
+private class ComponentThemeWrapper : PreviewWrapperProvider {
+    @Composable
+    override fun Wrap(content: @Composable (() -> Unit)) {
+        EchoFlowTheme {
+            Box(
+                modifier = Modifier.background(color = mColors.background)
+            ) { content() }
+        }
+    }
+}
+
+private class ScreenThemeWrapper : PreviewWrapperProvider {
     @Composable
     override fun Wrap(content: @Composable (() -> Unit)) {
         EchoFlowTheme {

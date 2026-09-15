@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mMotion
 
@@ -76,3 +77,10 @@ private fun EchoFlowSheetDragHandle(
         BottomSheetDefaults.DragHandle()
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@EchoFlowPreview
+private fun EchoFlowSheetDragHandlePreview() =
+    EchoFlowSheetDragHandle()
+

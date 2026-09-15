@@ -1,10 +1,12 @@
 package com.brbx.design_system.components.components
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImagePainter
 import coil3.compose.LocalPlatformContext
 import coil3.compose.SubcomposeAsyncImage
@@ -12,6 +14,7 @@ import coil3.compose.SubcomposeAsyncImageScope
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import coil3.request.crossfade
+import com.brbx.debug.compose.EchoFlowPreview
 
 @Composable
 fun EchoFlowRemoteImage(
@@ -46,3 +49,11 @@ fun EchoFlowRemoteImage(
         error = onError,
     )
 }
+
+@Composable
+@EchoFlowPreview
+private fun EchoFlowRemoteImagePreview() =
+    EchoFlowRemoteImage(
+        model = null,
+        modifier = Modifier.size(100.dp),
+    )

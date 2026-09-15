@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.window.core.layout.WindowSizeClass
-import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.debug.compose.EchoFlowScreenPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
@@ -388,7 +388,7 @@ private fun CollageIconWrapper(
 
 
 @Composable
-@EchoFlowPreview
+@EchoFlowScreenPreview
 private fun WithSkipPagePreview() =
     OnboardingPage(
         page = createAuthPage(payload = 0).copy(action = createAuthPage(payload = 0).action?.copy(canSkip = true)),
@@ -398,7 +398,7 @@ private fun WithSkipPagePreview() =
     )
 
 @Composable
-@EchoFlowPreview
+@EchoFlowScreenPreview
 private fun WithActionPagePreview() =
     OnboardingPage(
         page = createAuthPage(payload = 0),
@@ -408,7 +408,7 @@ private fun WithActionPagePreview() =
     )
 
 @Composable
-@EchoFlowPreview
+@EchoFlowScreenPreview
 private fun NoActionPagePreview() =
     OnboardingPage(
         page = createGreetingPage(payload = 0),

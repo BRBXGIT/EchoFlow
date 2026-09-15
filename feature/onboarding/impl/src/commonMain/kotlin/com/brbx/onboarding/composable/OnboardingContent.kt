@@ -3,11 +3,14 @@ package com.brbx.onboarding.composable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowScreenPreview
 import com.brbx.design_system.theme.mDimens
 import com.brbx.onboarding.model.OnboardingPage
+import com.brbx.onboarding.model.createGreetingPage
 import com.brbx.onboarding.utils.scrollToNext
 import kotlinx.coroutines.launch
 
@@ -50,3 +53,17 @@ internal fun <T> OnboardingContent(
             )
         }
     }
+
+@Composable
+@EchoFlowScreenPreview
+private fun OnboardingContentPreview() {
+    val pages = listOf(createGreetingPage(payload = 0))
+    val pagerState = rememberPagerState { pages.size }
+    OnboardingContent(
+        pagerState = pagerState,
+        pages = pages,
+        onAction = {},
+    )
+}
+
+

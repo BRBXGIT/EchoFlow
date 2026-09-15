@@ -15,8 +15,12 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mTypography
+import dev.chiksmedina.solar.BoldSolar
+import dev.chiksmedina.solar.bold.VideoAudioSound
+import dev.chiksmedina.solar.bold.videoaudiosound.Play
 
 @Composable
 fun ButtonWithIcon(
@@ -47,3 +51,13 @@ fun ButtonWithIcon(
             )
         }
     }
+
+@Composable
+@EchoFlowPreview
+private fun ButtonWithIconPreview() =
+    ButtonWithIcon(
+        onClick = {},
+        icon = BoldSolar.VideoAudioSound.Play,
+        text = "Play All",
+    )
+

@@ -1,13 +1,16 @@
 package com.brbx.home.composable
 
 import androidx.compose.animation.Crossfade
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.theme.mMotion
 import com.brbx.domain.model.common.Track
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 internal fun TracksCrossfade(
@@ -47,3 +50,15 @@ private fun rememberContentState(loading: Boolean, tracks: ImmutableList<TrackIt
             else -> ContentState.List(tracks)
         }
     }
+
+@Composable
+@EchoFlowPreview
+private fun TracksCrossfadePreview() =
+    TracksCrossfade(
+        loading = false,
+        tracks = persistentListOf(),
+        loadingContent = { Text("Loading...") },
+        emptyContent = { Text("Empty") },
+        listContent = { Text("List") },
+    )
+

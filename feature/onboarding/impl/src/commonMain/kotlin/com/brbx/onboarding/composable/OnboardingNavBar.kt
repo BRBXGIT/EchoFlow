@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowIconButton
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
@@ -63,3 +65,10 @@ internal fun OnboardingNavBar(
             }
         }
     }
+
+@Composable
+@EchoFlowPreview
+private fun OnboardingNavBarPreview() {
+    val pagerState = rememberPagerState { 3 }
+    OnboardingNavBar(pagerState = pagerState)
+}

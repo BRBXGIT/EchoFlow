@@ -6,6 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.brbx.debug.compose.EchoFlowPreview
+import dev.chiksmedina.solar.BoldSolar
+import dev.chiksmedina.solar.bold.VideoAudioSound
+import dev.chiksmedina.solar.bold.videoaudiosound.Play
 
 @Composable
 fun EchoFlowIcon(
@@ -18,4 +22,11 @@ fun EchoFlowIcon(
         contentDescription = null,
         modifier = modifier,
         tint = tint,
+    )
+
+@Composable
+@EchoFlowPreview
+private fun EchoFlowIconPreview() =
+    EchoFlowIcon(
+        imageVector = BoldSolar.VideoAudioSound.Play,
     )

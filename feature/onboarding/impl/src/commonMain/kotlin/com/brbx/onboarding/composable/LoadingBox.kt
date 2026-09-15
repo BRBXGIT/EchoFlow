@@ -4,14 +4,17 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mMotion
 
@@ -57,3 +60,13 @@ private fun animatedAlphaState(loading: Boolean, target: Float = 1f) =
         targetValue = if (loading) target else 0f,
         animationSpec = mMotion.nonSpatialFastSpec(),
     )
+
+@Composable
+@EchoFlowPreview
+private fun LoadingBoxPreview() =
+    LoadingBox(
+        loading = true,
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Text("Content under loading")
+    }

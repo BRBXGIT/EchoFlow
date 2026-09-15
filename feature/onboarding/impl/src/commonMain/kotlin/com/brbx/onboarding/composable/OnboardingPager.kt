@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mMotion
 import kotlin.math.absoluteValue
 
@@ -44,4 +47,13 @@ internal fun OnboardingPager(
 
 private fun PagerState.calculatePageOffset(page: Int): Float {
     return (currentPage - page) + currentPageOffsetFraction
+}
+
+@Composable
+@EchoFlowPreview
+private fun OnboardingPagerPreview() {
+    val pagerState = rememberPagerState { 3 }
+    OnboardingPager(pagerState = pagerState) { page ->
+        Text("Page $page")
+    }
 }

@@ -4,6 +4,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.design_system.theme.mTypography
 
 @Composable
 fun EllipsedText(
@@ -17,4 +19,12 @@ fun EllipsedText(
         text = text,
         maxLines = maxLines,
         overflow = overflow,
+    )
+
+@Composable
+@EchoFlowPreview
+private fun EllipsedTextPreview() =
+    EllipsedText(
+        text = "Long text example that should be ellipsed when overflowed",
+        style = mTypography.bodyMedium,
     )

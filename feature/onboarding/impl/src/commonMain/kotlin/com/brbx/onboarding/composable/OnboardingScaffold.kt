@@ -11,12 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowScreenPreview
 import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingPage
 import com.brbx.onboarding.model.OnboardingState
+import com.brbx.onboarding.model.createGreetingPage
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
@@ -64,3 +67,19 @@ internal fun HandleDeeplink(
     LaunchedEffect(key1 = deeplink) {
         deeplink?.let { dispatchIntent(OnboardingIntent.Authenticate(deeplink)) }
     }
+
+@Composable
+@EchoFlowScreenPreview
+private fun OnboardingScaffoldInternalPreview() {
+    val state = OnboardingState(
+        pages = listOf(createGreetingPage(payload = 0)),
+        loading = false,
+    )
+    OnboardingScaffoldInternal(
+        state = state,
+        effects = MutableSharedFlow(),
+        onPageAction = {},
+    )
+}
+
+
