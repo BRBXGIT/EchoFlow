@@ -34,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -74,7 +73,7 @@ private val ItemPosterSize
 
 private val ItemShape
     @Composable @ReadOnlyComposable get() = mShapes.extraLarge
-private val ItemPosterShape: Shape get() = CircleShape
+private val ItemPosterShape = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
 
