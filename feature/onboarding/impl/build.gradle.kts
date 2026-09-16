@@ -26,11 +26,5 @@ kotlin {
             implementation(libs.solar)
             implementation(libs.koin.compose.viewmodel)
         }
-
-        commonTest.dependencies {
-            // Libs
-            implementation(libs.kotlin.test)
-            implementation(libs.kotlinx.coroutines.test)
-        }
     }
 }
