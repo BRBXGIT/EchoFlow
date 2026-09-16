@@ -22,5 +22,11 @@ kotlin {
             // Api
             implementation(projects.core.localServer.api)
         }
+
+        commonTest.dependencies {
+            // Libs
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }

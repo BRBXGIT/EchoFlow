@@ -17,7 +17,7 @@ internal class FlowPaginator<Dto, Domain>(
 
     private var key: String? = null
     private val _state = MutableStateFlow(value = PaginationState<Domain>())
-    private val currentState = _state.value
+    private val currentState get() = _state.value
 
     override val state = _state.asStateFlow()
 

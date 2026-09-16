@@ -115,6 +115,7 @@ solar = { module = "dev.chiksmedina.solar:solar", version.ref = "solar" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 # Testing
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 androidx-test-core = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test-core" }
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidx-test-runner" }
