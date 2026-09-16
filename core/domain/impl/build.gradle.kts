@@ -12,5 +12,11 @@ kotlin {
             // Libs
             implementation(libs.koin.core)
         }
+
+        commonTest.dependencies {
+            // Libs
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }
