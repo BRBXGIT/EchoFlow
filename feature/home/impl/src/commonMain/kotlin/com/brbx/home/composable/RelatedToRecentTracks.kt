@@ -80,7 +80,7 @@ internal fun LazyListScope.relatedToRecentTracks(
             relatedLoading = relatedLoading,
             tracks = tracks,
             posters = posters,
-            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Sheets.ToggleMixSheet) },
+            dispatchIntent = dispatchIntent,
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8),
@@ -88,19 +88,19 @@ internal fun LazyListScope.relatedToRecentTracks(
     }
 
 @Composable
-private fun RelatedToRecentTracks(
+internal fun RelatedToRecentTracks(
     relatedLoading: Boolean,
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
-    onShowFullPlaylistClick: () -> Unit,
+    dispatchIntent: (HomeIntent) -> Unit,
 ) =
     MixContainerCard(modifier) {
         RelatedToRecentTracksContent(
             relatedLoading = relatedLoading,
             tracks = tracks,
             posters = posters,
-            onShowFullPlaylistClick = onShowFullPlaylistClick,
+            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Sheets.ToggleMixSheet) },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -559,7 +559,7 @@ private fun RelatedToRecentTracksContentWithPostersPreview() =
         tracks = PreviewTracks,
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
-        onShowFullPlaylistClick = {}
+        dispatchIntent = {}
     )
 
 @Composable
@@ -570,7 +570,7 @@ private fun RelatedToRecentTracksLoadingPreview() =
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
-        onShowFullPlaylistClick = {}
+        dispatchIntent = {}
     )
 
 @Composable
@@ -581,5 +581,5 @@ private fun RelatedToRecentTracksEmptyPreview() =
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
-        onShowFullPlaylistClick = {}
+        dispatchIntent = {}
     )

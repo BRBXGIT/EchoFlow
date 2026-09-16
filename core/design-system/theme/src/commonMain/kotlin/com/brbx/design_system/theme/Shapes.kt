@@ -1,12 +1,14 @@
 package com.brbx.design_system.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 internal val LocalShapes = staticCompositionLocalOf<EchoFlowShapes> { DefaultEchoFlowShapes() }
 
+@Immutable
 interface EchoFlowShapes {
     val zeroRadius: Dp
     val extraSmallRadius: Dp

@@ -19,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -33,8 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.window.core.layout.WindowSizeClass
 import com.brbx.debug.compose.EchoFlowScreenPreview
+import com.brbx.design_system.components.utils.rememberIsLargeScreen
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
@@ -58,16 +57,6 @@ internal fun OnboardingPage(
         LargeLayout(page, onSkip, onAction = onAction, modifier = modifier.fillMaxSize())
     } else {
         StandardLayout(page, onSkip, onAction = onAction, modifier = modifier.fillMaxSize())
-    }
-
-@Composable
-private fun rememberIsLargeScreen() =
-    currentWindowAdaptiveInfoV2().let { adaptiveInfo ->
-        remember(key1 = adaptiveInfo) {
-            adaptiveInfo
-                .windowSizeClass
-                .isWidthAtLeastBreakpoint(widthDpBreakpoint = WindowSizeClass.WIDTH_DP_MEDIUM_LOWER_BOUND)
-        }
     }
 
 @Composable

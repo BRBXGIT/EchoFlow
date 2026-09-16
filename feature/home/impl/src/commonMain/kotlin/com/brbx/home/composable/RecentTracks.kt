@@ -82,31 +82,34 @@ internal fun LazyListScope.recentTracks(
     tracks: ImmutableList<TrackItem>,
     dispatchIntent: (HomeIntent) -> Unit,
 ) =
-    item(key = RecentTracksKey) {
+    item(RecentTracksKey) {
         RecentTracks(
             recentLoading = recentLoading,
             tracks = tracks,
-            onFullClick = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
+            dispatchIntent = dispatchIntent,
             modifier = Modifier
                 .animateItem()
                 .padding(horizontal = mDimens.micro8)
-                .animateContentSize(animationSpec = mMotion.mediumSpatialSpec()),
         )
     }
 
 @Composable
-private fun RecentTracks(
+internal fun RecentTracks(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
-    onFullClick: () -> Unit,
+    dispatchIntent: (HomeIntent) -> Unit,
     modifier: Modifier = Modifier,
+    rowCount: Int = 3,
 ) =
     RecentTracksContainerCard(modifier) {
         RecentTracksContent(
             recentLoading = recentLoading,
             tracks = tracks,
-            onFullClick = onFullClick,
-            modifier = Modifier.fillMaxWidth(),
+            onFullClick = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
+            rowCount = rowCount,
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(animationSpec = mMotion.mediumSpatialSpec()),
         )
     }
 
@@ -135,6 +138,7 @@ private fun RecentTracksContent(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     onFullClick: () -> Unit,
+    rowCount: Int,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -152,6 +156,7 @@ private fun RecentTracksContent(
         RecentTracksGrid(
             recentLoading = recentLoading,
             tracks = tracks,
+            rowCount = rowCount,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -186,6 +191,7 @@ private fun RecentTracksHeader(
 private fun RecentTracksGrid(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
+    rowCount: Int,
     modifier: Modifier = Modifier,
 ) {
     val contentModifier = remember { Modifier.fillMaxWidth() }
@@ -194,12 +200,13 @@ private fun RecentTracksGrid(
         loading = recentLoading,
         tracks = tracks,
         emptyContent = { Empty() },
-        listContent = { tracks -> RecentTracksContainer(contentModifier) { tracks(tracks) } },
+        listContent = { tracks -> RecentTracksContainer(contentModifier, rowCount = rowCount) { tracks(tracks) } },
         loadingContent = {
             val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
             RecentTracksContainer(
                 withScroll = false,
                 modifier = contentModifier.shimmer(customShimmer = shimmerInstance),
+                rowCount = rowCount
             ) { loading() }
         },
     )
@@ -248,17 +255,19 @@ private fun LazyStaggeredGridScope.loading() =
 private fun RecentTracksContainer(
     modifier: Modifier = Modifier,
     withScroll: Boolean = true,
+    rowCount: Int,
     content: LazyStaggeredGridScope.() -> Unit,
 ) {
     val recentTrackItemHeight = ItemPosterSize + (ItemPadding * 2)
-    val recentTracksGridHeight = (recentTrackItemHeight * 3) + (mDimens.micro8 * 2)
+    val verticalSpacing = mDimens.micro6
+    val recentTracksGridHeight = (recentTrackItemHeight * rowCount) + (verticalSpacing * (rowCount - 1))
     LazyHorizontalStaggeredGrid(
         userScrollEnabled = withScroll,
-        rows = StaggeredGridCells.Fixed(count = 3),
+        rows = StaggeredGridCells.Fixed(count = rowCount),
         modifier = modifier.height(recentTracksGridHeight),
         contentPadding = PaddingValues(horizontal = mDimens.micro8),
         horizontalItemSpacing = mDimens.micro6,
-        verticalArrangement = Arrangement.spacedBy(mDimens.micro6),
+        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
         content = content,
     )
 }
@@ -455,6 +464,6 @@ private fun RecentTracksPreview() =
             TrackItem(id = 1L, title = "Song 1", poster = null, artist = "Artist 1"),
             TrackItem(id = 2L, title = "Song 2", poster = null, artist = "Artist 2"),
         ),
-        onFullClick = {},
+        dispatchIntent = {}
     )
 

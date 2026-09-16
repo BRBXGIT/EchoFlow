@@ -12,6 +12,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.design_system.components.components.PlaylistSheet
 import com.brbx.design_system.components.components.TrackItem
+import com.brbx.design_system.components.utils.rememberIsLargeScreen
 import com.brbx.design_system.components.utils.rememberSnackbarHost
 import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
@@ -24,7 +25,8 @@ import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
-private const val RecentSnapshotCount = 15
+private val RecentSnapshotCount
+    @Composable get() = if (rememberIsLargeScreen()) 25 else 15
 internal const val RelatedToRecentlySnapshotCount = 4
 
 @Composable

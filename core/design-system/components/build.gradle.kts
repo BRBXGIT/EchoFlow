@@ -20,6 +20,7 @@ kotlin {
 
             // Libs
             api(libs.compose.material3)
+            implementation(libs.compose.material3.adaptive.navigation3)
             implementation(libs.compose.resources)
             implementation(libs.coil.compose)
             implementation(libs.coil.core)
