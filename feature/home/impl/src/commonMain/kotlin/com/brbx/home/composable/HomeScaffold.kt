@@ -3,6 +3,7 @@ package com.brbx.home.composable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,7 +12,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.design_system.components.components.PlaylistSheet
 import com.brbx.design_system.components.components.TrackItem
+import com.brbx.design_system.components.utils.rememberSnackbarHost
 import com.brbx.design_system.theme.mColors
+import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.home.model.HomeIntent
 import com.brbx.home.view_model.HomeViewModel
 import echoflow.feature.home.impl.generated.resources.Res
@@ -30,6 +33,9 @@ internal fun HomeScaffold() {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val dispatchIntent = viewModel::dispatchIntent
 
+    val hostState = rememberSnackbarHost()
+    HandleEchoFlowEffects(viewModel.effects, snackbarHost = hostState)
+
     Sheets(
         dispatchIntent = dispatchIntent,
         todayMixVisible = state.todayMixVisible,
@@ -40,6 +46,7 @@ internal fun HomeScaffold() {
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState) },
         topBar = { HomeTopBar(scrollBehavior) },
         containerColor = mColors.surface,
         modifier = Modifier
