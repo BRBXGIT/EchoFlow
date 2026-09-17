@@ -11,5 +11,6 @@ data class TrackDto(
     @SerialName("artwork_url") val artworkUrl: String? = null,
     @SerialName("duration") val durationMs: Long? = null,
     @SerialName("stream_url") val streamUrl: String? = null,
+    val streamable: Boolean,
     val user: UserDto? = null
 )

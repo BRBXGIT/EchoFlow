@@ -5,6 +5,8 @@ data class Track(
     val title: String,
     val description: String?,
     val artworkUrl: String?,
+    val streamUrl: String?,
+    val streamable: Boolean,
     val user: User?,
 ) {
     val highResArtworkUrl: String?
