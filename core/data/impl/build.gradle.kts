@@ -28,6 +28,9 @@ kotlin {
         jvmMain.dependencies {
             // Api
             implementation(projects.core.localServer.api)
+
+            // Libs
+            implementation(libs.javafx.media)
         }
 
         commonTest.dependencies {

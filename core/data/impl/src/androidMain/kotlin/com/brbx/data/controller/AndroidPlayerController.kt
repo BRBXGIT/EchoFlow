@@ -17,9 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -28,15 +25,12 @@ import org.koin.core.component.inject
 internal class AndroidPlayerController(
     private val player: Player,
     dispatcherMain: CoroutineDispatcher,
-) : PlayerController {
+) : BasePlayerController() {
 
     private val scope = CoroutineScope(context = dispatcherMain + SupervisorJob())
-    private val _playerState = MutableStateFlow(value = PlayerState())
 
     private var positionUpdateJob: Job? = null
     private var currentQueue = emptyList<Track>()
-
-    override val playerState = _playerState.asStateFlow()
 
     private val playerListener = object : Player.Listener {
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) =
@@ -86,7 +80,7 @@ internal class AndroidPlayerController(
     private fun clearQueue() {
         currentQueue = emptyList()
         player.clearMediaItems()
-        _playerState.value = PlayerState()
+        reduce { PlayerState() }
         stopPositionUpdates()
     }
 
@@ -99,7 +93,7 @@ internal class AndroidPlayerController(
         player.prepare()
         player.play()
 
-        _playerState.reduce {
+        reduce {
             copy(
                 queue = tracks,
                 currentTrack = tracks.getOrNull(index = validIndex),
@@ -109,14 +103,14 @@ internal class AndroidPlayerController(
         }
     }
 
-    private fun updateTrackAndPosition() = _playerState.reduce {
+    private fun updateTrackAndPosition() = reduce {
         copy(
             currentTrack = currentQueue.getOrNull(index = player.currentMediaItemIndex),
             currentPositionMs = player.currentPosition.coerceAt0(),
         )
     }
 
-    private fun updatePosition(positionMs: Long) = _playerState.reduce {
+    private fun updatePosition(positionMs: Long) = reduce {
         copy(currentPositionMs = positionMs.coerceAt0())
     }
 
@@ -125,7 +119,7 @@ internal class AndroidPlayerController(
         if (isPlaying) startPositionUpdates() else stopPositionUpdates()
     }
 
-    private fun updatePlaybackStatus() = _playerState.reduce {
+    private fun updatePlaybackStatus() = reduce {
         copy(
             status = resolvePlaybackStatus(),
             currentPositionMs = player.currentPosition.coerceAt0(),
@@ -153,9 +147,6 @@ internal class AndroidPlayerController(
         .also { positionUpdateJob = null }
 
     private fun Long.coerceAt0() = this.coerceAtLeast(minimumValue = 0L)
-
-    private fun MutableStateFlow<PlayerState>.reduce(transform: PlayerState.() -> PlayerState) =
-        this.update(function = transform)
 
     private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()

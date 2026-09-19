@@ -3,7 +3,7 @@
 android-gradle-plugin = "9.2.1"
 
 # Kotlin
-kotlin = "2.4.10"
+kotlin = "2.4.20"
 ksp = "2.3.11"
 compose-multiplatform = "1.12.0"
 compose-material3 = "1.12.0-alpha03"
@@ -36,6 +36,7 @@ brbx-mvi = "1.2.10"
 solar = "2.1.0"
 buildconfig = "6.1.0"
 okio = "3.18.2"
+javafxMedia = "27"
 
 # Testing
 junit4 = "4.13.2"
@@ -114,6 +115,7 @@ shimmer-compose = { group = "com.valentinilk.shimmer", name = "compose-shimmer",
 brbx-mvi = { module = "com.github.BRBXGIT.BrbxMvi:api", version.ref = "brbx-mvi" }
 solar = { module = "dev.chiksmedina.solar:solar", version.ref = "solar" }
 okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
+javafx-media = { module = "org.openjfx:javafx-media", version.ref = "javafxMedia" }
 
 # Testing
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
