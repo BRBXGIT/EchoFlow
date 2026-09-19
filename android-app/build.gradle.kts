@@ -6,6 +6,8 @@ plugins {
 }
 
 dependencies {
+    // Impl
+    implementation(projects.core.data.impl)
     // Other
     implementation(projects.commonApp)
 
