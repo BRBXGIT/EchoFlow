@@ -6,11 +6,12 @@ import org.koin.core.scope.Scope
 import kotlinx.coroutines.CoroutineDispatcher
 
 enum class DispatcherQualifier : Qualifier {
-    Main, Io, Default, Unconfined;
+    Main, MainImmediate, Io, Default, Unconfined;
 
     override val value: QualifierValue = this.name
 }
 
+fun Scope.getMainImmediateDispatcher(): CoroutineDispatcher = get(qualifier = DispatcherQualifier.MainImmediate)
 fun Scope.getMainDispatcher(): CoroutineDispatcher = get(qualifier = DispatcherQualifier.Main)
 fun Scope.getIoDispatcher(): CoroutineDispatcher = get(qualifier = DispatcherQualifier.Io)
 fun Scope.getDefaultDispatcher(): CoroutineDispatcher = get(qualifier = DispatcherQualifier.Default)

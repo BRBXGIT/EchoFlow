@@ -1,8 +1,9 @@
 package com.brbx.data.controller
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
@@ -23,8 +24,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.time.Duration.Companion.milliseconds
-import androidx.core.net.toUri
 
 internal class AndroidPlayerController(
     private val player: Player,
@@ -33,41 +32,28 @@ internal class AndroidPlayerController(
 
     private val scope = CoroutineScope(context = dispatcherMain + SupervisorJob())
     private val _playerState = MutableStateFlow(value = PlayerState())
-    private val playerListener = object : Player.Listener {
-        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-            val currentTrack = currentQueue.getOrNull(player.currentMediaItemIndex)
-            _playerState.update { currentState ->
-                currentState.copy(
-                    currentTrack = currentTrack,
-                    currentPositionMs = player.currentPosition.coerceAtLeast(minimumValue = 0L),
-                )
-            }
-        }
-
-        override fun onIsPlayingChanged(isPlaying: Boolean) {
-            updatePlaybackStatus()
-            if (isPlaying) startPositionUpdates() else stopPositionUpdates()
-        }
-
-        override fun onPlaybackStateChanged(playbackState: Int) = updatePlaybackStatus()
-
-        override fun onPositionDiscontinuity(
-            oldPosition: Player.PositionInfo,
-            newPosition: Player.PositionInfo,
-            reason: Int,
-        ) =
-            _playerState.update { currentState ->
-                currentState.copy(
-                    currentPositionMs = newPosition.positionMs.coerceAtLeast(minimumValue = 0L),
-                )
-            }
-    }
-
 
     private var positionUpdateJob: Job? = null
     private var currentQueue = emptyList<Track>()
 
     override val playerState = _playerState.asStateFlow()
+
+    private val playerListener = object : Player.Listener {
+        override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) =
+            updateTrackAndPosition()
+
+        override fun onIsPlayingChanged(isPlaying: Boolean) =
+            handlePlayStateChange(isPlaying = isPlaying)
+
+        override fun onPlaybackStateChanged(playbackState: Int) =
+            updatePlaybackStatus()
+
+        override fun onPositionDiscontinuity(
+            oldPosition: Player.PositionInfo,
+            newPosition: Player.PositionInfo,
+            reason: Int,
+        ) = updatePosition(positionMs = newPosition.positionMs)
+    }
 
     init {
         player.addListener(playerListener)
@@ -78,108 +64,117 @@ internal class AndroidPlayerController(
 
     override fun resume() = player.play()
 
-    override fun seekTo(positionMs: Long) {
-        player.seekTo(positionMs)
-        _playerState.update { currentState ->
-            currentState.copy(currentPositionMs = positionMs.coerceAtLeast(minimumValue = 0L))
-        }
+    override fun seekTo(positionMs: Long) = player.seekTo(positionMs)
+        .also { updatePosition(positionMs) }
+
+    override fun setQueue(tracks: List<Track>, startIndex: Int) = if (tracks.isEmpty()) {
+        clearQueue()
+    } else {
+        initializeQueue(tracks = tracks, startIndex = startIndex)
     }
 
-    override fun setQueue(tracks: List<Track>, startIndex: Int) {
-        if (tracks.isEmpty()) {
-            currentQueue = emptyList()
-            player.clearMediaItems()
-            _playerState.value = PlayerState()
-            stopPositionUpdates()
-            return
-        }
+    override fun skipToNext() = player
+        .takeIf { it.hasNextMediaItem() }
+        ?.seekToNextMediaItem() ?: Unit
 
+    override fun skipToPrevious() = when {
+        player.currentPosition > SEEK_TO_PREVIOUS_THRESHOLD_MS -> player.seekTo(0L)
+        player.hasPreviousMediaItem() -> player.seekToPreviousMediaItem()
+        else -> player.seekTo(0L)
+    }
+
+    private fun clearQueue() {
+        currentQueue = emptyList()
+        player.clearMediaItems()
+        _playerState.value = PlayerState()
+        stopPositionUpdates()
+    }
+
+    private fun initializeQueue(tracks: List<Track>, startIndex: Int) {
         currentQueue = tracks
-        val validIndex = startIndex.coerceIn(0, tracks.lastIndex)
-        val mediaItems = tracks.map { it.toMediaItem() }
+        val validIndex = startIndex.coerceIn(minimumValue = 0, maximumValue = tracks.lastIndex)
+        val mediaItems = tracks.map { track -> track.mapToMediaItem() }
 
         player.setMediaItems(mediaItems, validIndex, 0L)
         player.prepare()
         player.play()
 
-        val initialTrack = tracks.getOrNull(validIndex)
-        _playerState.update { currentState ->
-            currentState.copy(
+        _playerState.reduce {
+            copy(
                 queue = tracks,
-                currentTrack = initialTrack,
+                currentTrack = tracks.getOrNull(index = validIndex),
                 currentPositionMs = 0L,
                 status = if (player.isPlaying) PlaybackStatus.Playing else PlaybackStatus.Stopped,
             )
         }
     }
 
-    override fun skipToNext() {
-        if (player.hasNextMediaItem()) {
-            player.seekToNextMediaItem()
-        }
+    private fun updateTrackAndPosition() = _playerState.reduce {
+        copy(
+            currentTrack = currentQueue.getOrNull(index = player.currentMediaItemIndex),
+            currentPositionMs = player.currentPosition.coerceAt0(),
+        )
     }
 
-    override fun skipToPrevious() {
-        if (player.currentPosition > SEEK_TO_PREVIOUS_THRESHOLD_MS) {
-            player.seekTo(0L)
-        } else if (player.hasPreviousMediaItem()) {
-            player.seekToPreviousMediaItem()
-        } else {
-            player.seekTo(0L)
-        }
+    private fun updatePosition(positionMs: Long) = _playerState.reduce {
+        copy(currentPositionMs = positionMs.coerceAt0())
     }
 
-    private fun updatePlaybackStatus() {
-        val status = when {
-            player.isPlaying -> PlaybackStatus.Playing
-            player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED -> PlaybackStatus.Idle
-            else -> PlaybackStatus.Stopped
-        }
-        _playerState.update { currentState ->
-            currentState.copy(
-                status = status,
-                currentPositionMs = player.currentPosition.coerceAtLeast(minimumValue = 0L),
-                currentTrack = currentQueue.getOrNull(player.currentMediaItemIndex) ?: currentState.currentTrack
-            )
-        }
+    private fun handlePlayStateChange(isPlaying: Boolean) {
+        updatePlaybackStatus()
+        if (isPlaying) startPositionUpdates() else stopPositionUpdates()
+    }
+
+    private fun updatePlaybackStatus() = _playerState.reduce {
+        copy(
+            status = resolvePlaybackStatus(),
+            currentPositionMs = player.currentPosition.coerceAt0(),
+            currentTrack = currentQueue.getOrNull(index = player.currentMediaItemIndex) ?: currentTrack
+        )
+    }
+
+    private fun resolvePlaybackStatus(): PlaybackStatus = when {
+        player.isPlaying -> PlaybackStatus.Playing
+        player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED -> PlaybackStatus.Idle
+        else -> PlaybackStatus.Stopped
     }
 
     private fun startPositionUpdates() {
         stopPositionUpdates()
         positionUpdateJob = scope.launch {
             while (isActive) {
-                val currentPos = player.currentPosition.coerceAtLeast(0L)
-                _playerState.update { currentState ->
-                    currentState.copy(currentPositionMs = currentPos)
-                }
+                updatePosition(positionMs = player.currentPosition)
                 delay(timeMillis = POSITION_UPDATE_INTERVAL_MS)
             }
         }
     }
 
-    private fun stopPositionUpdates() {
-        positionUpdateJob?.cancel()
-        positionUpdateJob = null
-    }
+    private fun stopPositionUpdates() = positionUpdateJob?.cancel()
+        .also { positionUpdateJob = null }
 
-    private fun Track.toMediaItem(): MediaItem {
+    private fun Long.coerceAt0() = this.coerceAtLeast(minimumValue = 0L)
+
+    private fun MutableStateFlow<PlayerState>.reduce(transform: PlayerState.() -> PlayerState) =
+        this.update(function = transform)
+
+    private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()
             .setTitle(title)
             .setArtist(user?.name ?: "unknown")
             .setArtworkUri(
                 (highResArtworkUrl ?: artworkUrl)
-                    ?.takeIf { it.isNotBlank() }
+                    ?.takeIf(predicate = { it.isNotBlank() })
                     ?.toUri()
             )
             .build()
 
         return MediaItem.Builder()
             .setMediaId(id.toString())
-            .apply {
-                streamUrl?.takeIf { it.isNotBlank() }?.let { url ->
-                    setUri(url.toUri())
-                }
-            }
+            .apply(block = {
+                streamUrl
+                    ?.takeIf(predicate = { it.isNotBlank() })
+                    ?.let(block = { url -> setUri(url.toUri()) })
+            })
             .setMediaMetadata(metadata)
             .setTag(this)
             .build()
@@ -191,36 +186,49 @@ internal class AndroidPlayerController(
     }
 }
 
+// Public cause needed in manifest
 class PlaybackService : MediaSessionService(), KoinComponent {
 
     private val player by inject<Player>()
+    private val intentProvider by inject<MediaServiceIntentProvider>()
 
     private var mediaSession: MediaSession? = null
 
     override fun onCreate() {
         super.onCreate()
-        val intent = packageManager.getLaunchIntentForPackage(packageName)
-            ?: Intent(this, Class.forName("com.brbx.echoflow.MainActivity"))
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            intent,
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-        )
-
         mediaSession = MediaSession.Builder(this, player)
-            .setSessionActivity(pendingIntent)
+            .setSessionActivity(intentProvider.provideSessionActivityIntent())
             .build()
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = mediaSession
 
     override fun onDestroy() {
-        mediaSession?.run {
+        mediaSession?.run(block = {
             player.release()
             release()
             mediaSession = null
-        }
+        })
         super.onDestroy()
+    }
+}
+
+internal interface MediaServiceIntentProvider {
+    fun provideSessionActivityIntent(): PendingIntent
+}
+
+internal class MediaServiceIntentProviderImpl(
+    private val context: Context
+) : MediaServiceIntentProvider {
+    override fun provideSessionActivityIntent(): PendingIntent {
+        val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+            ?: Intent(context, Class.forName("com.brbx.echoflow.MainActivity"))
+
+        return PendingIntent.getActivity(
+            context,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+        )
     }
 }

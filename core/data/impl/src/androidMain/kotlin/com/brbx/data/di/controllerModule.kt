@@ -4,7 +4,10 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.brbx.core_common.dispatchers.getMainImmediateDispatcher
 import com.brbx.data.controller.AndroidPlayerController
+import com.brbx.data.controller.MediaServiceIntentProviderImpl
+import com.brbx.data.controller.MediaServiceIntentProvider
 import com.brbx.data.controller.PlayerController
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
@@ -23,5 +26,11 @@ internal val controllerModule = module {
             .setHandleAudioBecomingNoisy(true)
             .build()
     }
-    singleOf(constructor = ::AndroidPlayerController) { bind<PlayerController>() }
+    single<PlayerController> {
+        AndroidPlayerController(
+            player = get(),
+            dispatcherMain = getMainImmediateDispatcher(),
+        )
+    }
+    singleOf(constructor = ::MediaServiceIntentProviderImpl) { bind<MediaServiceIntentProvider>() }
 }

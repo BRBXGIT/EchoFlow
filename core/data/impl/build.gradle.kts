@@ -18,6 +18,7 @@ kotlin {
             implementation(projects.core.data.api)
             implementation(projects.core.preferences.api)
             implementation(projects.core.network.api)
+            implementation(projects.core.common.api)
 
             // Libs
             implementation(libs.koin.core)
