@@ -100,7 +100,7 @@ internal fun RelatedToRecentTracks(
             relatedLoading = relatedLoading,
             tracks = tracks,
             posters = posters,
-            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Sheets.ToggleMixSheet) },
+            onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Playlists.OpenMix) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

@@ -10,19 +10,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.brbx.design_system.components.components.PlaylistSheet
-import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.components.utils.rememberIsLargeScreen
 import com.brbx.design_system.components.utils.rememberSnackbarHost
 import com.brbx.design_system.theme.mColors
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
-import com.brbx.home.model.HomeIntent
 import com.brbx.home.view_model.HomeViewModel
-import echoflow.feature.home.impl.generated.resources.Res
-import echoflow.feature.home.impl.generated.resources.recent_tracks_divider_label
-import echoflow.feature.home.impl.generated.resources.related_to_recently_title
-import kotlinx.collections.immutable.ImmutableList
-import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 private val RecentSnapshotCount
@@ -37,14 +29,6 @@ internal fun HomeScaffold() {
 
     val hostState = rememberSnackbarHost()
     HandleEchoFlowEffects(viewModel.effects, snackbarHost = hostState)
-
-    Sheets(
-        dispatchIntent = dispatchIntent,
-        todayMixVisible = state.todayMixVisible,
-        todayMix = state.relatedToRecently.items,
-        recentVisible = state.recentSheetsVisible,
-        recent = state.recentlyListened.collection
-    )
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     Scaffold(
@@ -67,26 +51,4 @@ internal fun HomeScaffold() {
                 .padding(paddingValues = innerPadding),
         )
     }
-}
-
-@Composable
-private fun Sheets(
-    dispatchIntent: (HomeIntent) -> Unit,
-    todayMixVisible: Boolean,
-    todayMix: ImmutableList<TrackItem>,
-    recentVisible: Boolean,
-    recent: ImmutableList<TrackItem>
-) {
-    PlaylistSheet(
-        onDismissRequest = { dispatchIntent(HomeIntent.Sheets.ToggleMixSheet) },
-        visible = todayMixVisible,
-        playlistName = stringResource(Res.string.related_to_recently_title),
-        tracks = todayMix,
-    )
-    PlaylistSheet(
-        onDismissRequest = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
-        visible = recentVisible,
-        playlistName = stringResource(Res.string.recent_tracks_divider_label),
-        tracks = recent,
-    )
 }

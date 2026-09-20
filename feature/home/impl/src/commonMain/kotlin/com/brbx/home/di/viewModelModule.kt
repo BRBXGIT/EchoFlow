@@ -6,15 +6,15 @@ import com.brbx.home.view_model.FeedLoader
 import com.brbx.home.view_model.FeedLoaderImpl
 import com.brbx.home.view_model.HomeMviScope
 import com.brbx.home.view_model.HomeViewModel
-import com.brbx.home.view_model.SheetsInteractor
-import com.brbx.home.view_model.SheetsInteractorImpl
+import com.brbx.home.view_model.PlaylistOpener
+import com.brbx.home.view_model.PlaylistOpenerImpl
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    factoryOf(constructor = ::SheetsInteractorImpl) { bind<SheetsInteractor>() }
+    factoryOf(constructor = ::PlaylistOpenerImpl) { bind<PlaylistOpener>() }
     delegateFactory<FeedLoader, HomeMviScope> {
         FeedLoaderImpl(
             scope = it,

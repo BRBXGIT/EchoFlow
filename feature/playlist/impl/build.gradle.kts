@@ -11,10 +11,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             // Api
-            api(projects.feature.home.api)
-            implementation(projects.feature.playlist.api)
+            api(projects.feature.playlist.api)
             implementation(projects.core.domain.api)
-            implementation(projects.core.common.api)
             implementation(projects.core.debug.api)
             // Other
             implementation(projects.feature.common)

@@ -24,6 +24,7 @@ kotlin {
             implementation(projects.feature.navigation.impl)
             implementation(projects.feature.onboarding.impl)
             implementation(projects.feature.home.impl)
+            implementation(projects.feature.playlist.impl)
             // Ohter
             implementation(projects.core.designSystem.theme)
             implementation(projects.feature.common)

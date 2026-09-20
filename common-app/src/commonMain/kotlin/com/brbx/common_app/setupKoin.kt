@@ -8,6 +8,7 @@ import com.brbx.home.di.homeModule
 import com.brbx.local_server.localServerModule
 import com.brbx.network.di.networkModule
 import com.brbx.onboarding.di.onboardingModule
+import com.brbx.playlist.di.playlistModule
 import com.brbx.preferences.preferencesModule
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
@@ -26,6 +27,7 @@ fun setupKoin(
             preferencesModule,
             onboardingModule,
             homeModule,
+            playlistModule,
             commonAppModule,
         )
     }

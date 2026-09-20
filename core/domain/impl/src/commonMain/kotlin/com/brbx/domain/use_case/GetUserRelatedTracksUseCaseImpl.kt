@@ -11,9 +11,12 @@ internal class GetUserRelatedTracksUseCaseImpl(
     private val historyRepository: UserHistoryRepository,
     private val relatedRepository: RelatedRepository,
 ) : GetUserRelatedTracksUseCase {
+    private var cached: Paginator<Track>? = null
+
     override suspend fun invoke(): Paginator<Track> =
-        historyRepository.recentTracks
+        cached ?: historyRepository.recentTracks
             .filterNotNull()
             .first { it.collection.isNotEmpty() } // TODO Maybe rewrite
             .run { relatedRepository.getSimilarTracksPaginator(collection.first().id) }
+            .also { cached = it }
 }

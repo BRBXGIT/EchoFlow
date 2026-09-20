@@ -1,4 +1,4 @@
-package com.brbx.design_system.components.components
+package com.brbx.playlist.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -23,7 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,11 +32,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.design_system.components.components.ButtonWithIcon
+import com.brbx.design_system.components.components.EchoFlowRemoteImage
+import com.brbx.design_system.components.components.EllipsedText
+import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
@@ -63,37 +64,7 @@ private const val ButtonsKey = "ButtonsKey"
 private const val ParallaxScrollMultiplier = 0.8f
 
 @Composable
-fun PlaylistSheet(
-    onDismissRequest: () -> Unit,
-    playlistName: String,
-    tracks: ImmutableList<TrackItem>,
-    modifier: Modifier = Modifier,
-    visible: Boolean = true,
-    onPlayClick: () -> Unit = {},
-    onMixClick: () -> Unit = {},
-) {
-    if (!visible) return
-
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    EchoFlowSheet(
-        scrollBehavior = scrollBehavior,
-        modifier = modifier,
-        onDismissRequest = onDismissRequest,
-    ) {
-        SheetContent(
-            playlistName = playlistName,
-            tracks = tracks,
-            onPlayClick = onPlayClick,
-            onMixClick = onMixClick,
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
-        )
-    }
-}
-
-@Composable
-private fun SheetContent(
+internal fun PlaylistContent(
     playlistName: String,
     tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
@@ -418,8 +389,8 @@ private val PreviewTracks = persistentListOf(
 
 @Composable
 @EchoFlowPreview
-private fun PlaylistSheetContentPreview() {
-    SheetContent(
+private fun PlaylistPlaylistContentPreview() {
+    PlaylistContent(
         playlistName = "Today's Mix",
         tracks = PreviewTracks,
         onPlayClick = {},
@@ -429,8 +400,8 @@ private fun PlaylistSheetContentPreview() {
 
 @Composable
 @EchoFlowPreview
-private fun PlaylistSheetContentEmptyPreview() {
-    SheetContent(
+private fun PlaylistPlaylistContentEmptyPreview() {
+    PlaylistContent(
         playlistName = "Empty Playlist",
         tracks = persistentListOf(),
         onPlayClick = {},

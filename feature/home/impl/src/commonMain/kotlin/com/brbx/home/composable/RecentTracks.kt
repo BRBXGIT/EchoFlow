@@ -105,7 +105,7 @@ internal fun RecentTracks(
         RecentTracksContent(
             recentLoading = recentLoading,
             tracks = tracks,
-            onFullClick = { dispatchIntent(HomeIntent.Sheets.ToggleRecentSheet) },
+            onFullClick = { dispatchIntent(HomeIntent.Playlists.OpenRecent) },
             rowCount = rowCount,
             modifier = Modifier
                 .fillMaxWidth()
