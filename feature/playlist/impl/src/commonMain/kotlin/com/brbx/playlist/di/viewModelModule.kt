@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    delegateOf(::PlaylistBinderImpl).bind<PlaylistBinder>()
+    delegateOf(::PlaylistBinderImpl) bind PlaylistBinder::class
+
     viewModel<PlaylistViewModel>()
 }

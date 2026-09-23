@@ -4,11 +4,11 @@ import com.brbx.data.builder.AuthUrlBuilder
 import com.brbx.data.builder.AuthUrlBuilderImpl
 import com.brbx.data.builder.PkceGenerator
 import com.brbx.data.builder.PkceGeneratorImpl
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val builderModule = module {
-    singleOf(constructor = ::PkceGeneratorImpl) { bind<PkceGenerator>() }
-    singleOf(constructor = ::AuthUrlBuilderImpl) { bind<AuthUrlBuilder>() }
+    singleOf(::PkceGeneratorImpl) bind PkceGenerator::class
+    singleOf(::AuthUrlBuilderImpl) bind AuthUrlBuilder::class
 }

@@ -11,8 +11,8 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    delegateOf(::PlaylistOpenerImpl).bind<PlaylistOpener>()
-    delegateOf(::FeedLoaderImpl).bind<FeedLoader>()
+    delegateOf(::PlaylistOpenerImpl) bind PlaylistOpener::class
+    delegateOf(::FeedLoaderImpl) bind FeedLoader::class
 
     viewModel<HomeViewModel>()
 }

@@ -22,21 +22,21 @@ import com.brbx.domain.use_case.SkipToNextTrackUseCase
 import com.brbx.domain.use_case.SkipToNextTrackUseCaseImpl
 import com.brbx.domain.use_case.SkipToPreviousTrackUseCase
 import com.brbx.domain.use_case.SkipToPreviousTrackUseCaseImpl
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val useCaseModule = module {
-    singleOf(constructor = ::GetUserAuthStateUseCaseImpl) { bind<GetUserAuthStateUseCase>() }
-    singleOf(constructor = ::AuthenticateUserUseCaseImpl) { bind<AuthenticateUserUseCase>() }
-    singleOf(constructor = ::GetUserRecentlyTracksUseCaseImpl) { bind<GetUserRecentlyTracksUseCase>() }
-    singleOf(constructor = ::GetUserRelatedTracksUseCaseImpl) { bind<GetUserRelatedTracksUseCase>() }
-    singleOf(constructor = ::ObservePlayerStateUseCaseImpl) { bind<ObservePlayerStateUseCase>() }
-    singleOf(constructor = ::PausePlaybackUseCaseImpl) { bind<PausePlaybackUseCase>() }
-    singleOf(constructor = ::ResumePlaybackUseCaseImpl) { bind<ResumePlaybackUseCase>() }
-    singleOf(constructor = ::SeekToPositionUseCaseImpl) { bind<SeekToPositionUseCase>() }
-    singleOf(constructor = ::SetPlaybackQueueUseCaseImpl) { bind<SetPlaybackQueueUseCase>() }
-    singleOf(constructor = ::SkipToNextTrackUseCaseImpl) { bind<SkipToNextTrackUseCase>() }
-    singleOf(constructor = ::SkipToPreviousTrackUseCaseImpl) { bind<SkipToPreviousTrackUseCase>() }
+    singleOf(::GetUserAuthStateUseCaseImpl) bind GetUserAuthStateUseCase::class
+    singleOf(::AuthenticateUserUseCaseImpl) bind AuthenticateUserUseCase::class
+    singleOf(::GetUserRecentlyTracksUseCaseImpl) bind GetUserRecentlyTracksUseCase::class
+    singleOf(::GetUserRelatedTracksUseCaseImpl) bind GetUserRelatedTracksUseCase::class
+    singleOf(::ObservePlayerStateUseCaseImpl) bind ObservePlayerStateUseCase::class
+    singleOf(::PausePlaybackUseCaseImpl) bind PausePlaybackUseCase::class
+    singleOf(::ResumePlaybackUseCaseImpl) bind ResumePlaybackUseCase::class
+    singleOf(::SeekToPositionUseCaseImpl) bind SeekToPositionUseCase::class
+    singleOf(::SetPlaybackQueueUseCaseImpl) bind SetPlaybackQueueUseCase::class
+    singleOf(::SkipToNextTrackUseCaseImpl) bind SkipToNextTrackUseCase::class
+    singleOf(::SkipToPreviousTrackUseCaseImpl) bind SkipToPreviousTrackUseCase::class
 }
 

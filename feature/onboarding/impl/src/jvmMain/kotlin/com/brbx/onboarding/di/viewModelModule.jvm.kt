@@ -10,8 +10,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal actual val viewModelModule = module {
-    delegateOf(::JvmPagesSource).bind<PagesSource<DesktopPagePayload>>()
-    delegateOf(::JvmAuthLinkHandler).bind<AuthLinkHandler>()
+    delegateOf(::JvmPagesSource) bind PagesSource::class
+    delegateOf(::JvmAuthLinkHandler) bind AuthLinkHandler::class
 
     viewModelModuleInternal<DesktopPagePayload>()
 }

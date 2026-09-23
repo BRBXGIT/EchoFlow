@@ -10,8 +10,8 @@ import com.brbx.data.controller.MediaServiceIntentProviderImpl
 import com.brbx.data.controller.MediaServiceIntentProvider
 import com.brbx.data.controller.PlayerController
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val androidControllerModule = module {
@@ -32,5 +32,5 @@ internal val androidControllerModule = module {
             dispatcherMain = getMainImmediateDispatcher(),
         )
     }
-    singleOf(constructor = ::MediaServiceIntentProviderImpl) { bind<MediaServiceIntentProvider>() }
+    singleOf(::MediaServiceIntentProviderImpl) bind MediaServiceIntentProvider::class
 }

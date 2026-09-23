@@ -6,12 +6,12 @@ import com.brbx.data.repository.RelatedRepository
 import com.brbx.data.repository.RelatedRepositoryImpl
 import com.brbx.data.repository.UserHistoryRepository
 import com.brbx.data.repository.UserHistoryRepositoryImpl
-import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val repositoryModule = module {
-    singleOf(constructor = ::AuthRepositoryImpl) { bind<AuthRepository>() }
-    singleOf(constructor = ::UserHistoryRepositoryImpl) { bind<UserHistoryRepository>() }
-    singleOf(constructor = ::RelatedRepositoryImpl) { bind<RelatedRepository>() }
+    singleOf(::AuthRepositoryImpl) bind AuthRepository::class
+    singleOf(::UserHistoryRepositoryImpl) bind UserHistoryRepository::class
+    singleOf(::RelatedRepositoryImpl) bind RelatedRepository::class
 }
