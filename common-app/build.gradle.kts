@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.koin.compiler)
 }
 
+koinCompiler {
+    compileSafety = false
+}
+
 kotlin {
     sourceSets {
         commonMain.dependencies {

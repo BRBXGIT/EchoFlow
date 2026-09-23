@@ -15,7 +15,7 @@ import org.koin.core.context.startKoin
 
 fun setupKoin(
     block: KoinApplication.() -> Unit = {},
-) {
+) =
     startKoin {
         block()
         modules(
@@ -31,4 +31,3 @@ fun setupKoin(
             commonAppModule,
         )
     }
-}

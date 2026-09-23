@@ -209,8 +209,8 @@ private fun HeaderCollageContainer(
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(
-                            mColors.surfaceContainerLow.copy(alpha = 0f),
-                            mColors.surfaceContainerLow,
+                            scaffoldContainerColor.copy(alpha = 0f),
+                            scaffoldContainerColor,
                         )
                     )
                 )
