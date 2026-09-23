@@ -52,6 +52,7 @@ fun EchoFlowApp(deeplink: String?) {
     }
 }
 
+// TODO Maybe leave to business or viewmodel
 @Composable
 private fun HandleAuthChanges(
     authState: UserAuthState,
@@ -73,7 +74,7 @@ private fun HandleAuthChanges(
 
 @Composable
 private fun rememberSerializers(): SerializersModule {
-    val serializers: List<SerializersModule> = getKoin().getAll()
+    val serializers = getKoin().getAll<SerializersModule>()
     return remember(key1 = serializers) {
         SerializersModule {
             serializers.forEach { include(module = it) }

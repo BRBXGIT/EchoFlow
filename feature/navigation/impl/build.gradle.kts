@@ -10,10 +10,11 @@ kotlin {
         commonMain.dependencies {
             // Api
             implementation(projects.feature.navigation.api)
+            // Other
+            implementation(projects.core.designSystem.theme)
 
             // Libs
             implementation(libs.navigation3.ui)
-            implementation(libs.material.motion.compose.core)
         }
     }
 }

@@ -252,7 +252,7 @@ private fun HeaderCollageContent(
             .size(135.dp)
             .rotate(degrees = 4f)
             .background(
-                color = mColors.surfaceContainerLow,
+                color = scaffoldContainerColor,
                 shape = mShapes.extraLarge,
             )
             .padding(all = 4.dp)

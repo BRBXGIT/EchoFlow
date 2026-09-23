@@ -10,6 +10,7 @@ import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.playlist.Playlist
 import com.brbx.playlist.PlaylistRoute
 import echoflow.feature.home.impl.generated.resources.Res
+import echoflow.feature.home.impl.generated.resources.recent_tracks_divider_label
 import echoflow.feature.home.impl.generated.resources.related_to_recently_title
 
 internal interface PlaylistOpener : HomeViewModelDelegate<HomeIntent.Playlists>
@@ -38,7 +39,7 @@ internal class PlaylistOpenerImpl(
     private fun openRecent() {
         val route = PlaylistRoute(
             playlist = Playlist.List(
-                title = CommonText.Res(value = Res.string.related_to_recently_title),
+                title = CommonText.Res(value = Res.string.recent_tracks_divider_label),
                 tracks = currentState.recentlyListened.collection,
             )
         )

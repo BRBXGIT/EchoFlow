@@ -16,7 +16,7 @@ fun main() {
         setupKoin()
 
         val windowState = rememberWindowState(
-            size = DpSize(width = 1024.dp, height = 768.dp),
+            size = DpSize(width = 1024.dp, height = 800.dp),
             position = WindowPosition(alignment = Alignment.Center)
         )
 
