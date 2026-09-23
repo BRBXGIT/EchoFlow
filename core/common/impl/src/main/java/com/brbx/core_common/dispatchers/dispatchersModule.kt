@@ -9,4 +9,5 @@ internal val dispatchersModule = module {
     single(qualifier = DispatcherQualifier.Io) { Dispatchers.IO }
     single(qualifier = DispatcherQualifier.Default) { Dispatchers.Default }
     single(qualifier = DispatcherQualifier.Unconfined) { Dispatchers.Unconfined }
+    single { Dispatchers.Default }
 }

@@ -5,18 +5,18 @@ import com.brbx.common_app.view_model.AuthStateDelegate
 import com.brbx.common_app.view_model.AuthStateDelegateImpl
 import com.brbx.common_app.view_model.base.AppMviScope
 import com.brbx.core_common.dispatchers.getIoDispatcher
-import com.brbx.feature_common.view_model.delegateFactory
+import com.brbx.feature_common.view_model.viewModelDelegate
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    delegateFactory<AuthStateDelegate, AppMviScope> {
+    viewModelDelegate<AuthStateDelegate, AppMviScope> { scope ->
         AuthStateDelegateImpl(
-            scope = it,
+            scope = scope,
             getUserAuthStateUseCase = get(),
             dispatcherIo = getIoDispatcher(),
         )
     }
-    
+
     viewModel<AppViewModel>()
 }

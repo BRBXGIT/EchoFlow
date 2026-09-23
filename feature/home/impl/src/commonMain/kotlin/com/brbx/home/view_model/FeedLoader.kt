@@ -18,9 +18,9 @@ internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Refresh>
 
 internal class FeedLoaderImpl(
     override val scope: HomeMviScope,
-    private val dispatcherDefault: CoroutineDispatcher,
     private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
     private val userRecentlyTracksUseCase: GetUserRecentlyTracksUseCase,
+    private val dispatcherDefault: CoroutineDispatcher,
 ) : FeedLoader {
     private var relatedPaginator: Paginator<Track>? = null
 
