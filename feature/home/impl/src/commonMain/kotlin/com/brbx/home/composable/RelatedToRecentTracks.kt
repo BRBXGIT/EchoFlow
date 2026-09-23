@@ -88,7 +88,7 @@ internal fun LazyListScope.relatedToRecentTracks(
     }
 
 @Composable
-internal fun RelatedToRecentTracks(
+private fun RelatedToRecentTracks(
     relatedLoading: Boolean,
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,

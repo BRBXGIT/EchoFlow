@@ -94,7 +94,7 @@ internal fun LazyListScope.recentTracks(
     }
 
 @Composable
-internal fun RecentTracks(
+private fun RecentTracks(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     dispatchIntent: (HomeIntent) -> Unit,
