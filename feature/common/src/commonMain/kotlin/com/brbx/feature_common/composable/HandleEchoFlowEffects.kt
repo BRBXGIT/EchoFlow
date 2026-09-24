@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.brbx.feature_common.utils.suspendAsString
 import com.brbx.feature_common.view_model.EchoFlowEffect
+import com.brbx.navigation.Navigator
 import com.brbx.navigation.echoFlowNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharedFlow
@@ -15,15 +16,16 @@ import kotlinx.coroutines.launch
 expect fun HandleEchoFlowEffects(
     effects: SharedFlow<EchoFlowEffect>,
     snackbarHost: SnackbarHostState? = null,
+    navigator: Navigator = echoFlowNavigator,
 )
 
 @Composable
 internal fun HandleEchoFlowEffectsInternal(
     effects: SharedFlow<EchoFlowEffect>,
     onOpenLink: (String) -> Unit,
-    snackbarHost: SnackbarHostState? = null,
-) {
-    val navigator = echoFlowNavigator
+    snackbarHost: SnackbarHostState?,
+    navigator: Navigator,
+) =
     LaunchedEffect(key1 = effects) {
         effects.collect { effect ->
             when (effect) {
@@ -36,7 +38,6 @@ internal fun HandleEchoFlowEffectsInternal(
             }
         }
     }
-}
 
 context(coroutineScope: CoroutineScope)
 private fun SnackbarHostState.showSnackbar(

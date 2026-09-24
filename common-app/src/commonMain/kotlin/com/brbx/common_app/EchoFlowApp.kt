@@ -4,20 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.brbx.common_app.model.AppEffect
 import com.brbx.common_app.view_model.AppViewModel
 import com.brbx.design_system.theme.EchoFlowTheme
-import com.brbx.domain.model.enums.UserAuthState
-import com.brbx.home.HomeRoute
+import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.navigation.EchoFlowNavGraph
-import com.brbx.navigation.EchoFlowNavKey
 import com.brbx.navigation.LocalNavigator
+import com.brbx.navigation.Navigator
 import com.brbx.navigation.rememberNavigator
-import com.brbx.onboarding.OnboardingRoute
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.modules.SerializersModule
 import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
@@ -26,24 +23,15 @@ import org.koin.compose.viewmodel.koinViewModel
 fun EchoFlowApp(deeplink: String?) {
     val viewModel = koinViewModel<AppViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val authState = state.authState ?: return
+    val startKey = state.startKey(deeplink) ?: return
 
     val navigator = rememberNavigator(
         serializers = rememberSerializers(),
-        startKey = rememberStartKey(authState, deeplink),
+        startKey = startKey,
     )
 
-    HandleAuthChanges(
-        authState = authState,
-        onLogIn = {
-            navigator.navigate(key = HomeRoute)
-            navigator.removeAllExceptCurrent()
-        },
-        onLogOut = {
-            navigator.navigate(key = OnboardingRoute())
-            navigator.removeAllExceptCurrent()
-        },
-    )
+    HandleAppEffects(viewModel.screenEffects, navigator)
+    HandleEchoFlowEffects(viewModel.effects, navigator = navigator)
 
     CompositionLocalProvider(value = LocalNavigator provides navigator) {
         EchoFlowTheme {
@@ -52,25 +40,18 @@ fun EchoFlowApp(deeplink: String?) {
     }
 }
 
-// TODO Maybe leave to business or viewmodel
 @Composable
-private fun HandleAuthChanges(
-    authState: UserAuthState,
-    onLogIn: () -> Unit,
-    onLogOut: () -> Unit,
-) {
-    var previous by rememberSaveable { mutableStateOf<UserAuthState?>(value = null) }
-    LaunchedEffect(key1 = authState) {
-        if (previous != null) {
-            if (authState == UserAuthState.Authorized && previous == UserAuthState.Unauthorized) {
-                onLogIn()
-            } else if (authState == UserAuthState.Unauthorized && previous == UserAuthState.Authorized) {
-                onLogOut()
+private fun HandleAppEffects(
+    effects: SharedFlow<AppEffect>,
+    navigator: Navigator,
+) =
+    LaunchedEffect(key1 = effects) {
+        effects.collect { effect ->
+            when (effect) {
+                AppEffect.RemoveAllKeysExceptCurrent -> navigator.removeAllExceptCurrent()
             }
         }
-        previous = authState
     }
-}
 
 @Composable
 private fun rememberSerializers(): SerializersModule {
@@ -81,9 +62,3 @@ private fun rememberSerializers(): SerializersModule {
         }
     }
 }
-
-@Composable
-private fun rememberStartKey(authState: UserAuthState, deeplink: String?): EchoFlowNavKey =
-    remember(key1 = authState) {
-        if (authState == UserAuthState.Unauthorized) OnboardingRoute(deeplink) else HomeRoute
-    }
