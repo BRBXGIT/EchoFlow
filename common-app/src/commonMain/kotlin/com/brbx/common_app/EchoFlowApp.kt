@@ -34,9 +34,7 @@ fun EchoFlowApp(deeplink: String?) {
     HandleEchoFlowEffects(viewModel.effects, navigator = navigator)
 
     CompositionLocalProvider(value = LocalNavigator provides navigator) {
-        EchoFlowTheme {
-            EchoFlowNavGraph()
-        }
+        EchoFlowNavGraph()
     }
 }
 

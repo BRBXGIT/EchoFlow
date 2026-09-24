@@ -12,8 +12,11 @@ dependencies {
     implementation(projects.core.common.api)
     // Other
     implementation(projects.commonApp)
+    implementation(projects.core.designSystem.theme)
+    implementation(projects.core.designSystem.components)
 
     // Libs
     implementation(libs.kotlinx.coroutines.swing)
+    implementation(libs.solar)
     implementation(compose.desktop.currentOs)
 }

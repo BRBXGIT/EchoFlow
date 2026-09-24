@@ -8,6 +8,7 @@ plugins {
 dependencies {
     // Impl
     implementation(projects.core.data.impl)
+    implementation(projects.core.designSystem.theme)
     // Other
     implementation(projects.commonApp)
 

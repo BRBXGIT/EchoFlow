@@ -1,7 +1,9 @@
 package com.brbx.design_system.components.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.IconButton
@@ -10,6 +12,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.unit.Dp
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
 import dev.chiksmedina.solar.BoldSolar
@@ -20,17 +23,20 @@ import dev.chiksmedina.solar.bold.videoaudiosound.Play
 fun EchoFlowIconButton(
     imageVector: ImageVector,
     modifier: Modifier = Modifier,
+    iconSize: Dp = mDimens.macro2,
+    interactionSource: MutableInteractionSource? = null,
     enabled: Boolean = true,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(),
     onClick: () -> Unit,
 ) =
     IconButton(
         onClick = onClick,
+        interactionSource = interactionSource,
         modifier = modifier,
         enabled = enabled,
         colors = colors,
     ) {
-        EchoFlowIcon(imageVector = imageVector)
+        EchoFlowIcon(imageVector = imageVector, modifier = Modifier.size(iconSize))
     }
 
 @Composable

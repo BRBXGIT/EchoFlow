@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.brbx.common_app.EchoFlowApp
+import com.brbx.design_system.theme.EchoFlowTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +19,9 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            EchoFlowApp(deeplink)
+            EchoFlowTheme {
+                EchoFlowApp(deeplink)
+            }
         }
     }
 }
