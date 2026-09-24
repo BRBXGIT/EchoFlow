@@ -66,6 +66,7 @@ private const val ParallaxScrollMultiplier = 0.8f
 
 @Composable
 internal fun PlaylistContent(
+    scaffoldPadding: PaddingValues,
     playlistName: String,
     isLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
@@ -78,9 +79,12 @@ internal fun PlaylistContent(
         state = listState,
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(mDimens.micro2),
-        contentPadding = PaddingValues(vertical = mDimens.micro8),
         onLoadNext = { dispatchIntent(PlaylistIntent.LoadNext) },
         isLoading = isLoading,
+        contentPadding = PaddingValues(
+            top = mDimens.micro8 + scaffoldPadding.calculateTopPadding(),
+            bottom = mDimens.micro8 + scaffoldPadding.calculateBottomPadding(),
+        ),
     ) {
         playlistSheetContent(
             listState = listState,
@@ -398,6 +402,7 @@ private fun PlaylistPlaylistContentPreview() {
         tracks = PreviewTracks,
         dispatchIntent = {},
         isLoading = false,
+        scaffoldPadding = PaddingValues()
     )
 }
 
@@ -409,5 +414,6 @@ private fun PlaylistPlaylistContentEmptyPreview() {
         tracks = persistentListOf(),
         dispatchIntent = {},
         isLoading = false,
+        scaffoldPadding = PaddingValues()
     )
 }

@@ -1,7 +1,6 @@
 package com.brbx.playlist.composable
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,13 +30,12 @@ internal fun PlaylistScaffold(playlist: Playlist) {
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         PlaylistContent(
+            scaffoldPadding = innerPadding,
             playlistName = state.title.asString(),
             tracks = state.tracks.items,
             isLoading = state.tracks.isLoading,
             dispatchIntent = dispatchIntent,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = innerPadding)
+            modifier = Modifier.fillMaxSize()
         )
     }
 }
