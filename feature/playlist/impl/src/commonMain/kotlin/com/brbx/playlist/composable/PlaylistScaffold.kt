@@ -22,8 +22,9 @@ internal val scaffoldContainerColor @Composable @ReadOnlyComposable get() = mCol
 internal fun PlaylistScaffold(playlist: Playlist) {
     val viewModel = koinViewModel<PlaylistViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val dispatchIntent = viewModel::dispatchIntent
 
-    HandlePlaylist(playlist, viewModel::dispatchIntent)
+    HandlePlaylist(playlist, dispatchIntent)
 
     Scaffold(
         containerColor = scaffoldContainerColor,
@@ -31,9 +32,9 @@ internal fun PlaylistScaffold(playlist: Playlist) {
     ) { innerPadding ->
         PlaylistContent(
             playlistName = state.title.asString(),
-            tracks = state.tracks,
-            onPlayClick = {},
-            onMixClick = {},
+            tracks = state.tracks.items,
+            isLoading = state.tracks.isLoading,
+            dispatchIntent = dispatchIntent,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues = innerPadding)

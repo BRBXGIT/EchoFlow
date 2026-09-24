@@ -11,8 +11,6 @@ internal class PlaylistViewModel : EchoFlowViewModel<PlaylistState, PlaylistInte
     private val playlistBinder by injectDelegate<PlaylistBinder>()
 
     override fun dispatchIntent(intent: PlaylistIntent) {
-        when (intent) {
-            is PlaylistIntent.BindPlaylist -> playlistBinder(intent)
-        }
+        playlistBinder(intent)
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -40,11 +39,13 @@ import com.brbx.design_system.components.components.ButtonWithIcon
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
 import com.brbx.design_system.components.components.TrackItem
+import com.brbx.design_system.components.containers.PaginatedLazyColumn
 import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
+import com.brbx.playlist.model.PlaylistIntent
 import dev.chiksmedina.solar.BoldSolar
 import dev.chiksmedina.solar.bold.VideoAudioSound
 import dev.chiksmedina.solar.bold.videoaudiosound.Play
@@ -66,25 +67,27 @@ private const val ParallaxScrollMultiplier = 0.8f
 @Composable
 internal fun PlaylistContent(
     playlistName: String,
+    isLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
-    onPlayClick: () -> Unit,
-    onMixClick: () -> Unit,
+    dispatchIntent: (PlaylistIntent) -> Unit,
 ) {
     val listState = rememberLazyListState()
 
-    LazyColumn(
+    PaginatedLazyColumn(
         state = listState,
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(mDimens.micro2),
         contentPadding = PaddingValues(vertical = mDimens.micro8),
+        onLoadNext = { dispatchIntent(PlaylistIntent.LoadNext) },
+        isLoading = isLoading,
     ) {
         playlistSheetContent(
             listState = listState,
             playlistName = playlistName,
             tracks = tracks,
-            onPlayClick = onPlayClick,
-            onMixClick = onMixClick,
+            onPlayClick = {},
+            onMixClick = {},
         )
     }
 }
@@ -393,8 +396,8 @@ private fun PlaylistPlaylistContentPreview() {
     PlaylistContent(
         playlistName = "Today's Mix",
         tracks = PreviewTracks,
-        onPlayClick = {},
-        onMixClick = {},
+        dispatchIntent = {},
+        isLoading = false,
     )
 }
 
@@ -404,7 +407,7 @@ private fun PlaylistPlaylistContentEmptyPreview() {
     PlaylistContent(
         playlistName = "Empty Playlist",
         tracks = persistentListOf(),
-        onPlayClick = {},
-        onMixClick = {},
+        dispatchIntent = {},
+        isLoading = false,
     )
 }
