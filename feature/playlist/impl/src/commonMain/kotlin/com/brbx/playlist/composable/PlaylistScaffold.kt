@@ -1,14 +1,17 @@
 package com.brbx.playlist.composable
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.design_system.theme.mColors
+import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.feature_common.utils.asString
 import com.brbx.playlist.Playlist
 import com.brbx.playlist.model.PlaylistIntent
@@ -24,11 +27,19 @@ internal fun PlaylistScaffold(playlist: Playlist) {
     val dispatchIntent = viewModel::dispatchIntent
 
     HandlePlaylist(playlist, dispatchIntent)
+    HandleEchoFlowEffects(viewModel.effects)
 
     Scaffold(
         containerColor = scaffoldContainerColor,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
+        GoBackButton(
+            postEffect = viewModel::postEffect,
+            modifier = Modifier
+                .padding(paddingValues = innerPadding)
+                .zIndex(4f)
+        )
+
         PlaylistContent(
             scaffoldPadding = innerPadding,
             playlistName = state.title.asString(),
