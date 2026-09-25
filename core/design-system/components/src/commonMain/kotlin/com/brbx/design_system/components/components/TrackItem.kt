@@ -149,12 +149,12 @@ private fun TrackItemContainer(
 
     val animatedTopCornerState = animateDpAsState(
         targetValue = targetTopCorner,
-        animationSpec = mMotion.mediumSpatialSpec(),
+        animationSpec = mMotion.softEffectSpec(),
     )
 
     val animatedBottomCornerState = animateDpAsState(
         targetValue = targetBottomCorner,
-        animationSpec = mMotion.mediumSpatialSpec(),
+        animationSpec = mMotion.softEffectSpec(),
     )
 
     Box(

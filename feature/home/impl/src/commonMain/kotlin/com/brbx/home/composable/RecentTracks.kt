@@ -2,6 +2,7 @@ package com.brbx.home.composable
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LocalContentColor
@@ -73,8 +75,8 @@ private val ItemSpacing: Dp
 private val ItemPosterSize
     @Composable @ReadOnlyComposable get() = mDimens.macro7
 
-private val ItemShape
-    @Composable @ReadOnlyComposable get() = mShapes.extraLarge
+private val ItemShapeCornerSize
+    @Composable @ReadOnlyComposable get() = mShapes.extraLargeRadius
 private val ItemPosterShape = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
@@ -341,10 +343,14 @@ private fun RecentTrackItemContainer(
     val contentColorState by colorState(
         targetValue = if (isPlaying) mColors.onPrimaryContainer else mColors.onSurface,
     )
+    val shape by animateDpAsState(
+        targetValue = if (!isPlaying) ItemShapeCornerSize else 100.dp,
+        animationSpec = mMotion.softEffectSpec()
+    )
 
     Box(
         modifier = modifier
-            .clip(shape = ItemShape)
+            .clip(shape = RoundedCornerShape(size = shape))
             .background(color = backgroundColorState)
             .clickable(onClick = onClick)
     ) {
@@ -358,7 +364,7 @@ private fun RecentTrackItemContainer(
 
 @Composable
 private fun colorState(targetValue: Color): State<Color> =
-    animateColorAsState(targetValue, animationSpec = mMotion.nonSpatialFastSpec(),)
+    animateColorAsState(targetValue, animationSpec = mMotion.nonSpatialFastSpec())
 
 @Composable
 private fun RecentTrackItemContent(
@@ -406,7 +412,7 @@ private fun RecentTrackItemShimmerContainer(
 ) =
     Box(
         modifier = modifier
-            .clip(shape = ItemShape)
+            .clip(shape = RoundedCornerShape(ItemShapeCornerSize))
             .background(
                 color = mColors.surfaceContainerHigh.copy(alpha = 0.75f),
             ),

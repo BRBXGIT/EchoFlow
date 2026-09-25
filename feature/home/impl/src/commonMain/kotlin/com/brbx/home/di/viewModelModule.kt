@@ -9,13 +9,13 @@ import com.brbx.home.view_model.HomeTracksStore
 import com.brbx.home.view_model.HomeViewModel
 import com.brbx.home.view_model.PlaylistOpener
 import com.brbx.home.view_model.PlaylistOpenerImpl
-import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    factoryOf(::HomeTracksStore)
+    singleOf(::HomeTracksStore)
     delegateOf(::PlaylistOpenerImpl) bind PlaylistOpener::class
     delegateOf(::FeedLoaderImpl) bind FeedLoader::class
     delegateOf(::HomeDjImpl) bind HomeDj::class
