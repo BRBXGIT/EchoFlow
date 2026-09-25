@@ -10,8 +10,8 @@ import com.brbx.domain.use_case.GetUserRecentlyTracksUseCase
 import com.brbx.domain.use_case.GetUserRecentlyTracksUseCaseImpl
 import com.brbx.domain.use_case.GetUserRelatedTracksUseCase
 import com.brbx.domain.use_case.GetUserRelatedTracksUseCaseImpl
-import com.brbx.domain.use_case.ObservePlayerStateUseCase
-import com.brbx.domain.use_case.ObservePlayerStateUseCaseImpl
+import com.brbx.domain.use_case.GetPlayerStateUseCase
+import com.brbx.domain.use_case.GetPlayerStateUseCaseImpl
 import com.brbx.domain.use_case.PausePlaybackUseCase
 import com.brbx.domain.use_case.PausePlaybackUseCaseImpl
 import com.brbx.domain.use_case.ResumePlaybackUseCase
@@ -33,7 +33,7 @@ internal val useCaseModule = module {
     singleOf(::AuthenticateUserUseCaseImpl) bind AuthenticateUserUseCase::class
     singleOf(::GetUserRecentlyTracksUseCaseImpl) bind GetUserRecentlyTracksUseCase::class
     singleOf(::GetUserRelatedTracksUseCaseImpl) bind GetUserRelatedTracksUseCase::class
-    singleOf(::ObservePlayerStateUseCaseImpl) bind ObservePlayerStateUseCase::class
+    singleOf(::GetPlayerStateUseCaseImpl) bind GetPlayerStateUseCase::class
     singleOf(::PausePlaybackUseCaseImpl) bind PausePlaybackUseCase::class
     singleOf(::ResumePlaybackUseCaseImpl) bind ResumePlaybackUseCase::class
     singleOf(::SeekToPositionUseCaseImpl) bind SeekToPositionUseCase::class

@@ -10,11 +10,15 @@ class PlayerViewModel : EchoFlowViewModel<UiPlayerState, PlayerIntent, Unit>(
 ) {
     private val playbackController by injectDelegate<PlaybackController>()
     private val seekController by injectDelegate<SeekController>()
+    private val playerStateObserver by injectDelegate<PlayerStateObserver>()
+
+    init { playerStateObserver }
 
     override fun dispatchIntent(intent: PlayerIntent) {
         when (intent) {
             is PlayerIntent.Playback -> playbackController(intent)
             is PlayerIntent.Seek -> seekController(intent)
+            is PlayerIntent.ObservePlayerState -> playerStateObserver(intent)
         }
     }
 }

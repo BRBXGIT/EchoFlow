@@ -4,8 +4,8 @@ import com.brbx.data.controller.PlayerController
 import com.brbx.domain.model.PlayerState
 import kotlinx.coroutines.flow.StateFlow
 
-internal class ObservePlayerStateUseCaseImpl(
+internal class GetPlayerStateUseCaseImpl(
     private val playerController: PlayerController,
-) : ObservePlayerStateUseCase {
+) : GetPlayerStateUseCase {
     override fun invoke(): StateFlow<PlayerState> = playerController.playerState
 }
