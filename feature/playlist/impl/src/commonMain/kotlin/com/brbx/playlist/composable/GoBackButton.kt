@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowFilledTonalIconButton
 import com.brbx.design_system.components.utils.rememberIsLargeScreen
 import com.brbx.design_system.theme.mDimens
@@ -32,3 +33,10 @@ internal fun GoBackButton(
         }
     } else return
 }
+
+@Composable
+@EchoFlowPreview
+private fun GoBackButtonPreview() =
+    GoBackButton(
+        postEffect = {},
+    )

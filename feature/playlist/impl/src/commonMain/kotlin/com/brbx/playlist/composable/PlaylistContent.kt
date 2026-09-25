@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.brbx.debug.compose.EchoFlowPreview
+import com.brbx.debug.compose.EchoFlowScreenPreview
 import com.brbx.design_system.components.components.ButtonWithIcon
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
@@ -396,6 +397,15 @@ private val PreviewTracks = persistentListOf(
 
 @Composable
 @EchoFlowPreview
+private fun HeaderCollagePreview() =
+    HeaderCollage(
+        firstPoster = null,
+        secondPoster = null,
+        thirdPoster = null,
+    )
+
+@Composable
+@EchoFlowScreenPreview
 private fun PlaylistPlaylistContentPreview() {
     PlaylistContent(
         playlistName = "Today's Mix",
@@ -407,7 +417,7 @@ private fun PlaylistPlaylistContentPreview() {
 }
 
 @Composable
-@EchoFlowPreview
+@EchoFlowScreenPreview
 private fun PlaylistPlaylistContentEmptyPreview() {
     PlaylistContent(
         playlistName = "Empty Playlist",

@@ -11,11 +11,13 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ContainedLoadingIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.theme.mDimens
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -73,5 +75,20 @@ private fun LazyListScope.defaultLoadingPlaceholder() =
             contentAlignment = Alignment.Center,
         ) {
             ContainedLoadingIndicator(modifier = Modifier.padding(all = mDimens.micro4))
+        }
+    }
+
+@Composable
+@EchoFlowPreview
+private fun PaginatedLazyColumnPreview() =
+    PaginatedLazyColumn(
+        isLoading = true,
+        onLoadNext = {},
+    ) {
+        items(count = 3) { index ->
+            Text(
+                text = "Item ${index + 1}",
+                modifier = Modifier.padding(all = mDimens.micro4),
+            )
         }
     }
