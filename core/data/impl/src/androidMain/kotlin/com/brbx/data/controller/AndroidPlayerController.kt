@@ -62,6 +62,10 @@ internal class AndroidPlayerController(
         else -> player.seekTo(0L)
     }
 
+    override fun onTrackAddedNext(track: Track, insertIndex: Int) {
+        player.addMediaItem(insertIndex, track.mapToMediaItem())
+    }
+
     override fun clearQueue() {
         player.clearMediaItems()
         super.clearQueue()

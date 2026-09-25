@@ -8,5 +8,5 @@ import com.brbx.playlist.model.PlaylistState
 internal typealias PlaylistMviScope =
         EchoFlowMviScope<PlaylistState, PlaylistIntent, Unit>
 
-internal interface PlaylistViewModelDelegate<Intent : PlaylistIntent> :
+internal interface PlaylistViewModelDelegate<in Intent : PlaylistIntent> :
         EchoFlowMviDelegate<PlaylistState, Intent, Unit>

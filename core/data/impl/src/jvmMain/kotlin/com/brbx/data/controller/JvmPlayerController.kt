@@ -49,6 +49,8 @@ internal class JvmPlayerController(
         }
     }
 
+    override fun onTrackAddedNext(track: Track, insertIndex: Int) {}
+
     override fun clearQueue() {
         stopMediaPlayer()
         super.clearQueue()

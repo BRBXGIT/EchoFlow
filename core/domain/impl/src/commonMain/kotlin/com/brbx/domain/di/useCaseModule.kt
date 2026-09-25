@@ -1,5 +1,7 @@
 package com.brbx.domain.di
 
+import com.brbx.domain.use_case.AddToPlaybackQueueUseCase
+import com.brbx.domain.use_case.AddToPlaybackQueueUseCaseImpl
 import com.brbx.domain.use_case.AuthenticateUserUseCase
 import com.brbx.domain.use_case.AuthenticateUserUseCaseImpl
 import com.brbx.domain.use_case.GetUserAuthStateUseCase
@@ -38,5 +40,6 @@ internal val useCaseModule = module {
     singleOf(::SetPlaybackQueueUseCaseImpl) bind SetPlaybackQueueUseCase::class
     singleOf(::SkipToNextTrackUseCaseImpl) bind SkipToNextTrackUseCase::class
     singleOf(::SkipToPreviousTrackUseCaseImpl) bind SkipToPreviousTrackUseCase::class
+    singleOf(::AddToPlaybackQueueUseCaseImpl) bind AddToPlaybackQueueUseCase::class
 }
 

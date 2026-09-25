@@ -13,9 +13,10 @@ interface PlayerController {
     fun pause()
     fun resume()
 
-    fun seekTo(positionMs: Long)
     fun setQueue(tracks: List<Track>, startIndex: Int)
+    fun addToQueue(track: Track)
 
+    fun seekTo(positionMs: Long)
     fun skipToNext()
     fun skipToPrevious()
 }

@@ -36,6 +36,23 @@ internal abstract class BasePlayerController(
         }
     }
 
+    final override fun addToQueue(track: Track) {
+        if (currentQueue.isEmpty()) {
+            setQueue(tracks = listOf(track), startIndex = 0)
+        } else {
+            val insertIndex = (currentTrackIndex + 1).coerceIn(0, currentQueue.size)
+            val updatedQueue = currentQueue.toMutableList().apply {
+                add(insertIndex, element = track)
+            }
+            currentQueue = updatedQueue
+            reduce { copy(queue = updatedQueue) }
+
+            onTrackAddedNext(track, insertIndex)
+        }
+    }
+
+    protected abstract fun onTrackAddedNext(track: Track, insertIndex: Int)
+
     protected open fun clearQueue() {
         currentQueue = emptyList()
         currentTrackIndex = -1
