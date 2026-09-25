@@ -101,6 +101,7 @@ private fun RelatedToRecentTracks(
             tracks = tracks,
             posters = posters,
             onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Playlists.OpenMix) },
+            onTrackClick = { dispatchIntent(HomeIntent.Player.PlayMix(trackIndex = it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -139,6 +140,7 @@ private fun RelatedToRecentTracksContent(
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,
     onShowFullPlaylistClick: () -> Unit,
+    onTrackClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -163,7 +165,7 @@ private fun RelatedToRecentTracksContent(
             tracks = tracks,
             loadingContent = { MixShimmerLoading(modifier) },
             emptyContent = { MixEmptyState(modifier) },
-            listContent = { tracks -> MixTracksList(tracks, modifier) }
+            listContent = { tracks -> MixTracksList(tracks, onTrackClick, modifier) }
         )
 
         if (relatedLoading || tracks.isNotEmpty()) {
@@ -405,6 +407,7 @@ private fun HeaderCollageContent(
 @Composable
 private fun MixTracksList(
     tracks: ImmutableList<TrackItem>,
+    onTrackClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) =
     Column(
@@ -413,6 +416,7 @@ private fun MixTracksList(
     ) {
         tracks.forEachIndexed { index, track ->
             TrackItem(
+                onClick = { onTrackClick(index) },
                 trackItem = track,
                 isFirst = index == 0,
                 isLast = (index == tracks.lastIndex),

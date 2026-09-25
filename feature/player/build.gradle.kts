@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.echoflow.kmp.library)
     // Compose
     alias(libs.plugins.echoflow.compose.multiplatform)
+    // Koin compiler
+    alias(libs.plugins.koin.compiler)
 }
 
 kotlin {

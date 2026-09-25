@@ -12,6 +12,7 @@ internal class HomeViewModel : EchoFlowViewModel<HomeState, HomeIntent, Unit>(
 ) {
     private val feedLoader by injectDelegate<FeedLoader>()
     private val playlistOpener by injectDelegate<PlaylistOpener>()
+    private val homeDj by injectDelegate<HomeDj>()
 
     init { feedLoader }
 
@@ -19,6 +20,7 @@ internal class HomeViewModel : EchoFlowViewModel<HomeState, HomeIntent, Unit>(
         when (intent) {
             is HomeIntent.Refresh -> feedLoader(intent)
             is HomeIntent.Playlists -> playlistOpener(intent)
+            is HomeIntent.Player -> homeDj(intent)
         }
     }
 }

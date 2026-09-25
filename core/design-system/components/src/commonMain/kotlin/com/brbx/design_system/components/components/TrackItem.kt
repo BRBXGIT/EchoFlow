@@ -70,9 +70,9 @@ private val ItemPosterShape: Shape
 @Composable
 fun TrackItem(
     trackItem: TrackItem,
+    onClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     playingTrackId: Long? = currentPlayingTrackId,
-    onClick: (Long) -> Unit = {},
     isFirst: Boolean = false,
     isLast: Boolean = false,
     outerCorner: Dp = mShapes.extraLargeRadius,

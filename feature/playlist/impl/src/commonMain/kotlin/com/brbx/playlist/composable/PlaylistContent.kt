@@ -146,6 +146,7 @@ private fun LazyListScope.playlistSheetContent(
         key = { _, item -> item.id },
     ) { index, track ->
         TrackItem(
+            onClick = {}, // TODO
             trackItem = track,
             isFirst = index == 0,
             isLast = index == tracks.lastIndex,

@@ -3,6 +3,7 @@ package com.brbx.home.composable
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,7 @@ import com.brbx.design_system.components.components.EchoFlowFilledTonalIconButto
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
 import com.brbx.design_system.components.components.EllipsedText
 import com.brbx.design_system.components.components.TrackItem
+import com.brbx.design_system.components.components.currentPlayingTrackId
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
 import com.brbx.design_system.theme.mMotion
@@ -106,6 +108,7 @@ private fun RecentTracks(
             recentLoading = recentLoading,
             tracks = tracks,
             onFullClick = { dispatchIntent(HomeIntent.Playlists.OpenRecent) },
+            onTrackClick = { dispatchIntent(HomeIntent.Player.PlayRecent(trackIndex = it)) },
             rowCount = rowCount,
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,6 +141,7 @@ private fun RecentTracksContent(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     onFullClick: () -> Unit,
+    onTrackClick: (Int) -> Unit,
     rowCount: Int,
     modifier: Modifier = Modifier,
 ) =
@@ -157,6 +161,7 @@ private fun RecentTracksContent(
             recentLoading = recentLoading,
             tracks = tracks,
             rowCount = rowCount,
+            onTrackClick = onTrackClick,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -192,6 +197,7 @@ private fun RecentTracksGrid(
     recentLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     rowCount: Int,
+    onTrackClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val contentModifier = remember { Modifier.fillMaxWidth() }
@@ -200,7 +206,14 @@ private fun RecentTracksGrid(
         loading = recentLoading,
         tracks = tracks,
         emptyContent = { Empty() },
-        listContent = { tracks -> RecentTracksContainer(contentModifier, rowCount = rowCount) { tracks(tracks) } },
+        listContent = { tracks ->
+            RecentTracksContainer(
+                modifier = contentModifier,
+                rowCount = rowCount
+            ) {
+                tracks(tracks, onTrackClick)
+            }
+        },
         loadingContent = {
             val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.Window)
             RecentTracksContainer(
@@ -227,15 +240,17 @@ private fun Empty() =
         )
     }
 
-private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<TrackItem>) =
+private fun LazyStaggeredGridScope.tracks(tracks: ImmutableList<TrackItem>, onTrackClick: (Int) -> Unit) =
     itemsIndexed(
         items = tracks,
         key = { _, track -> track.id },
     ) { index, track ->
         RecentTrackItem(
+            isPlaying = track.id == currentPlayingTrackId,
             title = track.title,
             poster = track.poster,
             artist = track.artist,
+            onClick = { onTrackClick(index) },
             modifier = Modifier
                 .animateItem()
                 .width(calculateTrackContentWidth(key = index)),
@@ -289,15 +304,16 @@ private fun RecentTrackItem(
     title: String,
     poster: String?,
     artist: String?,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isPlaying: Boolean = false,
+    isPlaying: Boolean,
 ) =
     RecentTrackItemContainer(
         isPlaying = isPlaying,
+        onClick = onClick,
         modifier = modifier,
     ) {
         RecentTrackItemContent(
-            isPlaying = isPlaying,
             poster = poster,
             title = title,
             artist = artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
@@ -315,6 +331,7 @@ private fun RecentTrackItemShimmer(
 @Composable
 private fun RecentTrackItemContainer(
     isPlaying: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -329,6 +346,7 @@ private fun RecentTrackItemContainer(
         modifier = modifier
             .clip(shape = ItemShape)
             .background(color = backgroundColorState)
+            .clickable(onClick = onClick)
     ) {
         CompositionLocalProvider(
             LocalContentColor provides contentColorState
@@ -344,7 +362,6 @@ private fun colorState(targetValue: Color): State<Color> =
 
 @Composable
 private fun RecentTrackItemContent(
-    isPlaying: Boolean,
     poster: String?,
     title: String,
     artist: String,
@@ -446,12 +463,14 @@ private fun RecentTrackItemPreview() =
             poster = null,
             title = "143 ways to lose yourself",
             artist = null,
+            onClick = {}
         )
         RecentTrackItem(
             isPlaying = true,
             poster = null,
             title = "Over the Horizon",
             artist = "Samsung",
+            onClick = {}
         )
     }
 

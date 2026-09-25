@@ -18,6 +18,7 @@ internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Refresh>
 
 internal class FeedLoaderImpl(
     override val scope: HomeMviScope,
+    private val tracksStore: HomeTracksStore,
     private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
     private val userRecentlyTracksUseCase: GetUserRecentlyTracksUseCase,
     private val dispatcherDefault: CoroutineDispatcher,
@@ -45,6 +46,7 @@ internal class FeedLoaderImpl(
     private suspend fun loadRecently() {
         reduce { copy(recentlyListened = recentlyListened.copy(isLoading = true)) }
         userRecentlyTracksUseCase() onSuccess { tracks ->
+            tracksStore.recent = tracks.collection
             reduce { copy(recentlyListened = tracks.toUi()) }
             reduce { copy(recentlyListened = recentlyListened.copy(isLoading = false)) }
         } onException { e ->
@@ -59,6 +61,7 @@ internal class FeedLoaderImpl(
                 sendRetrySnackbar(paged.exception!!) { loadRelated() }
                 this
             } else {
+                tracksStore.relatedToRecent = paged.items
                 copy(relatedToRecently = paged.toUi())
             }
         }
