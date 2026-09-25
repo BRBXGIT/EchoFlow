@@ -31,7 +31,9 @@ kotlin {
             implementation(projects.feature.playlist.impl)
             // Ohter
             implementation(projects.core.designSystem.theme)
+            implementation(projects.core.designSystem.components)
             implementation(projects.feature.common)
+            implementation(projects.feature.player)
 
             // Libs
             implementation(libs.koin.compose.viewmodel)

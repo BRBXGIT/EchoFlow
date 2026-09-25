@@ -5,7 +5,7 @@ import com.brbx.feature_common.view_model.injectDelegate
 import com.brbx.player.model.PlayerIntent
 import com.brbx.player.model.UiPlayerState
 
-internal class PlayerViewModel : EchoFlowViewModel<UiPlayerState, PlayerIntent, Unit>(
+class PlayerViewModel : EchoFlowViewModel<UiPlayerState, PlayerIntent, Unit>(
     initialState = UiPlayerState(),
 ) {
     private val playbackController by injectDelegate<PlaybackController>()

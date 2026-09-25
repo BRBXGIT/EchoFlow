@@ -414,7 +414,6 @@ private fun MixTracksList(
         tracks.forEachIndexed { index, track ->
             TrackItem(
                 trackItem = track,
-                isPlaying = false,
                 isFirst = index == 0,
                 isLast = (index == tracks.lastIndex),
                 modifier = Modifier.fillMaxWidth(),

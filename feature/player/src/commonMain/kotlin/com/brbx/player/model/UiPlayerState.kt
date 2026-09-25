@@ -9,7 +9,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Immutable
-internal data class UiPlayerState(
+data class UiPlayerState(
     val currentTrack: Track? = null,
     val currentPositionMs: Long = 0L,
     val queue: ImmutableList<Track> = persistentListOf(),

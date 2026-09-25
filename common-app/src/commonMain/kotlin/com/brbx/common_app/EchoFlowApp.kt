@@ -8,12 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.common_app.model.AppEffect
 import com.brbx.common_app.view_model.AppViewModel
-import com.brbx.design_system.theme.EchoFlowTheme
+import com.brbx.design_system.components.components.LocalCurrentPlayingTrackId
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.navigation.EchoFlowNavGraph
 import com.brbx.navigation.LocalNavigator
 import com.brbx.navigation.Navigator
 import com.brbx.navigation.rememberNavigator
+import com.brbx.player.view_model.PlayerViewModel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.serialization.modules.SerializersModule
 import org.koin.compose.getKoin
@@ -21,19 +22,25 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun EchoFlowApp(deeplink: String?) {
-    val viewModel = koinViewModel<AppViewModel>()
-    val state by viewModel.state.collectAsStateWithLifecycle()
-    val startKey = state.startKey(deeplink) ?: return
+    val appViewModel = koinViewModel<AppViewModel>()
+    val appState by appViewModel.state.collectAsStateWithLifecycle()
+    val startKey = appState.startKey(deeplink) ?: return
+
+    val playerViewModel = koinViewModel<PlayerViewModel>()
+    val playerState by playerViewModel.state.collectAsStateWithLifecycle()
 
     val navigator = rememberNavigator(
         serializers = rememberSerializers(),
         startKey = startKey,
     )
 
-    HandleAppEffects(viewModel.screenEffects, navigator)
-    HandleEchoFlowEffects(viewModel.effects, navigator = navigator)
+    HandleAppEffects(appViewModel.screenEffects, navigator)
+    HandleEchoFlowEffects(appViewModel.effects, navigator = navigator)
 
-    CompositionLocalProvider(value = LocalNavigator provides navigator) {
+    CompositionLocalProvider(
+        LocalNavigator provides navigator,
+        LocalCurrentPlayingTrackId provides playerState.currentTrack?.id,
+    ) {
         EchoFlowNavGraph()
     }
 }

@@ -3,6 +3,7 @@ package com.brbx.design_system.components.components
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -19,7 +20,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +42,10 @@ import com.brbx.design_system.theme.mTypography
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
 import org.jetbrains.compose.resources.stringResource
+
+val LocalCurrentPlayingTrackId = compositionLocalOf<Long?> { null }
+
+val currentPlayingTrackId @Composable @ReadOnlyComposable  get() = LocalCurrentPlayingTrackId.current
 
 @Immutable
 data class TrackItem(
@@ -62,16 +69,19 @@ private val ItemPosterShape: Shape
 
 @Composable
 fun TrackItem(
-    isPlaying: Boolean,
     trackItem: TrackItem,
     modifier: Modifier = Modifier,
+    playingTrackId: Long? = currentPlayingTrackId,
+    onClick: (Long) -> Unit = {},
     isFirst: Boolean = false,
     isLast: Boolean = false,
     outerCorner: Dp = mShapes.extraLargeRadius,
     innerCorner: Dp = mShapes.smallRadius,
     playingCorner: Dp = PlayingCorner,
-) =
+) {
+    val isPlaying = remember(key1 = playingTrackId) { playingTrackId == trackItem.id }
     TrackItemContainer(
+        onClick = { onClick(trackItem.id) },
         isPlaying = isPlaying,
         isFirst = isFirst,
         isLast = isLast,
@@ -81,12 +91,12 @@ fun TrackItem(
         modifier = modifier,
     ) {
         TrackItemContent(
-            isPlaying = isPlaying,
             poster = trackItem.poster,
             title = trackItem.title,
             artist = trackItem.artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
         )
     }
+}
 
 @Composable
 fun TrackItemShimmer(
@@ -108,6 +118,7 @@ fun TrackItemShimmer(
 
 @Composable
 private fun TrackItemContainer(
+    onClick: () -> Unit,
     isPlaying: Boolean,
     isFirst: Boolean,
     isLast: Boolean,
@@ -161,7 +172,8 @@ private fun TrackItemContainer(
             }
             .drawBehind {
                 drawRect(color = backgroundColorState)
-            },
+            }
+            .clickable(onClick = onClick),
     ) {
         CompositionLocalProvider(
             LocalContentColor provides contentColorState
@@ -175,7 +187,6 @@ private fun colorState(targetValue: Color): State<Color> =
 
 @Composable
 private fun TrackItemContent(
-    isPlaying: Boolean,
     poster: String?,
     title: String,
     artist: String,
@@ -293,13 +304,14 @@ private fun TrackItemShimmerContent(
 @EchoFlowPreview
 private fun TrackItemPreview() =
     TrackItem(
+        onClick = {},
+        playingTrackId = 1L,
         trackItem = TrackItem(
             id = 1L,
             poster = null,
             title = "143 ways to lose yourself",
             artist = "usedcvnt",
         ),
-        isPlaying = false,
         isFirst = true,
     )
 

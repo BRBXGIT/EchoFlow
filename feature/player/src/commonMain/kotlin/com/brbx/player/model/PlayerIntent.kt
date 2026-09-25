@@ -1,6 +1,6 @@
 package com.brbx.player.model
 
-internal sealed interface PlayerIntent {
+sealed interface PlayerIntent {
     sealed interface Playback : PlayerIntent {
         data object Pause : Playback
         data object Resume : Playback
