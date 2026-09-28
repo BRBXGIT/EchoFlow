@@ -1,7 +1,13 @@
 package com.brbx.design_system.components.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +24,7 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.compositionLocalOf
@@ -27,6 +34,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
@@ -41,11 +51,16 @@ import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import echoflow.core.design_system.components.generated.resources.DesignComponentsRes
 import echoflow.core.design_system.components.generated.resources.unknown_artist_label
+import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.stringResource
+import kotlin.math.PI
+import kotlin.math.sin
 
 val LocalCurrentPlayingTrackId = compositionLocalOf<Long?> { null }
+val LocalCurrentPlayingTrackPaused = compositionLocalOf<Boolean?> { null }
 
-val currentPlayingTrackId @Composable @ReadOnlyComposable  get() = LocalCurrentPlayingTrackId.current
+val currentPlayingTrackId @Composable @ReadOnlyComposable get() = LocalCurrentPlayingTrackId.current
+val currentPlayingTrackPaused @Composable @ReadOnlyComposable get() = LocalCurrentPlayingTrackPaused.current
 
 @Immutable
 data class TrackItem(
@@ -73,6 +88,7 @@ fun TrackItem(
     onClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
     playingTrackId: Long? = currentPlayingTrackId,
+    playingTrackPaused: Boolean? = currentPlayingTrackPaused,
     isFirst: Boolean = false,
     isLast: Boolean = false,
     outerCorner: Dp = mShapes.extraLargeRadius,
@@ -91,9 +107,11 @@ fun TrackItem(
         modifier = modifier,
     ) {
         TrackItemContent(
+            isPaused = playingTrackPaused,
             poster = trackItem.poster,
             title = trackItem.title,
             artist = trackItem.artist ?: stringResource(resource = DesignComponentsRes.string.unknown_artist_label),
+            isPlaying = isPlaying,
         )
     }
 }
@@ -176,7 +194,7 @@ private fun TrackItemContainer(
             .clickable(onClick = onClick),
     ) {
         CompositionLocalProvider(
-            LocalContentColor provides contentColorState
+            LocalContentColor provides contentColorState,
         ) { content() }
     }
 }
@@ -187,14 +205,15 @@ private fun colorState(targetValue: Color): State<Color> =
 
 @Composable
 private fun TrackItemContent(
+    isPaused: Boolean?,
     poster: String?,
     title: String,
     artist: String,
     modifier: Modifier = Modifier,
-) {
+    isPlaying: Boolean?,
+) =
     Row(
-        modifier = modifier
-            .padding(horizontal = ItemHorizontalPadding, vertical = ItemVerticalPadding),
+        modifier = modifier.padding(horizontal = ItemHorizontalPadding, vertical = ItemVerticalPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(space = ItemSpacing),
     ) {
@@ -209,6 +228,7 @@ private fun TrackItemContent(
             modifier = Modifier.weight(weight = 1f),
             verticalArrangement = Arrangement.Center,
         ) {
+            // TODO Add marquee
             EllipsedText(
                 text = title,
                 style = mTypography.bodyLarge.copy(
@@ -222,6 +242,99 @@ private fun TrackItemContent(
                     color = LocalContentColor.current.copy(alpha = 0.7f),
                     fontWeight = FontWeight.Normal
                 ),
+            )
+        }
+
+        if (isPlaying != null && isPlaying) {
+            PlayingEqIcon(
+                modifier = Modifier.size(mDimens.micro8),
+                color = LocalContentColor.current,
+                isPlaying = isPaused?.not() ?: false,
+            )
+        }
+    }
+
+@Composable
+private fun PlayingEqIcon(
+    modifier: Modifier = Modifier,
+    color: Color,
+    isPlaying: Boolean = true,
+    bars: Int = 3,
+    minHeightFraction: Float = 0.28f,
+    maxHeightFraction: Float = 1.0f,
+    phaseDurationMillis: Int = 2400,
+    wanderDurationMillis: Int = 8000,
+    gapFraction: Float = 0.30f
+) {
+    val fullRotation = (2f * PI).toFloat()
+    val phaseAnim = remember { Animatable(0f) }
+    val wanderAnim = remember { Animatable(0f) }
+
+    LaunchedEffect(key1 = isPlaying, key2 = phaseDurationMillis) {
+        if (!isPlaying) return@LaunchedEffect
+        while (isActive) {
+            val start = (phaseAnim.value % fullRotation).let { if (it < 0f) it + fullRotation else it }
+            phaseAnim.snapTo(targetValue = start)
+            phaseAnim.animateTo(
+                targetValue = start + fullRotation,
+                animationSpec = tween(durationMillis = phaseDurationMillis, easing = LinearEasing)
+            )
+        }
+    }
+
+    LaunchedEffect(key1 = isPlaying, key2 = wanderDurationMillis) {
+        if (!isPlaying) return@LaunchedEffect
+        while (isActive) {
+            val start = (wanderAnim.value % fullRotation).let { if (it < 0f) it + fullRotation else it }
+            wanderAnim.snapTo(targetValue = start)
+            wanderAnim.animateTo(
+                targetValue = start + fullRotation,
+                animationSpec = tween(durationMillis = wanderDurationMillis, easing = LinearEasing)
+            )
+        }
+    }
+
+    val phase = phaseAnim.value
+    val wander = wanderAnim.value
+
+    val activity by animateFloatAsState(
+        targetValue = if (isPlaying) 1f else 0f,
+        animationSpec = tween(durationMillis = 240, easing = FastOutSlowInEasing),
+        label = "activity"
+    )
+
+    val speeds = remember(key1 = bars) { List(size = bars) { (it + 1).toFloat() } } // 1f, 2f, 3f
+    val shifts = remember(key1 = bars) { List(size = bars) { i -> i * 0.9f } }
+
+    Canvas(modifier = modifier) {
+        val w = size.width
+        val h = size.height
+
+        val tentativeBarW = w / (bars + (bars - 1) * (1f + gapFraction))
+        val gap = tentativeBarW * gapFraction
+        val corner = CornerRadius(x = tentativeBarW / 2f, y = tentativeBarW / 2f)
+
+        repeat(times = bars) { i ->
+            val slowShift = 0.6f * sin(x = wander + i * 0.4f)
+            val slowAmp   = 0.85f + 0.15f * sin(x = wander * 0.5f + 1.1f + i * 0.3f)
+
+            val v = (sin(x = phase * speeds[i] + shifts[i] + slowShift) * slowAmp + 1f) * 0.5f
+
+            val eased = v * v * (3 - 2 * v)
+
+            val fracBars = minHeightFraction + (maxHeightFraction - minHeightFraction) * eased
+            val barH = h * fracBars
+
+            val blendedH = tentativeBarW + (barH - tentativeBarW) * activity
+
+            val top = (h - blendedH) / 2f
+            val left = i * (tentativeBarW + gap)
+
+            drawRoundRect(
+                color = color,
+                topLeft = Offset(x = left, y = top),
+                size = Size(width = tentativeBarW, height = blendedH),
+                cornerRadius = corner
             )
         }
     }

@@ -9,6 +9,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.brbx.common_app.model.AppEffect
 import com.brbx.common_app.view_model.AppViewModel
 import com.brbx.design_system.components.components.LocalCurrentPlayingTrackId
+import com.brbx.design_system.components.components.LocalCurrentPlayingTrackPaused
+import com.brbx.domain.model.enums.PlaybackStatus
 import com.brbx.feature_common.composable.HandleEchoFlowEffects
 import com.brbx.navigation.EchoFlowNavGraph
 import com.brbx.navigation.LocalNavigator
@@ -37,9 +39,11 @@ fun EchoFlowApp(deeplink: String?) {
     HandleAppEffects(appViewModel.screenEffects, navigator)
     HandleEchoFlowEffects(appViewModel.effects, navigator = navigator)
 
+    val isPlaying = remember(key1 = playerState.status) { playerState.status == PlaybackStatus.Playing }
     CompositionLocalProvider(
         LocalNavigator provides navigator,
         LocalCurrentPlayingTrackId provides playerState.currentTrack?.id,
+        LocalCurrentPlayingTrackPaused provides isPlaying,
     ) {
         EchoFlowNavGraph()
     }

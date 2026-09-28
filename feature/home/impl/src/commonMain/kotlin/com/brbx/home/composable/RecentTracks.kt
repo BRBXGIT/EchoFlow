@@ -76,7 +76,7 @@ private val ItemPosterSize
     @Composable @ReadOnlyComposable get() = mDimens.macro7
 
 private val ItemShapeCornerSize
-    @Composable @ReadOnlyComposable get() = mShapes.extraLargeRadius
+    @Composable @ReadOnlyComposable get() = mShapes.largeRadius
 private val ItemPosterShape = CircleShape
 
 private const val RecentTracksKey = "RecentTracksKey"
