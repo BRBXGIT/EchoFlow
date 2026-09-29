@@ -228,8 +228,8 @@ private fun TrackItemContent(
             modifier = Modifier.weight(weight = 1f),
             verticalArrangement = Arrangement.Center,
         ) {
-            // TODO Add marquee
-            EllipsedText(
+            MarqueeText(
+                enabled = isPlaying == true && isPaused == false,
                 text = title,
                 style = mTypography.bodyLarge.copy(
                     fontWeight = FontWeight.SemiBold,
@@ -267,8 +267,8 @@ private fun PlayingEqIcon(
     gapFraction: Float = 0.30f
 ) {
     val fullRotation = (2f * PI).toFloat()
-    val phaseAnim = remember { Animatable(0f) }
-    val wanderAnim = remember { Animatable(0f) }
+    val phaseAnim = remember { Animatable(initialValue = 0f) }
+    val wanderAnim = remember { Animatable(initialValue = 0f) }
 
     LaunchedEffect(key1 = isPlaying, key2 = phaseDurationMillis) {
         if (!isPlaying) return@LaunchedEffect
@@ -300,10 +300,9 @@ private fun PlayingEqIcon(
     val activity by animateFloatAsState(
         targetValue = if (isPlaying) 1f else 0f,
         animationSpec = tween(durationMillis = 240, easing = FastOutSlowInEasing),
-        label = "activity"
     )
 
-    val speeds = remember(key1 = bars) { List(size = bars) { (it + 1).toFloat() } } // 1f, 2f, 3f
+    val speeds = remember(key1 = bars) { List(size = bars) { (it + 1).toFloat() } }
     val shifts = remember(key1 = bars) { List(size = bars) { i -> i * 0.9f } }
 
     Canvas(modifier = modifier) {

@@ -2,6 +2,7 @@ package com.brbx.design_system.components.components
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import com.brbx.debug.compose.EchoFlowPreview
@@ -11,10 +12,12 @@ import com.brbx.design_system.theme.mTypography
 fun EllipsedText(
     text: String,
     style: TextStyle,
+    modifier: Modifier = Modifier,
     maxLines: Int = 1,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) =
     Text(
+        modifier = modifier,
         style = style,
         text = text,
         maxLines = maxLines,
