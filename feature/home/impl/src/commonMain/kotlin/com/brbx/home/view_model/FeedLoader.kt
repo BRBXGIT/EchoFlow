@@ -59,7 +59,7 @@ internal class FeedLoaderImpl(
                 sendRetrySnackbar(paged.exception!!) { loadRelated() }
                 this
             } else {
-                tracksStore.relatedToRecent = paged.items
+                tracksStore.relatedToRecent = relatedPaginator
                 copy(relatedToRecently = paged.toUi())
             }
         }

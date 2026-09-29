@@ -4,6 +4,8 @@ import com.brbx.design_system.components.components.TrackItem
 import com.brbx.domain.model.base.ItemsCollection
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.pagination.PaginationState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 fun Track.toUi(): TrackItem =
     TrackItem(
@@ -12,6 +14,9 @@ fun Track.toUi(): TrackItem =
         poster = highResArtworkUrl,
         artist = user?.name,
     )
+
+fun List<Track>.toUi(): ImmutableList<TrackItem> =
+    this.map { it.toUi() }.toPersistentList()
 
 fun PaginationState<Track>.toUi(): UiPaginationState<TrackItem> =
     toUi(itemsMapper = { it.toUi() })

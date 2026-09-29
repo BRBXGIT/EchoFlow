@@ -12,6 +12,5 @@ internal sealed interface HomeIntent {
     sealed interface Player : HomeIntent {
         @JvmInline value class PlayMix(val trackIndex: Int) : Player
         @JvmInline value class PlayRecent(val trackIndex: Int) : Player
-        @JvmInline value class AddToQueue(val trackId: Long) : Player
     }
 }

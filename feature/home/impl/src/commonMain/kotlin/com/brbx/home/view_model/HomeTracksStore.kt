@@ -1,6 +1,7 @@
 package com.brbx.home.view_model
 
 import com.brbx.domain.model.common.Track
+import com.brbx.domain.pagination.Paginator
 
 internal class HomeTracksStore {
 
@@ -12,14 +13,12 @@ internal class HomeTracksStore {
             putTracks(value)
         }
 
-    var relatedToRecent: List<Track> = emptyList()
+    var relatedToRecent: Paginator<Track>? = null
         set(value) {
             field = value
-            putTracks(value)
+            putTracks(value?.state?.value?.items)
         }
 
-    fun findTrack(id: Long): Track? = tracksMap[id]
-
-    private fun putTracks(tracks: Iterable<Track>) =
-        tracks.forEach { track -> tracksMap[track.id] = track }
+    private fun putTracks(tracks: Iterable<Track>?) =
+        tracks?.forEach { track -> tracksMap[track.id] = track }
 }

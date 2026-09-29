@@ -91,8 +91,12 @@ internal fun PlaylistContent(
             listState = listState,
             playlistName = playlistName,
             tracks = tracks,
-            onPlayClick = {},
-            onMixClick = {},
+            onTrackClick = { trackIndex -> dispatchIntent(PlaylistIntent.PlayPlaylist(trackIndex)) },
+            onPlayClick = { dispatchIntent(PlaylistIntent.PlayPlaylist(trackIndex = 0)) },
+            onMixClick = {
+                val randomIndex = (0..tracks.size).random()
+                dispatchIntent(PlaylistIntent.PlayPlaylist(trackIndex = randomIndex))
+            },
         )
     }
 }
@@ -101,6 +105,7 @@ private fun LazyListScope.playlistSheetContent(
     playlistName: String,
     tracks: ImmutableList<TrackItem>,
     listState: LazyListState,
+    onTrackClick: (Int) -> Unit,
     onPlayClick: () -> Unit,
     onMixClick: () -> Unit,
 ) {
@@ -146,7 +151,7 @@ private fun LazyListScope.playlistSheetContent(
         key = { _, item -> item.id },
     ) { index, track ->
         TrackItem(
-            onClick = {}, // TODO
+            onClick = { onTrackClick(index) },
             trackItem = track,
             isFirst = index == 0,
             isLast = index == tracks.lastIndex,

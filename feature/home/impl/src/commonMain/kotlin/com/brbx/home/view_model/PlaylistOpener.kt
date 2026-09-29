@@ -6,7 +6,6 @@ import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.home.model.HomeIntent
 import com.brbx.mvi_core.helpers.launchAction
 import com.brbx.mvi_core.helpers.postEffect
-import com.brbx.mvi_core.helpers.state
 import com.brbx.playlist.Playlist
 import com.brbx.playlist.PlaylistRoute
 import echoflow.feature.home.impl.generated.resources.Res
@@ -18,6 +17,7 @@ internal interface PlaylistOpener : HomeViewModelDelegate<HomeIntent.Playlists>
 internal class PlaylistOpenerImpl(
     override val mviScope: HomeMviScope,
     private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
+    private val tracksStore: HomeTracksStore,
 ) : PlaylistOpener {
     override fun invoke(intent: HomeIntent.Playlists) {
         when (intent) {
@@ -38,9 +38,9 @@ internal class PlaylistOpenerImpl(
 
     private fun openRecent() {
         val route = PlaylistRoute(
-            playlist = Playlist.List(
+            playlist = Playlist.ReadyList(
                 title = CommonText.Res(value = Res.string.recent_tracks_divider_label),
-                tracks = state.recentlyListened.collection,
+                tracks = tracksStore.recent,
             )
         )
         postEffect(EchoFlowEffect.Navigate(key = route))
