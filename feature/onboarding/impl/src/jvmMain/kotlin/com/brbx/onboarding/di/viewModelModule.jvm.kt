@@ -1,6 +1,6 @@
 package com.brbx.onboarding.di
 
-import com.brbx.feature_common.view_model.delegateOf
+import com.brbx.feature_common.view_model.mviDelegateOf
 import com.brbx.onboarding.model.DesktopPagePayload
 import com.brbx.onboarding.view_model.AuthLinkHandler
 import com.brbx.onboarding.view_model.JvmAuthLinkHandler
@@ -10,8 +10,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal actual val viewModelModule = module {
-    delegateOf(::JvmPagesSource) bind PagesSource::class
-    delegateOf(::JvmAuthLinkHandler) bind AuthLinkHandler::class
+    mviDelegateOf(::JvmPagesSource) bind PagesSource::class
+    mviDelegateOf(::JvmAuthLinkHandler) bind AuthLinkHandler::class
 
     viewModelModuleInternal<DesktopPagePayload>()
 }

@@ -1,6 +1,6 @@
 package com.brbx.onboarding.di
 
-import com.brbx.feature_common.view_model.delegateOf
+import com.brbx.feature_common.view_model.mviDelegateOf
 import com.brbx.onboarding.view_model.Authenticator
 import com.brbx.onboarding.view_model.AuthenticatorImpl
 import com.brbx.onboarding.view_model.OnboardingViewModel
@@ -11,7 +11,7 @@ import org.koin.plugin.module.dsl.viewModel
 internal expect val viewModelModule: Module
 
 internal fun <T> Module.viewModelModuleInternal() {
-    delegateOf(::AuthenticatorImpl) bind Authenticator::class
+    mviDelegateOf(::AuthenticatorImpl) bind Authenticator::class
 
     viewModel<OnboardingViewModel<T>>()
 }

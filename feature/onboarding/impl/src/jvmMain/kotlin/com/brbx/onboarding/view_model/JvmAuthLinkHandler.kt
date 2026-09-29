@@ -10,7 +10,7 @@ import com.brbx.onboarding.model.OnboardingIntent
 import kotlinx.coroutines.CoroutineDispatcher
 
 internal class JvmAuthLinkHandler(
-    override val scope: OnboardingMviScope<Any?>,
+    override val mviScope: OnboardingMviScope<Any?>,
     private val getAuthUrlUseCase: GetAuthUrlUseCase,
     private val getCurrentAuthUrlUseCase: GetCurrentAuthUrlUseCase,
     private val dispatcherDefault: CoroutineDispatcher,

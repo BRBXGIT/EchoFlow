@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 internal interface AuthStateDelegate : AppViewModelDelegate<AppIntent.AuthState>
 
 internal class AuthStateDelegateImpl(
-    override val scope: AppMviScope,
+    override val mviScope: AppMviScope,
     private val getUserAuthStateUseCase: GetUserAuthStateUseCase,
     private val dispatcherIo: CoroutineDispatcher,
 ) : AuthStateDelegate {

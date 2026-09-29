@@ -18,7 +18,7 @@ internal interface Authenticator :
     OnboardingDelegate<Any?, OnboardingIntent.Authenticate>
 
 internal class AuthenticatorImpl(
-    override val scope: OnboardingMviScope<Any?>,
+    override val mviScope: OnboardingMviScope<Any?>,
     private val authUseCase: AuthenticateUserUseCase,
     private val dispatcherDefault: CoroutineDispatcher,
 ) : Authenticator {

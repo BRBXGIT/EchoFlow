@@ -8,7 +8,7 @@ import com.brbx.player.model.PlayerIntent
 internal interface SeekController : PlayerDelegate<PlayerIntent.Seek>
 
 internal class SeekControllerImpl(
-    override val scope: PlayerMviScope,
+    override val mviScope: PlayerMviScope,
     private val seekToPositionUseCase: SeekToPositionUseCase,
     private val skipToNextTrackUseCase: SkipToNextTrackUseCase,
     private val skipToPreviousTrackUseCase: SkipToPreviousTrackUseCase,

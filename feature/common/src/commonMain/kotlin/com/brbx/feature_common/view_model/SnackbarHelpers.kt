@@ -6,7 +6,7 @@ import com.brbx.feature_common.utils.CommonText
 import com.brbx.feature_common.utils.asRes
 import com.brbx.mvi_core.helpers.postEffect
 
-fun EchoFlowMviDelegate<*, *, *>.sendRetrySnackbar(
+fun EchoFlowIntentDelegate<*, *, *>.sendRetrySnackbar(
     e: RequestException,
     duration: SnackbarDuration = SnackbarDuration.Indefinite,
     dismissable: Boolean = false,

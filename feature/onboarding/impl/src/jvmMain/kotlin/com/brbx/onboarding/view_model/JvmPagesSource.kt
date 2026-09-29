@@ -10,7 +10,7 @@ import com.brbx.onboarding.model.createAuthPage
 import com.brbx.onboarding.model.createGreetingPage
 
 internal class JvmPagesSource(
-    override val scope: OnboardingMviScope<DesktopPagePayload>,
+    override val mviScope: OnboardingMviScope<DesktopPagePayload>,
 ) : PagesSource<DesktopPagePayload> {
     override fun invoke(intent: OnboardingIntent.RefreshPages) =
         reduce { copy(pages = buildPages()) }

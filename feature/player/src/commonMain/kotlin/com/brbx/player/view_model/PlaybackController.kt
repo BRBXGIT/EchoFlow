@@ -7,7 +7,7 @@ import com.brbx.player.model.PlayerIntent
 internal interface PlaybackController : PlayerDelegate<PlayerIntent.Playback>
 
 internal class PlaybackControllerImpl(
-    override val scope: PlayerMviScope,
+    override val mviScope: PlayerMviScope,
     private val pausePlaybackUseCase: PausePlaybackUseCase,
     private val resumePlaybackUseCase: ResumePlaybackUseCase,
 ) : PlaybackController {

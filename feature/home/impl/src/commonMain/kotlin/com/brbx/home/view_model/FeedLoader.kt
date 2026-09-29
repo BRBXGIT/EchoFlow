@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Refresh>
 
 internal class FeedLoaderImpl(
-    override val scope: HomeMviScope,
+    override val mviScope: HomeMviScope,
     private val tracksStore: HomeTracksStore,
     private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
     private val userRecentlyTracksUseCase: GetUserRecentlyTracksUseCase,
@@ -25,9 +25,7 @@ internal class FeedLoaderImpl(
 ) : FeedLoader {
     private var relatedPaginator: Paginator<Track>? = null
 
-    init {
-        loadFeed()
-    }
+    init { loadFeed() }
 
     override fun invoke(intent: HomeIntent.Refresh) {
         refreshFeed()

@@ -1,6 +1,6 @@
 package com.brbx.player.di
 
-import com.brbx.feature_common.view_model.delegateOf
+import com.brbx.feature_common.view_model.mviDelegateOf
 import com.brbx.player.view_model.PlaybackController
 import com.brbx.player.view_model.PlaybackControllerImpl
 import com.brbx.player.view_model.PlayerStateObserver
@@ -13,9 +13,9 @@ import org.koin.dsl.module
 import org.koin.plugin.module.dsl.viewModel
 
 internal val viewModelModule = module {
-    delegateOf(::PlaybackControllerImpl) bind PlaybackController::class
-    delegateOf(::SeekControllerImpl) bind SeekController::class
-    delegateOf(::PlayerStateObserverImpl) bind PlayerStateObserver::class
+    mviDelegateOf(::PlaybackControllerImpl) bind PlaybackController::class
+    mviDelegateOf(::SeekControllerImpl) bind SeekController::class
+    mviDelegateOf(::PlayerStateObserverImpl) bind PlayerStateObserver::class
 
     viewModel<PlayerViewModel>()
 }

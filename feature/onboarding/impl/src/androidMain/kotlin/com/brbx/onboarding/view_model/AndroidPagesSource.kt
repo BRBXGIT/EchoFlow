@@ -17,7 +17,7 @@ import com.brbx.onboarding.model.createGreetingPage
 import com.brbx.onboarding.model.createNotificationsPage
 
 internal class AndroidPagesSource(
-    override val scope: OnboardingMviScope<AndroidPagePayload>,
+    override val mviScope: OnboardingMviScope<AndroidPagePayload>,
     private val context: Context,
 ) : PagesSource<AndroidPagePayload> {
     override fun invoke(intent: OnboardingIntent.RefreshPages) =

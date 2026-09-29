@@ -7,7 +7,7 @@ import com.brbx.home.model.HomeIntent
 internal interface HomeDj : HomeViewModelDelegate<HomeIntent.Player>
 
 internal class HomeDjImpl(
-    override val scope: HomeMviScope,
+    override val mviScope: HomeMviScope,
     private val tracksStore: HomeTracksStore,
     private val addToQueueUseCase: AddToPlaybackQueueUseCase,
     private val setQueueUseCase: SetPlaybackQueueUseCase,

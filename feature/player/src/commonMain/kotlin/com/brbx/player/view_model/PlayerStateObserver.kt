@@ -8,7 +8,7 @@ import com.brbx.player.model.toUi
 internal interface PlayerStateObserver : PlayerDelegate<PlayerIntent.ObservePlayerState>
 
 internal class PlayerStateObserverImpl(
-    override val scope: PlayerMviScope,
+    override val mviScope: PlayerMviScope,
     private val getPlayerStateUseCase: GetPlayerStateUseCase,
 ) : PlayerStateObserver {
 

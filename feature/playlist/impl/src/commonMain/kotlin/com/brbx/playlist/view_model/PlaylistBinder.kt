@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 internal interface PlaylistBinder : PlaylistViewModelDelegate<PlaylistIntent>
 
 internal class PlaylistBinderImpl(
-    override val scope: PlaylistMviScope,
+    override val mviScope: PlaylistMviScope,
     private val dispatcherDefault: CoroutineDispatcher,
 ) : PlaylistBinder {
 

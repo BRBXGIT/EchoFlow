@@ -6,7 +6,7 @@ import com.brbx.mvi_core.helpers.postEffect
 import com.brbx.onboarding.model.OnboardingIntent
 
 internal class AndroidAuthLinkHandler(
-    override val scope: OnboardingMviScope<Any?>,
+    override val mviScope: OnboardingMviScope<Any?>,
     private val getAuthUrlUseCase: GetAuthUrlUseCase,
 ) : AuthLinkHandler {
     override fun invoke(intent: OnboardingIntent.OpenAuthLink) =
