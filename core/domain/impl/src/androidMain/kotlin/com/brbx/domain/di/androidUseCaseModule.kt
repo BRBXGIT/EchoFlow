@@ -2,10 +2,10 @@ package com.brbx.domain.di
 
 import com.brbx.domain.use_case.AndroidGetAuthUrlUseCaseImpl
 import com.brbx.domain.use_case.GetAuthUrlUseCase
-import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val androidUseCaseModule = module {
-    singleOf(::AndroidGetAuthUrlUseCaseImpl) bind GetAuthUrlUseCase::class
+    factoryOf(::AndroidGetAuthUrlUseCaseImpl) bind GetAuthUrlUseCase::class
 }

@@ -24,13 +24,14 @@ import com.brbx.domain.use_case.SkipToNextTrackUseCase
 import com.brbx.domain.use_case.SkipToNextTrackUseCaseImpl
 import com.brbx.domain.use_case.SkipToPreviousTrackUseCase
 import com.brbx.domain.use_case.SkipToPreviousTrackUseCaseImpl
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val useCaseModule = module {
     singleOf(::GetUserAuthStateUseCaseImpl) bind GetUserAuthStateUseCase::class
-    singleOf(::AuthenticateUserUseCaseImpl) bind AuthenticateUserUseCase::class
+    factoryOf(::AuthenticateUserUseCaseImpl) bind AuthenticateUserUseCase::class
     singleOf(::GetUserRecentlyTracksUseCaseImpl) bind GetUserRecentlyTracksUseCase::class
     singleOf(::GetUserRelatedTracksUseCaseImpl) bind GetUserRelatedTracksUseCase::class
     singleOf(::GetPlayerStateUseCaseImpl) bind GetPlayerStateUseCase::class

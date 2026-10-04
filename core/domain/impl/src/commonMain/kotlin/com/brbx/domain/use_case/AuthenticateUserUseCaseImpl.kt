@@ -35,6 +35,7 @@ internal class AuthenticateUserUseCaseImpl(
                     authTokenDataSource.saveTokens(AuthTokens(codes.access, codes.refresh))
                 }
                 .map {}
-        } ?: failure(exception = RequestException.Unknown)
+                .also { authUrlBuilder.clear() }
+        } ?: failure(exception = RequestException.Unknown).also { authUrlBuilder.clear() }
     }
 }
