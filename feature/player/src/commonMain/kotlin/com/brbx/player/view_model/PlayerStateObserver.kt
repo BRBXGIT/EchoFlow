@@ -1,9 +1,11 @@
 package com.brbx.player.view_model
 
+import com.brbx.domain.model.PlayerState
 import com.brbx.domain.use_case.GetPlayerStateUseCase
 import com.brbx.mvi_core.helpers.bindLatest
 import com.brbx.player.model.PlayerIntent
-import com.brbx.player.model.toUi
+import com.brbx.player.model.UiPlayerState
+import kotlinx.collections.immutable.toPersistentList
 
 internal interface PlayerStateObserver : PlayerDelegate<PlayerIntent.ObservePlayerState>
 
@@ -20,4 +22,12 @@ internal class PlayerStateObserverImpl(
 
     private fun observePlayerState() =
         getPlayerStateUseCase() bindLatest { it.toUi() }
+
+    internal fun PlayerState.toUi() =
+        UiPlayerState(
+            currentTrack = currentTrack,
+            currentPositionMs = currentPositionMs,
+            queue = queue.toPersistentList(),
+            status = status,
+        )
 }

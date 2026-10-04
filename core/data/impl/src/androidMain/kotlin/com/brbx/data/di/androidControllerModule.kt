@@ -1,34 +1,21 @@
 package com.brbx.data.di
 
-import androidx.media3.common.AudioAttributes
-import androidx.media3.common.C
-import androidx.media3.common.Player
-import androidx.media3.exoplayer.ExoPlayer
 import com.brbx.core_common.dispatchers.getMainImmediateDispatcher
 import com.brbx.data.controller.AndroidPlayerController
-import com.brbx.data.controller.MediaServiceIntentProviderImpl
 import com.brbx.data.controller.MediaServiceIntentProvider
+import com.brbx.data.controller.MediaServiceIntentProviderImpl
 import com.brbx.data.controller.PlayerController
-import org.koin.android.ext.koin.androidContext
+import com.brbx.data.provider.PlayerProvider
+import com.brbx.data.provider.PlayerProviderImpl
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 internal val androidControllerModule = module {
-    single<Player> {
-        val audioAttributes = AudioAttributes.Builder()
-            .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-            .setUsage(C.USAGE_MEDIA)
-            .build()
-
-        ExoPlayer.Builder(androidContext())
-            .setAudioAttributes(audioAttributes, true)
-            .setHandleAudioBecomingNoisy(true)
-            .build()
-    }
+    singleOf(::PlayerProviderImpl) bind PlayerProvider::class
     single<PlayerController> {
         AndroidPlayerController(
-            player = get(),
+            playerProvider = get(),
             dispatcherMain = getMainImmediateDispatcher(),
         )
     }
