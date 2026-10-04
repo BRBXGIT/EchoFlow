@@ -27,12 +27,9 @@ internal class UserHistoryRepositoryImpl(
             .fold(
                 onException = { e -> failure(exception = e) },
                 onSuccess = { dto ->
-                    val mapped = dto.toDomain()
+                    val mapped = dto.toDomain { trackDto -> trackDto.toDomain() }
                     _recentTracks.value = mapped
                     success(value = mapped)
                 },
             )
-
-    private fun CollectionDto<TrackDto>.toDomain() =
-        ItemsCollection(collection.map { it.toDomain() })
 }

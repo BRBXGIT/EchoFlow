@@ -12,6 +12,9 @@ sealed interface CommonText {
     @JvmInline value class Res(val value: StringResource) : CommonText
 }
 
+fun String.asCommonText(): CommonText = CommonText.Raw(this)
+fun StringResource.asCommonText(): CommonText = CommonText.Res(this)
+
 @Composable
 fun CommonText.asString(): String =
     when (this) {

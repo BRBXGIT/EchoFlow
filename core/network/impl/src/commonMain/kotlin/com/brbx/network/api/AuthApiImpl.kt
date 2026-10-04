@@ -7,6 +7,7 @@ import com.brbx.network.model.auth.AuthResponseDto
 import io.ktor.client.call.body
 import io.ktor.client.request.forms.submitForm
 import io.ktor.http.Parameters
+import com.brbx.network.utils.parametersOfNotNull
 
 internal class AuthApiImpl(
     private val clientProvider: AuthApiClientProvider,
@@ -24,7 +25,7 @@ internal class AuthApiImpl(
             formParameters = parameters,
         ).body()
 
-    private fun AuthRequestDto.toFormParameters(): Parameters = formParametersOf(
+    private fun AuthRequestDto.toFormParameters(): Parameters = parametersOfNotNull(
         "code" to code,
         "code_verifier" to codeVerifier,
         "client_id" to clientId,
@@ -33,7 +34,7 @@ internal class AuthApiImpl(
         "grant_type" to grantType,
     )
 
-    private fun refreshForm(refreshToken: String): Parameters = formParametersOf(
+    private fun refreshForm(refreshToken: String): Parameters = parametersOfNotNull(
         "grant_type" to AuthConfig.refreshGrantType,
         "client_id" to AuthConfig.clientId,
         "client_secret" to AuthConfig.clientSecret,
@@ -42,11 +43,5 @@ internal class AuthApiImpl(
 
     private companion object {
         const val TokenEndpoint = "oauth/token"
-    }
-}
-
-private fun formParametersOf(vararg pairs: Pair<String, String?>): Parameters = Parameters.build {
-    pairs.forEach { (key, value) ->
-        if (value != null) append(name = key, value = value)
     }
 }

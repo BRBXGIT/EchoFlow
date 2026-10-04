@@ -1,12 +1,12 @@
 package com.brbx.home.view_model
 
 import com.brbx.domain.model.common.Track
-import com.brbx.domain.model.common.onException
 import com.brbx.domain.model.common.onSuccess
 import com.brbx.domain.pagination.Paginator
 import com.brbx.domain.use_case.GetUserRecentlyTracksUseCase
 import com.brbx.domain.use_case.GetUserRelatedTracksUseCase
 import com.brbx.feature_common.model.toUi
+import com.brbx.feature_common.view_model.onExceptionWithSnackbar
 import com.brbx.feature_common.view_model.sendRetrySnackbar
 import com.brbx.home.model.HomeIntent
 import com.brbx.mvi_core.helpers.bindLatest
@@ -47,8 +47,8 @@ internal class FeedLoaderImpl(
             tracksStore.recent = tracks.collection
             reduce { copy(recentlyListened = tracks.toUi()) }
             reduce { copy(recentlyListened = recentlyListened.copy(isLoading = false)) }
-        } onException { e ->
-            sendRetrySnackbar(e) { loadRecently() }
+        } onExceptionWithSnackbar {
+            loadRecently()
         }
     }
 

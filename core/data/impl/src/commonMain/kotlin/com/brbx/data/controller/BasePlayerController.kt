@@ -99,7 +99,7 @@ internal abstract class BasePlayerController(
         positionUpdateJob = null
     }
 
-    protected fun Long.coerceAt0(): Long = this.coerceAtLeast(minimumValue = 0L)
+    internal fun Long.coerceAt0(): Long = this.coerceAtLeast(minimumValue = 0L)
 
     companion object {
         protected const val POSITION_UPDATE_INTERVAL_MS = 250L

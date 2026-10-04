@@ -43,12 +43,12 @@ import androidx.compose.ui.unit.sp
 import com.brbx.debug.compose.EchoFlowPreview
 import com.brbx.design_system.components.components.EchoFlowIcon
 import com.brbx.design_system.components.components.EchoFlowRemoteImage
+import com.brbx.design_system.components.components.EchoFlowSectionCard
 import com.brbx.design_system.components.components.TrackItem
 import com.brbx.design_system.components.components.TrackItemShimmer
 import com.brbx.design_system.theme.gFlexFontFamily
 import com.brbx.design_system.theme.mColors
 import com.brbx.design_system.theme.mDimens
-import com.brbx.design_system.theme.mShapes
 import com.brbx.design_system.theme.mTypography
 import com.brbx.home.model.HomeIntent
 import com.valentinilk.shimmer.ShimmerBounds
@@ -111,12 +111,9 @@ private fun MixContainerCard(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) =
-    Card(
-        shape = mShapes.extraLarge,
-        colors = CardDefaults.cardColors(
-            containerColor = mColors.surfaceContainerLow,
-        ),
+    EchoFlowSectionCard(
         modifier = modifier,
+        verticalPadding = mDimens.zero,
     ) {
         Box(
             modifier = Modifier

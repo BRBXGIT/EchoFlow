@@ -1,5 +1,8 @@
 package com.brbx.domain.model.common
 
+import com.brbx.domain.model.enums.ArtworkSize
+import com.brbx.domain.model.enums.toArtworkUrl
+
 data class Track(
     val id: Long,
     val title: String,
@@ -11,6 +14,5 @@ data class Track(
     val user: User?,
 ) {
     val highResArtworkUrl: String?
-        get() = (artworkUrl ?: user?.avatarUrl)
-            ?.replace(oldValue = "-large.", newValue = "-t300x300.")
+        get() = (artworkUrl ?: user?.avatarUrl)?.toArtworkUrl(size = ArtworkSize.MEDIUM)
 }
