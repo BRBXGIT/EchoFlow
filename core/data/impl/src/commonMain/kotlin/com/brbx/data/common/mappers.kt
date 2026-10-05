@@ -23,8 +23,7 @@ internal fun TrackDto.toDomain(): Track =
         title = title,
         artworkUrl = artworkUrl,
         description = description,
-        streamUrl = streamUrl,
-        streamable = streamUrl?.let { streamable } ?: false,
+        streamable = streamable,
         duration = durationMs,
         user = user?.toDomain(),
     )

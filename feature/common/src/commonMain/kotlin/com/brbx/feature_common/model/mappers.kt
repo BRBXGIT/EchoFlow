@@ -11,7 +11,7 @@ fun Track.toUi(): TrackItem =
     TrackItem(
         id = id,
         title = title,
-        poster = highResArtworkUrl,
+        poster = mediumResArtworkUrl,
         artist = user?.name,
     )
 
