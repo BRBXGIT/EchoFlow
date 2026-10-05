@@ -10,8 +10,10 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import com.brbx.data.common.NetworkConstants
 import com.brbx.data.datasource.AuthTokenDataSource
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 
 internal interface PlayerProvider {
     suspend fun getPlayer(): ExoPlayer
@@ -20,6 +22,7 @@ internal interface PlayerProvider {
 internal class PlayerProviderImpl(
     private val context: Context,
     private val tokensSource: AuthTokenDataSource,
+    private val dispatcherIo: CoroutineDispatcher,
 ) : PlayerProvider {
     override suspend fun getPlayer() =
         ExoPlayer.Builder(context)
@@ -36,7 +39,9 @@ internal class PlayerProviderImpl(
 
     @OptIn(UnstableApi::class)
     private suspend fun dataSourceFactory(): DefaultMediaSourceFactory {
-        val access = tokensSource.tokens.filterNotNull().first().access
+        val access = withContext(context = dispatcherIo) {
+            tokensSource.tokens.filterNotNull().first().access
+        }
         val httpDataSourceFactory = DefaultHttpDataSource.Factory()
             .setDefaultRequestProperties(
                 mapOf(NetworkConstants.AuthHeader to NetworkConstants.bearerAuth(token = access))

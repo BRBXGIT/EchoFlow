@@ -4,15 +4,18 @@ import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.auth.AuthTokens
 import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.domain.model.common.RequestResult
+import com.brbx.domain.model.common.failure
+import com.brbx.domain.model.enums.RequestException
 import com.brbx.network.api.AuthApi
 import com.brbx.network.model.auth.AuthRequestDto
 import com.brbx.network.model.auth.AuthResponseDto
 import com.brbx.preferences.AuthPrefsManager
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 
 internal class AuthRepositoryImpl(
-    authPrefs: AuthPrefsManager,
+    private val authPrefs: AuthPrefsManager,
     private val authApi: AuthApi,
     private val handler: NetworkResponseHandler,
 ) : AuthRepository {
@@ -32,6 +35,15 @@ internal class AuthRepositoryImpl(
             codeVerifier = verifier
         )
         return handler.handle { authApi.exchangeCode(authRequest = dto).toDomain() }
+    }
+
+    override suspend fun refreshTokens(): RequestResult<AuthTokens> {
+        val token = authPrefs.refreshToken.first()
+        return if (token == null) {
+            failure(exception = RequestException.Unknown)
+        } else {
+            handler.handle { authApi.refreshTokens(token).toDomain() }
+        }
     }
 
     private fun AuthResponseDto.toDomain() =

@@ -14,18 +14,24 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.brbx.data.common.toRequestException
 import com.brbx.data.provider.PlayerProvider
+import com.brbx.data.repository.AuthRepository
 import com.brbx.domain.model.common.Track
+import com.brbx.domain.model.common.onException
+import com.brbx.domain.model.common.onSuccess
 import com.brbx.domain.model.enums.PlaybackStatus
 import com.brbx.domain.model.enums.RequestException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 internal class AndroidPlayerController(
     private val playerProvider: PlayerProvider,
-    dispatcherMain: CoroutineDispatcher,
-) : BasePlayerController(dispatcherMainImmediate = dispatcherMain) {
+    private val authRepository: AuthRepository,
+    private val dispatcherDefault: CoroutineDispatcher,
+    private val dispatcherMainImmediate: CoroutineDispatcher,
+) : BasePlayerController(dispatcherMainImmediate) {
 
     private lateinit var player: ExoPlayer
 
@@ -53,7 +59,7 @@ internal class AndroidPlayerController(
     }
 
     init {
-        initializePlayer().also {
+        initializePlayer {
             player.addListener(playerListener)
             updatePlaybackStatus()
         }
@@ -138,13 +144,27 @@ internal class AndroidPlayerController(
         }
         when (requestException) {
             RequestException.Unauthorized -> {
-                // TODO: обновить токен или разлогинить
+                scope.launch(context = dispatcherDefault) {
+                    authRepository.refreshTokens() onSuccess {
+                        withContext(dispatcherMainImmediate) {
+                            reduce { copy(exception = null) }
+                            player.prepare()
+                            player.play()
+                        }
+                    } onException { e ->
+                        reduce { copy(exception = e) }
+                    }
+                }
             }
             else -> reduce { copy(exception = requestException) }
         }
     }
 
-    private fun initializePlayer() = scope.launch { player = playerProvider.getPlayer() }
+    private fun initializePlayer(afterInit: ExoPlayer.() -> Unit) =
+        scope.launch {
+            player = playerProvider.getPlayer()
+            afterInit(player)
+        }
 
     private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()
