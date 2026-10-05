@@ -7,21 +7,23 @@ import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.brbx.data.provider.PlayerProvider
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.enums.PlaybackStatus
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 internal class AndroidPlayerController(
-    playerProvider: PlayerProvider,
+    private val playerProvider: PlayerProvider,
     dispatcherMain: CoroutineDispatcher,
 ) : BasePlayerController(dispatcherMainImmediate = dispatcherMain) {
 
-    private val player = playerProvider.player
+    private lateinit var player: ExoPlayer
 
     private val playerListener = object : Player.Listener {
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) =
@@ -44,8 +46,10 @@ internal class AndroidPlayerController(
     }
 
     init {
-        player.addListener(playerListener)
-        updatePlaybackStatus()
+        initializePlayer().also {
+            player.addListener(playerListener)
+            updatePlaybackStatus()
+        }
     }
 
     override fun pause() = player.pause()
@@ -119,6 +123,8 @@ internal class AndroidPlayerController(
         (player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED) -> PlaybackStatus.Idle
         else -> PlaybackStatus.Stopped
     }
+
+    private fun initializePlayer() = scope.launch { player = playerProvider.getPlayer() }
 
     private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()
