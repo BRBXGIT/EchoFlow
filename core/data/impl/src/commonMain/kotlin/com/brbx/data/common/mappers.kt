@@ -3,6 +3,7 @@ package com.brbx.data.common
 import com.brbx.domain.model.base.ItemsCollection
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.common.User
+import com.brbx.domain.model.enums.RequestException
 import com.brbx.network.model.base.CollectionDto
 import com.brbx.network.model.base.PaginatedDto
 import com.brbx.network.model.common.TrackDto
@@ -34,3 +35,11 @@ private fun UserDto.toDomain(): User =
         name = username,
         avatarUrl = avatarUrl,
     )
+
+internal fun Int.toRequestException(): RequestException = when (this) {
+    401, 403 -> RequestException.Unauthorized
+    409 -> RequestException.Conflict
+    413 -> RequestException.PayloadTooLarge
+    429 -> RequestException.TooManyRequests
+    else -> RequestException.Unknown
+}

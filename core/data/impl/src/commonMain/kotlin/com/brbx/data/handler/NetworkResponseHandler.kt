@@ -1,5 +1,6 @@
 package com.brbx.data.handler
 
+import com.brbx.data.common.toRequestException
 import com.brbx.domain.model.common.RequestResult
 import com.brbx.domain.model.enums.RequestException
 import io.ktor.client.plugins.ClientRequestException
@@ -19,15 +20,7 @@ internal class NetworkResponseHandlerImpl : NetworkResponseHandler {
             val result = call()
             RequestResult.Success(value = result)
         } catch (e: ClientRequestException) {
-            val requestException = when (e.response.status) {
-                HttpStatusCode.Unauthorized -> RequestException.Unauthorized
-                HttpStatusCode.Forbidden -> RequestException.Unauthorized
-                HttpStatusCode.Conflict -> RequestException.Conflict
-                HttpStatusCode.PayloadTooLarge -> RequestException.PayloadTooLarge
-                HttpStatusCode.TooManyRequests -> RequestException.TooManyRequests
-                HttpStatusCode.BadRequest -> RequestException.Unknown
-                else -> RequestException.Unknown
-            }
+            val requestException = e.response.status.value.toRequestException()
             RequestResult.Exception(requestException)
         } catch (_: ServerResponseException) {
             RequestResult.Exception(RequestException.ServerError)

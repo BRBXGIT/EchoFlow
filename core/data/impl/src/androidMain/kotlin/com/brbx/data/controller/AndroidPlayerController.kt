@@ -6,13 +6,17 @@ import android.content.Intent
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.datasource.HttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import com.brbx.data.common.toRequestException
 import com.brbx.data.provider.PlayerProvider
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.enums.PlaybackStatus
+import com.brbx.domain.model.enums.RequestException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -43,6 +47,9 @@ internal class AndroidPlayerController(
             newPosition: Player.PositionInfo,
             reason: Int,
         ) = updatePosition(positionMs = newPosition.positionMs)
+
+        override fun onPlayerError(error: PlaybackException) =
+            handlePlayerExceptions(exception = error)
     }
 
     init {
@@ -122,6 +129,19 @@ internal class AndroidPlayerController(
         player.isPlaying -> PlaybackStatus.Playing
         (player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED) -> PlaybackStatus.Idle
         else -> PlaybackStatus.Stopped
+    }
+
+    private fun handlePlayerExceptions(exception: PlaybackException) {
+        val requestException = when (val cause = exception.cause) {
+            is HttpDataSource.InvalidResponseCodeException -> cause.responseCode.toRequestException()
+            else -> RequestException.Unknown
+        }
+        when (requestException) {
+            RequestException.Unauthorized -> {
+                // TODO: обновить токен или разлогинить
+            }
+            else -> reduce { copy(exception = requestException) }
+        }
     }
 
     private fun initializePlayer() = scope.launch { player = playerProvider.getPlayer() }
