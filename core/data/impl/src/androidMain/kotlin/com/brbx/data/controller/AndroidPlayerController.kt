@@ -26,6 +26,8 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
+internal const val brbxTrackScheme = "brbx-track://"
+
 internal class AndroidPlayerController(
     private val playerProvider: PlayerProvider,
     private val authRepository: AuthRepository,
@@ -58,12 +60,7 @@ internal class AndroidPlayerController(
             handlePlayerExceptions(exception = error)
     }
 
-    init {
-        initializePlayer {
-            player.addListener(playerListener)
-            updatePlaybackStatus()
-        }
-    }
+    init { initializePlayer() }
 
     override fun pause() = player.pause()
 
@@ -160,11 +157,11 @@ internal class AndroidPlayerController(
         }
     }
 
-    private fun initializePlayer(afterInit: ExoPlayer.() -> Unit) =
-        scope.launch {
-            player = playerProvider.getPlayer()
-            afterInit(player)
-        }
+    private fun initializePlayer() {
+        player = playerProvider.getPlayer { e -> reduce { copy(exception = e) } }
+        player.addListener(playerListener)
+        updatePlaybackStatus()
+    }
 
     private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()
@@ -177,13 +174,10 @@ internal class AndroidPlayerController(
             )
             .build()
 
+        val uri = "$brbxTrackScheme$urn".toUri()
         return MediaItem.Builder()
             .setMediaId(id.toString())
-            .apply {
-                streamUrl
-                    ?.takeIf { it.isNotBlank() }
-                    ?.let { url -> setUri(url.toUri()) }
-            }
+            .setUri(uri)
             .setMediaMetadata(metadata)
             .setTag(this)
             .build()

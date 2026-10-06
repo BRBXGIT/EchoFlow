@@ -18,8 +18,10 @@ internal val androidControllerModule = module {
     single<PlayerProvider> {
         PlayerProviderImpl(
             tokensSource = get(),
+            streamsLoader = get(),
             context = androidContext(),
             dispatcherIo = getIoDispatcher(),
+            dispatcherDefault = getDefaultDispatcher(),
         )
     }
     single<PlayerController> {

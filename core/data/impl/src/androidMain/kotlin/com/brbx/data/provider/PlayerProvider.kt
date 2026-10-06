@@ -2,31 +2,40 @@ package com.brbx.data.provider
 
 import android.content.Context
 import androidx.annotation.OptIn
+import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import com.brbx.data.common.NetworkConstants
+import com.brbx.data.controller.brbxTrackScheme
 import com.brbx.data.datasource.AuthTokenDataSource
+import com.brbx.data.loader.TrackStreamsLoader
+import com.brbx.domain.model.common.onException
+import com.brbx.domain.model.common.onSuccess
+import com.brbx.domain.model.enums.RequestException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.runBlocking
 
 internal interface PlayerProvider {
-    suspend fun getPlayer(): ExoPlayer
+    fun getPlayer(onFailedUrlException: (RequestException) -> Unit): ExoPlayer
 }
 
 internal class PlayerProviderImpl(
     private val context: Context,
     private val tokensSource: AuthTokenDataSource,
     private val dispatcherIo: CoroutineDispatcher,
+    private val dispatcherDefault: CoroutineDispatcher,
+    private val streamsLoader: TrackStreamsLoader,
 ) : PlayerProvider {
-    override suspend fun getPlayer() =
+    override fun getPlayer(onFailedUrlException: (RequestException) -> Unit) =
         ExoPlayer.Builder(context)
-            .setMediaSourceFactory(dataSourceFactory())
+            .setMediaSourceFactory(dataSourceFactory(onFailedUrlException))
             .setAudioAttributes(audioAttributes(), true)
             .setHandleAudioBecomingNoisy(true)
             .build()
@@ -38,15 +47,37 @@ internal class PlayerProviderImpl(
             .build()
 
     @OptIn(UnstableApi::class)
-    private suspend fun dataSourceFactory(): DefaultMediaSourceFactory {
-        val access = withContext(context = dispatcherIo) {
+    private fun dataSourceFactory(
+        onFailedUrlException: (RequestException) -> Unit
+    ): DefaultMediaSourceFactory {
+        val access = runBlocking(context = dispatcherIo) {
             tokensSource.tokens.filterNotNull().first().access
         }
         val httpDataSourceFactory = DefaultHttpDataSource.Factory()
             .setDefaultRequestProperties(
                 mapOf(NetworkConstants.AuthHeader to NetworkConstants.bearerAuth(token = access))
             )
+        val resolver = ResolvingDataSource.Resolver { dataSpec ->
+            val uri = dataSpec.uri
+            if (uri.scheme == brbxTrackScheme) {
+                var url: String? = null
+                val urn = uri.host ?: return@Resolver dataSpec
+                runBlocking(context = dispatcherDefault) {
+                    streamsLoader.load(urn) onSuccess { resolved ->
+                        url = resolved
+                    } onException { e -> onFailedUrlException(e) }
+                }
+                if (url != null) {
+                    return@Resolver dataSpec.withUri(url.toUri())
+                } else onFailedUrlException(RequestException.Unknown)
+            }
+            dataSpec
+        }
+        val resolvingDataSourceFactory = ResolvingDataSource.Factory(
+            httpDataSourceFactory,
+            resolver
+        )
         return DefaultMediaSourceFactory(context)
-            .setDataSourceFactory(httpDataSourceFactory)
+            .setDataSourceFactory(resolvingDataSourceFactory)
     }
 }
