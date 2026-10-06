@@ -64,9 +64,9 @@ internal class PlayerProviderImpl(
                 var url: String? = null
                 val urn = uri.toString().substringAfter("://")
                 runBlocking(dispatcherDefault) {
-                    streamsLoader.load(urn)
-                        .onSuccess { url = it }
-                        .onException(onFailedUrlException)
+                    streamsLoader.load(urn) onSuccess { hls ->
+                        url = hls
+                    } onException(onFailedUrlException)
                 }
                 if (url != null) return@Resolver dataSpec.withUri(url.toUri())
                 onFailedUrlException(RequestException.Unknown)

@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -58,26 +56,26 @@ import dev.chiksmedina.solar.BrokenSolar
 import dev.chiksmedina.solar.broken.ElectronicDevices
 import dev.chiksmedina.solar.broken.electronicdevices.TurntableMusicNote
 import echoflow.feature.home.impl.generated.resources.Res
-import echoflow.feature.home.impl.generated.resources.related_to_recently_full_playlist_button_label
-import echoflow.feature.home.impl.generated.resources.related_to_recently_no_recently_description
-import echoflow.feature.home.impl.generated.resources.related_to_recently_no_recently_title
-import echoflow.feature.home.impl.generated.resources.related_to_recently_subtitle
-import echoflow.feature.home.impl.generated.resources.related_to_recently_title
+import echoflow.feature.home.impl.generated.resources.daily_mix_full_playlist_button_label
+import echoflow.feature.home.impl.generated.resources.daily_mix_no_recently_description
+import echoflow.feature.home.impl.generated.resources.daily_mix_no_recently_title
+import echoflow.feature.home.impl.generated.resources.daily_mix_subtitle
+import echoflow.feature.home.impl.generated.resources.daily_mix_title
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 
-private const val RelatedToRecentTracksKey = "RelatedToRecentTracks"
+private const val DailyMixTracksKey = "DailyMixTracks"
 
-internal fun LazyListScope.relatedToRecentTracks(
-    relatedLoading: Boolean,
+internal fun LazyListScope.dailyMixTracks(
+    dailyMixLoading: Boolean,
     tracks: ImmutableList<TrackItem>,
     posters: ImmutableList<String?>,
     dispatchIntent: (HomeIntent) -> Unit,
 ) =
-    item(key = RelatedToRecentTracksKey) {
-        RelatedToRecentTracks(
-            relatedLoading = relatedLoading,
+    item(key = DailyMixTracksKey) {
+        DailyMixTracks(
+            dailyMixLoading = dailyMixLoading,
             tracks = tracks,
             posters = posters,
             dispatchIntent = dispatchIntent,
@@ -88,16 +86,16 @@ internal fun LazyListScope.relatedToRecentTracks(
     }
 
 @Composable
-private fun RelatedToRecentTracks(
-    relatedLoading: Boolean,
+private fun DailyMixTracks(
+    dailyMixLoading: Boolean,
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,
     modifier: Modifier = Modifier,
     dispatchIntent: (HomeIntent) -> Unit,
 ) =
     MixContainerCard(modifier) {
-        RelatedToRecentTracksContent(
-            relatedLoading = relatedLoading,
+        DailyMixTracksContent(
+            dailyMixLoading = dailyMixLoading,
             tracks = tracks,
             posters = posters,
             onShowFullPlaylistClick = { dispatchIntent(HomeIntent.Playlists.OpenMix) },
@@ -132,8 +130,8 @@ private fun MixContainerCard(
     }
 
 @Composable
-private fun RelatedToRecentTracksContent(
-    relatedLoading: Boolean,
+private fun DailyMixTracksContent(
+    dailyMixLoading: Boolean,
     posters: ImmutableList<String?>,
     tracks: ImmutableList<TrackItem>,
     onShowFullPlaylistClick: () -> Unit,
@@ -144,10 +142,10 @@ private fun RelatedToRecentTracksContent(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(mDimens.micro6)
     ) {
-        TodayMixHeader(
+        DailyMixHeader(
             posters = posters,
-            title = stringResource(Res.string.related_to_recently_title),
-            subtitle = stringResource(Res.string.related_to_recently_subtitle),
+            title = stringResource(Res.string.daily_mix_title),
+            subtitle = stringResource(Res.string.daily_mix_subtitle),
             modifier = Modifier.fillMaxWidth(),
         )
 
@@ -158,16 +156,16 @@ private fun RelatedToRecentTracksContent(
                 .padding(horizontal = micro6)
         }
         TracksCrossfade(
-            loading = relatedLoading,
+            loading = dailyMixLoading,
             tracks = tracks,
             loadingContent = { MixShimmerLoading(modifier) },
             emptyContent = { MixEmptyState(modifier) },
             listContent = { tracks -> MixTracksList(tracks, onTrackClick, modifier) }
         )
 
-        if (relatedLoading || tracks.isNotEmpty()) {
+        if (dailyMixLoading || tracks.isNotEmpty()) {
             ShowFullPlaylistButton(
-                enabled = !relatedLoading,
+                enabled = !dailyMixLoading,
                 onClick = onShowFullPlaylistClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -179,14 +177,14 @@ private fun RelatedToRecentTracksContent(
     }
 
 @Composable
-private fun TodayMixHeader(
+private fun DailyMixHeader(
     posters: ImmutableList<String?>,
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
 ) =
-    TodayMixHeaderContainer(modifier) {
-        TodayMixHeaderContent(
+    DailyMixHeaderContainer(modifier) {
+        DailyMixHeaderContent(
             posters = posters,
             title = title,
             subtitle = subtitle,
@@ -194,7 +192,7 @@ private fun TodayMixHeader(
     }
 
 @Composable
-private fun TodayMixHeaderContainer(
+private fun DailyMixHeaderContainer(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) =
@@ -211,7 +209,7 @@ private fun TodayMixHeaderContainer(
                 ),
             ),
     ) {
-        TodayMixBackgroundDecoration(
+        DailyMixBackgroundDecoration(
             modifier = Modifier.align(Alignment.TopEnd),
         )
 
@@ -243,7 +241,7 @@ private fun AsymmetricDecoration(
     }
 
 @Composable
-private fun TodayMixBackgroundDecoration(
+private fun DailyMixBackgroundDecoration(
     modifier: Modifier = Modifier,
     shapeColor: Color = mColors.onPrimaryContainer.copy(alpha = 0.08f),
     accentDotColor: Color = mColors.onPrimaryContainer.copy(alpha = 0.12f),
@@ -307,7 +305,7 @@ private fun TracksContainerBottomRightDecoration(
     )
 
 @Composable
-private fun TodayMixHeaderContent(
+private fun DailyMixHeaderContent(
     posters: ImmutableList<String?>,
     title: String,
     subtitle: String,
@@ -316,7 +314,7 @@ private fun TodayMixHeaderContent(
     Column(modifier) {
         Text(
             text = title,
-            style = rememberTodayMixTitleStyle(),
+            style = rememberDailyMixTitleStyle(),
         )
         Text(
             text = subtitle,
@@ -331,7 +329,7 @@ private fun TodayMixHeaderContent(
 }
 
 @Composable
-private fun rememberTodayMixTitleStyle(): TextStyle {
+private fun rememberDailyMixTitleStyle(): TextStyle {
     val gFlex = gFlexFontFamily(
         FontVariation.width(value = 136f),
         FontVariation.grade(value = 40),
@@ -427,7 +425,7 @@ private fun ShowFullPlaylistButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    text: String = stringResource(Res.string.related_to_recently_full_playlist_button_label),
+    text: String = stringResource(Res.string.daily_mix_full_playlist_button_label),
 ) =
     TextButton(
         enabled = enabled,
@@ -470,8 +468,8 @@ private fun MixEmptyStateContainer(
 
 @Composable
 private fun MixEmptyStateContent(
-    title: String = stringResource(Res.string.related_to_recently_no_recently_title),
-    description: String = stringResource(Res.string.related_to_recently_no_recently_description),
+    title: String = stringResource(Res.string.daily_mix_no_recently_title),
+    description: String = stringResource(Res.string.daily_mix_no_recently_description),
 ) {
     Box(
         modifier = Modifier
@@ -514,10 +512,10 @@ private fun MixShimmerLoading(
             .shimmer(customShimmer = shimmerInstance),
         verticalArrangement = Arrangement.spacedBy(space = mDimens.micro2),
     ) {
-        repeat(times = RelatedToRecentlySnapshotCount) { index ->
+        repeat(times = DailyMixSnapshotCount) { index ->
             TrackItemShimmer(
                 isFirst = index == 0,
-                isLast = index == RelatedToRecentlySnapshotCount - 1,
+                isLast = index == DailyMixSnapshotCount - 1,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -553,9 +551,9 @@ private val PreviewTracks = persistentListOf(
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksContentWithPostersPreview() =
-    RelatedToRecentTracks(
-        relatedLoading = false,
+private fun DailyMixTracksContentWithPostersPreview() =
+    DailyMixTracks(
+        dailyMixLoading = false,
         tracks = PreviewTracks,
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
@@ -564,9 +562,9 @@ private fun RelatedToRecentTracksContentWithPostersPreview() =
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksLoadingPreview() =
-    RelatedToRecentTracks(
-        relatedLoading = true,
+private fun DailyMixTracksLoadingPreview() =
+    DailyMixTracks(
+        dailyMixLoading = true,
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),
@@ -575,9 +573,9 @@ private fun RelatedToRecentTracksLoadingPreview() =
 
 @Composable
 @EchoFlowPreview
-private fun RelatedToRecentTracksEmptyPreview() =
-    RelatedToRecentTracks(
-        relatedLoading = false,
+private fun DailyMixTracksEmptyPreview() =
+    DailyMixTracks(
+        dailyMixLoading = false,
         tracks = persistentListOf(),
         posters = persistentListOf(),
         modifier = Modifier.padding(all = mDimens.micro8),

@@ -19,7 +19,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 private val RecentSnapshotCount
     @Composable get() = if (rememberIsLargeScreen()) 25 else 15
-internal const val RelatedToRecentlySnapshotCount = 4
+internal const val DailyMixSnapshotCount = 4
 
 @Composable
 internal fun HomeScaffold() {
@@ -41,9 +41,9 @@ internal fun HomeScaffold() {
     ) { innerPadding ->
         HomeContent(
             recentLoading = state.recentlyListened.isLoading,
-            relatedLoading = state.relatedToRecently.isLoadingOrRefreshing,
+            dailyMixLoading = state.dailyMix.isLoadingOrRefreshing,
             recentTracks = state.recentlyListened.collectionSnapshot(n = RecentSnapshotCount),
-            relatedToRecentTracks = state.relatedToRecently.itemsSnapshot(n = RelatedToRecentlySnapshotCount),
+            dailyMixTracks = state.dailyMix.itemsSnapshot(n = DailyMixSnapshotCount),
             recentlyPosters = state.recentlyPosters,
             dispatchIntent = dispatchIntent,
             modifier = Modifier

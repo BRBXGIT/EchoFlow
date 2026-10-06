@@ -59,8 +59,8 @@ internal class FeedLoaderImpl(
                 sendRetrySnackbar(paged.exception!!) { loadMix() }
                 this
             } else {
-                tracksStore.relatedToRecent = mixPaginator
-                copy(relatedToRecently = paged.toUi())
+                tracksStore.dailyMix = mixPaginator
+                copy(dailyMix = paged.toUi())
             }
         }
     }

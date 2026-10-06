@@ -413,7 +413,7 @@ private fun HeaderCollagePreview() =
 @EchoFlowScreenPreview
 private fun PlaylistPlaylistContentPreview() {
     PlaylistContent(
-        playlistName = "Today's Mix",
+        playlistName = "Daily Mix",
         tracks = PreviewTracks,
         dispatchIntent = {},
         isLoading = false,

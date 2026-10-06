@@ -1,9 +1,9 @@
 <resources>
-    <string name="related_to_recently_title">TODAY'S MIX</string>
-    <string name="related_to_recently_subtitle">Based on history</string>
-    <string name="related_to_recently_full_playlist_button_label">Show full playlist</string>
-    <string name="related_to_recently_no_recently_title">No history yet</string>
-    <string name="related_to_recently_no_recently_description">Listen tracks to create your own Today Mix</string>
+    <string name="daily_mix_title">Daily Mix</string>
+    <string name="daily_mix_subtitle">Based on history</string>
+    <string name="daily_mix_full_playlist_button_label">Show full playlist</string>
+    <string name="daily_mix_no_recently_title">No history yet</string>
+    <string name="daily_mix_no_recently_description">Listen tracks to create your own Daily Mix</string>
     <string name="recent_tracks_divider_label">Recent tracks</string>
     <string name="no_songs_in_history_label">Nothing here you did not listen music yet</string>
     <string name="no_playlist_selected_label">No playlist selected</string>

@@ -18,7 +18,7 @@ internal class HomeDjImpl(
     }
 
     private fun playMix(index: Int) =
-        tracksStore.relatedToRecent?.let { setQueueUseCase(paginator = it, startIndex = index) }
+        tracksStore.dailyMix?.let { setQueueUseCase(paginator = it, startIndex = index) }
 
     private fun playRecent(index: Int) =
         setQueueUseCase(tracksStore.recent, startIndex = index)

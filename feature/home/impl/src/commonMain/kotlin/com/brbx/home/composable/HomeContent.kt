@@ -15,8 +15,8 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 internal fun HomeContent(
     recentLoading: Boolean,
-    relatedLoading: Boolean,
-    relatedToRecentTracks: ImmutableList<TrackItem>,
+    dailyMixLoading: Boolean,
+    dailyMixTracks: ImmutableList<TrackItem>,
     recentTracks: ImmutableList<TrackItem>,
     recentlyPosters: ImmutableList<String?>,
     dispatchIntent: (HomeIntent) -> Unit,
@@ -27,7 +27,7 @@ internal fun HomeContent(
         contentPadding = PaddingValues(vertical = mDimens.macro3),
         modifier = modifier,
     ) {
-        relatedToRecentTracks(relatedLoading, relatedToRecentTracks, recentlyPosters, dispatchIntent)
+        dailyMixTracks(dailyMixLoading, dailyMixTracks, recentlyPosters, dispatchIntent)
 
         recentTracks(recentLoading, recentTracks, dispatchIntent)
     }
@@ -65,8 +65,8 @@ private val PreviewTracks = persistentListOf(
 private fun HomeContentWithItemsPreview() =
     HomeContent(
         recentLoading = false,
-        relatedLoading = false,
-        relatedToRecentTracks = PreviewTracks,
+        dailyMixLoading = false,
+        dailyMixTracks = PreviewTracks,
         recentTracks = PreviewTracks,
         recentlyPosters = persistentListOf(null, null, null),
         dispatchIntent = {},
@@ -77,8 +77,8 @@ private fun HomeContentWithItemsPreview() =
 private fun HomeContentShimmerPreview() =
     HomeContent(
         recentLoading = true,
-        relatedLoading = true,
-        relatedToRecentTracks = persistentListOf(),
+        dailyMixLoading = true,
+        dailyMixTracks = persistentListOf(),
         recentTracks = persistentListOf(),
         recentlyPosters = persistentListOf(),
         dispatchIntent = {},
@@ -89,11 +89,9 @@ private fun HomeContentShimmerPreview() =
 private fun HomeContentEmptyPreview() =
     HomeContent(
         recentLoading = false,
-        relatedLoading = false,
-        relatedToRecentTracks = persistentListOf(),
+        dailyMixLoading = false,
+        dailyMixTracks = persistentListOf(),
         recentTracks = persistentListOf(),
         recentlyPosters = persistentListOf(),
         dispatchIntent = {},
     )
-
-

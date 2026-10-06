@@ -13,7 +13,7 @@ internal class HomeTracksStore {
             putTracks(value)
         }
 
-    var relatedToRecent: Paginator<Track>? = null
+    var dailyMix: Paginator<Track>? = null
         set(value) {
             field = value
             putTracks(value?.state?.value?.items)
