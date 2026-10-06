@@ -8,14 +8,12 @@ import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.common.failure
 import com.brbx.domain.model.common.fold
 import com.brbx.domain.model.common.success
-import com.brbx.network.api.UserFeedApi
-import com.brbx.network.model.base.CollectionDto
-import com.brbx.network.model.common.TrackDto
+import com.brbx.network.api.UserHistoryApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 internal class UserHistoryRepositoryImpl(
-    private val userFeedApi: UserFeedApi,
+    private val userHistoryApi: UserHistoryApi,
     private val handler: NetworkResponseHandler,
 ) : UserHistoryRepository {
 
@@ -23,7 +21,7 @@ internal class UserHistoryRepositoryImpl(
     override val recentTracks = _recentTracks.asStateFlow()
 
     override suspend fun loadRecentTracks(): RequestResult<ItemsCollection<Track>> =
-        handler.handle { userFeedApi.getRecentlyPlayedTracks() }
+        handler.handle { userHistoryApi.getRecentlyPlayedTracks() }
             .fold(
                 onException = { e -> failure(exception = e) },
                 onSuccess = { dto ->

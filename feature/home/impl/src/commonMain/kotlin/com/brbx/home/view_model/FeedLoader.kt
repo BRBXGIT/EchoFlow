@@ -3,8 +3,8 @@ package com.brbx.home.view_model
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.common.onSuccess
 import com.brbx.domain.pagination.Paginator
+import com.brbx.domain.use_case.GetDailyMixUseCase
 import com.brbx.domain.use_case.GetUserRecentlyTracksUseCase
-import com.brbx.domain.use_case.GetUserRelatedTracksUseCase
 import com.brbx.feature_common.model.toUi
 import com.brbx.feature_common.view_model.onExceptionWithSnackbar
 import com.brbx.feature_common.view_model.sendRetrySnackbar
@@ -19,11 +19,11 @@ internal interface FeedLoader : HomeViewModelDelegate<HomeIntent.Refresh>
 internal class FeedLoaderImpl(
     override val mviScope: HomeMviScope,
     private val tracksStore: HomeTracksStore,
-    private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
+    private val dailyMixUseCase: GetDailyMixUseCase,
     private val userRecentlyTracksUseCase: GetUserRecentlyTracksUseCase,
     private val dispatcherDefault: CoroutineDispatcher,
 ) : FeedLoader {
-    private var relatedPaginator: Paginator<Track>? = null
+    private var mixPaginator: Paginator<Track>? = null
 
     init { loadFeed() }
 
@@ -33,12 +33,12 @@ internal class FeedLoaderImpl(
 
     private fun refreshFeed() = launchAction(context = dispatcherDefault) {
         loadRecently()
-        relatedPaginator?.refresh()
+        mixPaginator?.refresh()
     }
 
     private fun loadFeed() = launchAction(context = dispatcherDefault) {
         loadRecently()
-        loadRelated()
+        loadMix()
     }
 
     private suspend fun loadRecently() {
@@ -52,14 +52,14 @@ internal class FeedLoaderImpl(
         }
     }
 
-    private suspend fun loadRelated() {
-        relatedPaginator = userRelatedTracksUseCase()
-        relatedPaginator?.state?.bindLatest(context = dispatcherDefault) { paged ->
+    private suspend fun loadMix() {
+        mixPaginator = dailyMixUseCase()
+        mixPaginator?.state?.bindLatest(context = dispatcherDefault) { paged ->
             if (paged.exception != null) {
-                sendRetrySnackbar(paged.exception!!) { loadRelated() }
+                sendRetrySnackbar(paged.exception!!) { loadMix() }
                 this
             } else {
-                tracksStore.relatedToRecent = relatedPaginator
+                tracksStore.relatedToRecent = mixPaginator
                 copy(relatedToRecently = paged.toUi())
             }
         }

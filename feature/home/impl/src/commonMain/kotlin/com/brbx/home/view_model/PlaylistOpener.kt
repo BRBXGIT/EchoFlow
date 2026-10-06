@@ -1,6 +1,6 @@
 package com.brbx.home.view_model
 
-import com.brbx.domain.use_case.GetUserRelatedTracksUseCase
+import com.brbx.domain.use_case.GetDailyMixUseCase
 import com.brbx.feature_common.utils.CommonText
 import com.brbx.feature_common.view_model.EchoFlowEffect
 import com.brbx.home.model.HomeIntent
@@ -16,7 +16,7 @@ internal interface PlaylistOpener : HomeViewModelDelegate<HomeIntent.Playlists>
 
 internal class PlaylistOpenerImpl(
     override val mviScope: HomeMviScope,
-    private val userRelatedTracksUseCase: GetUserRelatedTracksUseCase,
+    private val mixUseCase: GetDailyMixUseCase,
     private val tracksStore: HomeTracksStore,
 ) : PlaylistOpener {
     override fun invoke(intent: HomeIntent.Playlists) {
@@ -30,7 +30,7 @@ internal class PlaylistOpenerImpl(
         val route = PlaylistRoute(
             playlist = Playlist.Paged(
                 title = CommonText.Res(value = Res.string.related_to_recently_title),
-                paginator = userRelatedTracksUseCase(),
+                paginator = mixUseCase(),
             )
         )
         postEffect(EchoFlowEffect.Navigate(key = route))

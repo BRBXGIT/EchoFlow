@@ -4,12 +4,12 @@ import com.brbx.domain.use_case.AddToPlaybackQueueUseCase
 import com.brbx.domain.use_case.AddToPlaybackQueueUseCaseImpl
 import com.brbx.domain.use_case.AuthenticateUserUseCase
 import com.brbx.domain.use_case.AuthenticateUserUseCaseImpl
+import com.brbx.domain.use_case.GetDailyMixUseCase
+import com.brbx.domain.use_case.GetDailyMixUseCaseImpl
 import com.brbx.domain.use_case.GetUserAuthStateUseCase
 import com.brbx.domain.use_case.GetUserAuthStateUseCaseImpl
 import com.brbx.domain.use_case.GetUserRecentlyTracksUseCase
 import com.brbx.domain.use_case.GetUserRecentlyTracksUseCaseImpl
-import com.brbx.domain.use_case.GetUserRelatedTracksUseCase
-import com.brbx.domain.use_case.GetUserRelatedTracksUseCaseImpl
 import com.brbx.domain.use_case.GetPlayerStateUseCase
 import com.brbx.domain.use_case.GetPlayerStateUseCaseImpl
 import com.brbx.domain.use_case.PausePlaybackUseCase
@@ -33,7 +33,7 @@ internal val useCaseModule = module {
     singleOf(::GetUserAuthStateUseCaseImpl) bind GetUserAuthStateUseCase::class
     factoryOf(::AuthenticateUserUseCaseImpl) bind AuthenticateUserUseCase::class
     singleOf(::GetUserRecentlyTracksUseCaseImpl) bind GetUserRecentlyTracksUseCase::class
-    singleOf(::GetUserRelatedTracksUseCaseImpl) bind GetUserRelatedTracksUseCase::class
+    singleOf(::GetDailyMixUseCaseImpl) bind GetDailyMixUseCase::class
     singleOf(::GetPlayerStateUseCaseImpl) bind GetPlayerStateUseCase::class
     singleOf(::PausePlaybackUseCaseImpl) bind PausePlaybackUseCase::class
     singleOf(::ResumePlaybackUseCaseImpl) bind ResumePlaybackUseCase::class

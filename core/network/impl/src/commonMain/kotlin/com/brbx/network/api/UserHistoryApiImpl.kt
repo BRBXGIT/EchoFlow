@@ -8,11 +8,13 @@ import com.brbx.network.utils.setupPaging
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-internal class RelatedApiImpl(
+internal class UserHistoryApiImpl(
     private val clientProvider: ApiClientProvider,
-) : RelatedApi {
-    override suspend fun getSimilarTracks(id: Long, url: String?): PaginatedDto<TrackDto> =
-        clientProvider.client.get(urlString = url ?: "tracks/$id/related") {
-            if (url == null) setupPaging()
-        }.body()
+) : UserHistoryApi {
+    override suspend fun getRecentlyPlayedTracks(): CollectionDto<TrackDto> =
+        clientProvider.client.get(urlString = RecentlyPlayedEndPoint).body()
+
+    private companion object {
+        const val RecentlyPlayedEndPoint = "/me/recently-played/tracks"
+    }
 }

@@ -55,7 +55,7 @@ internal fun setupApiClient(
                         logD(tag = "HttpClient", message)
                     }
                 }
-                level = LogLevel.BODY // TODO make NONE in release
+                level = LogLevel.HEADERS // TODO make NONE in release
             }
             block()
         }
