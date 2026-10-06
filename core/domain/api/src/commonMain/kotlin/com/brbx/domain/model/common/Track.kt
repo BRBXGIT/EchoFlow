@@ -11,6 +11,7 @@ data class Track(
     val streamable: Boolean,
     val duration: Long?,
     val user: User?,
+    val urn: String,
 ) {
     val mediumResArtworkUrl: String?
         get() = (artworkUrl ?: user?.avatarUrl)?.toArtworkUrl(size = ArtworkSize.MEDIUM)

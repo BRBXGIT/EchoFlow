@@ -26,6 +26,7 @@ internal fun TrackDto.toDomain(): Track =
         streamable = streamable,
         duration = durationMs,
         user = user?.toDomain(),
+        urn = urn,
     )
 
 private fun UserDto.toDomain(): User =

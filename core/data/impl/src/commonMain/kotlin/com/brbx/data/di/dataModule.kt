@@ -13,5 +13,6 @@ val dataModule = module {
         dataSourceModule,
         platformModule,
         storageModule,
+        loaderModule,
     )
 }
