@@ -9,14 +9,14 @@ import com.brbx.domain.model.enums.RequestException
 import com.brbx.network.api.TrackApi
 
 internal interface TrackStreamsLoader {
-    suspend fun load(urn: String): RequestResult<String>
+    suspend fun load(urn: String): RequestResult<String?>
 }
 
 internal class TrackStreamsLoaderImpl(
     private val trackApi: TrackApi,
     private val handler: NetworkResponseHandler,
 ) : TrackStreamsLoader {
-    override suspend fun load(urn: String): RequestResult<String> =
+    override suspend fun load(urn: String): RequestResult<String?> =
         handler.handle {
             val streams = trackApi.getTrackStreams(urn)
             streams.hlsAac160

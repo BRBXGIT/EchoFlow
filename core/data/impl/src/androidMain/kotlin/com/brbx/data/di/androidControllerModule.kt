@@ -17,17 +17,18 @@ import org.koin.dsl.module
 internal val androidControllerModule = module {
     single<PlayerProvider> {
         PlayerProviderImpl(
-            context = androidContext(),
             tokensSource = get(),
+            context = androidContext(),
             dispatcherIo = getIoDispatcher(),
         )
     }
     single<PlayerController> {
         AndroidPlayerController(
             playerProvider = get(),
+            authRepository = get(),
+            streamsLoader = get(),
             dispatcherMainImmediate = getMainImmediateDispatcher(),
             dispatcherDefault = getDefaultDispatcher(),
-            authRepository = get(),
         )
     }
     singleOf(::MediaServiceIntentProviderImpl) bind MediaServiceIntentProvider::class
