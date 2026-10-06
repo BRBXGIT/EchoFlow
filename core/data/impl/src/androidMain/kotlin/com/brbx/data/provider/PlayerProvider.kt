@@ -11,7 +11,7 @@ import androidx.media3.datasource.ResolvingDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import com.brbx.data.common.NetworkConstants
-import com.brbx.data.controller.brbxTrackScheme
+import com.brbx.data.controller.echoFlowTrackScheme
 import com.brbx.data.datasource.AuthTokenDataSource
 import com.brbx.data.loader.TrackStreamsLoader
 import com.brbx.domain.model.common.onException
@@ -59,9 +59,9 @@ internal class PlayerProviderImpl(
             )
         val resolver = ResolvingDataSource.Resolver { dataSpec ->
             val uri = dataSpec.uri
-            if (uri.scheme == brbxTrackScheme) {
+            if (uri.scheme == echoFlowTrackScheme) {
                 var url: String? = null
-                val urn = uri.host ?: return@Resolver dataSpec
+                val urn = uri.toString().substringAfter(delimiter = "://")
                 runBlocking(context = dispatcherDefault) {
                     streamsLoader.load(urn) onSuccess { resolved ->
                         url = resolved

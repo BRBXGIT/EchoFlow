@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.datasource.HttpDataSource
@@ -26,7 +27,7 @@ import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-internal const val brbxTrackScheme = "brbx-track://"
+internal const val echoFlowTrackScheme = "echoflow-track"
 
 internal class AndroidPlayerController(
     private val playerProvider: PlayerProvider,
@@ -174,10 +175,11 @@ internal class AndroidPlayerController(
             )
             .build()
 
-        val uri = "$brbxTrackScheme$urn".toUri()
+        val uri = "$echoFlowTrackScheme://$urn".toUri()
         return MediaItem.Builder()
             .setMediaId(id.toString())
             .setUri(uri)
+            .setMimeType(MimeTypes.APPLICATION_M3U8)
             .setMediaMetadata(metadata)
             .setTag(this)
             .build()
