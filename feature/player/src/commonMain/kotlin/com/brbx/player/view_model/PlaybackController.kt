@@ -11,10 +11,8 @@ internal class PlaybackControllerImpl(
     private val pausePlaybackUseCase: PausePlaybackUseCase,
     private val resumePlaybackUseCase: ResumePlaybackUseCase,
 ) : PlaybackController {
-    override fun invoke(intent: PlayerIntent.Playback) {
-        when (intent) {
-            PlayerIntent.Playback.Pause -> pausePlaybackUseCase()
-            PlayerIntent.Playback.Resume -> resumePlaybackUseCase()
-        }
+    override fun invoke(intent: PlayerIntent.Playback) = when (intent) {
+        PlayerIntent.Playback.Pause -> pausePlaybackUseCase()
+        PlayerIntent.Playback.Resume -> resumePlaybackUseCase()
     }
 }

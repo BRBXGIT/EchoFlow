@@ -43,10 +43,7 @@ internal class AndroidPlayerController(
             updateTrackAndPosition()
 
         override fun onIsPlayingChanged(isPlaying: Boolean) =
-            handlePlayStateChange(
-                isPlaying = isPlaying,
-                status = resolvePlaybackStatus(),
-            )
+            handlePlayStateChange(isPlaying = isPlaying, status = resolvePlaybackStatus())
 
         override fun onPlaybackStateChanged(playbackState: Int) =
             updatePlaybackStatus()
@@ -63,16 +60,19 @@ internal class AndroidPlayerController(
 
     init { initializePlayer() }
 
+    // --- Playback Commands ---
+
     override fun pause() = player.pause()
 
     override fun resume() = player.play()
 
-    override fun seekTo(positionMs: Long) = player.seekTo(positionMs)
-        .also { updatePosition(positionMs = positionMs) }
+    override fun getCurrentPositionMs(): Long = player.currentPosition
 
-    override fun skipToNext() = player
-        .takeIf { it.hasNextMediaItem() }
-        ?.seekToNextMediaItem() ?: Unit
+    override fun seekTo(positionMs: Long) =
+        player.seekTo(positionMs).also { updatePosition(positionMs) }
+
+    override fun skipToNext() =
+        if (player.hasNextMediaItem()) player.seekToNextMediaItem() else Unit
 
     override fun skipToPrevious() = when {
         player.currentPosition > SEEK_TO_PREVIOUS_THRESHOLD_MS -> player.seekTo(0L)
@@ -80,9 +80,10 @@ internal class AndroidPlayerController(
         else -> player.seekTo(0L)
     }
 
-    override fun onTrackAddedNext(track: Track, insertIndex: Int) {
+    // --- Queue Commands ---
+
+    override fun onTrackAddedNext(track: Track, insertIndex: Int) =
         player.addMediaItem(insertIndex, track.mapToMediaItem())
-    }
 
     override fun clearQueue() {
         player.clearMediaItems()
@@ -91,30 +92,29 @@ internal class AndroidPlayerController(
 
     override fun initializeQueue(tracks: List<Track>, startIndex: Int) {
         currentQueue = tracks
-        currentTrackIndex = startIndex.coerceIn(minimumValue = 0, maximumValue = tracks.lastIndex)
-        val mediaItems = tracks.map { track -> track.mapToMediaItem() }
+        currentTrackIndex = startIndex.coerceIn(0, tracks.lastIndex)
 
-        player.setMediaItems(mediaItems, currentTrackIndex, 0L)
+        player.setMediaItems(tracks.map { it.mapToMediaItem() }, currentTrackIndex, 0L)
         player.prepare()
         player.play()
 
         reduce {
             copy(
                 queue = tracks,
-                currentTrack = tracks.getOrNull(index = currentTrackIndex),
+                currentTrack = tracks.getOrNull(currentTrackIndex),
                 currentPositionMs = 0L,
                 status = if (player.isPlaying) PlaybackStatus.Playing else PlaybackStatus.Stopped,
             )
         }
     }
 
-    override fun getCurrentPositionMs(): Long = player.currentPosition
+    // --- State Resolution & Event Updates ---
 
     private fun updateTrackAndPosition() {
         currentTrackIndex = player.currentMediaItemIndex
         reduce {
             copy(
-                currentTrack = currentQueue.getOrNull(index = currentTrackIndex),
+                currentTrack = currentQueue.getOrNull(currentTrackIndex),
                 currentPositionMs = getCurrentPositionMs().coerceAt0(),
             )
         }
@@ -122,17 +122,24 @@ internal class AndroidPlayerController(
 
     private fun updatePlaybackStatus() {
         currentTrackIndex = player.currentMediaItemIndex
-        val isPlaying = player.isPlaying
         handlePlayStateChange(
-            isPlaying = isPlaying,
+            isPlaying = player.isPlaying,
             status = resolvePlaybackStatus(),
         )
     }
 
     private fun resolvePlaybackStatus(): PlaybackStatus = when {
         player.isPlaying -> PlaybackStatus.Playing
-        (player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED) -> PlaybackStatus.Idle
+        player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED -> PlaybackStatus.Idle
         else -> PlaybackStatus.Stopped
+    }
+
+    // --- Setup & Error Handling ---
+
+    private fun initializePlayer() {
+        player = playerProvider.getPlayer { e -> reduce { copy(exception = e) } }
+        player.addListener(playerListener)
+        updatePlaybackStatus()
     }
 
     private fun handlePlayerExceptions(exception: PlaybackException) {
@@ -140,29 +147,24 @@ internal class AndroidPlayerController(
             is HttpDataSource.InvalidResponseCodeException -> cause.responseCode.toRequestException()
             else -> RequestException.Unknown
         }
-        when (requestException) {
-            RequestException.Unauthorized -> {
-                scope.launch(context = dispatcherDefault) {
-                    authRepository.refreshTokens() onSuccess {
-                        withContext(dispatcherMainImmediate) {
-                            reduce { copy(exception = null) }
-                            player.prepare()
-                            player.play()
-                        }
-                    } onException { e ->
-                        reduce { copy(exception = e) }
+        if (requestException == RequestException.Unauthorized) {
+            scope.launch(dispatcherDefault) {
+                authRepository.refreshTokens() onSuccess {
+                    withContext(dispatcherMainImmediate) {
+                        reduce { copy(exception = null) }
+                        player.prepare()
+                        player.play()
                     }
+                } onException { e ->
+                    reduce { copy(exception = e) }
                 }
             }
-            else -> reduce { copy(exception = requestException) }
+        } else {
+            reduce { copy(exception = requestException) }
         }
     }
 
-    private fun initializePlayer() {
-        player = playerProvider.getPlayer { e -> reduce { copy(exception = e) } }
-        player.addListener(playerListener)
-        updatePlaybackStatus()
-    }
+    // --- Mappers ---
 
     private fun Track.mapToMediaItem(): MediaItem {
         val metadata = MediaMetadata.Builder()
@@ -175,10 +177,9 @@ internal class AndroidPlayerController(
             )
             .build()
 
-        val uri = "$echoFlowTrackScheme://$urn".toUri()
         return MediaItem.Builder()
             .setMediaId(id.toString())
-            .setUri(uri)
+            .setUri("$echoFlowTrackScheme://$urn".toUri())
             .setMimeType(MimeTypes.APPLICATION_M3U8)
             .setMediaMetadata(metadata)
             .setTag(this)
@@ -189,7 +190,7 @@ internal class AndroidPlayerController(
 // Public cause needed in manifest
 class PlaybackService : MediaSessionService(), KoinComponent {
 
-    private val player by inject<Player>()
+    private val player by inject<ExoPlayer>()
     private val intentProvider by inject<MediaServiceIntentProvider>()
 
     private var mediaSession: MediaSession? = null

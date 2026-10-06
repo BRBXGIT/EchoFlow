@@ -13,11 +13,10 @@ internal class SeekControllerImpl(
     private val skipToNextTrackUseCase: SkipToNextTrackUseCase,
     private val skipToPreviousTrackUseCase: SkipToPreviousTrackUseCase,
 ) : SeekController {
-    override fun invoke(intent: PlayerIntent.Seek) {
-        when (intent) {
-            is PlayerIntent.Seek.SeekTo -> seekToPositionUseCase(intent.positionMs)
-            PlayerIntent.Seek.SkipToNext -> skipToNextTrackUseCase()
-            PlayerIntent.Seek.SkipToPrevious -> skipToPreviousTrackUseCase()
-        }
+
+    override fun invoke(intent: PlayerIntent.Seek) = when (intent) {
+        is PlayerIntent.Seek.SeekTo -> seekToPositionUseCase(intent.positionMs)
+        PlayerIntent.Seek.SkipToNext -> skipToNextTrackUseCase()
+        PlayerIntent.Seek.SkipToPrevious -> skipToPreviousTrackUseCase()
     }
 }

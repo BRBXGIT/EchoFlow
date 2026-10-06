@@ -13,14 +13,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 internal abstract class BasePlayerController(
     dispatcherMainImmediate: CoroutineDispatcher,
 ) : PlayerController {
 
-    protected val scope = CoroutineScope(context = dispatcherMainImmediate + SupervisorJob())
+    protected val scope = CoroutineScope(dispatcherMainImmediate + SupervisorJob())
 
-    private val _state = MutableStateFlow(value = PlayerState())
+    private val _state = MutableStateFlow(PlayerState())
     final override val playerState = _state.asStateFlow()
 
     protected var currentQueue: List<Track> = emptyList()
@@ -28,32 +29,21 @@ internal abstract class BasePlayerController(
 
     private var positionUpdateJob: Job? = null
 
-    final override fun setQueue(tracks: List<Track>, startIndex: Int) {
-        if (tracks.isEmpty()) {
-            clearQueue()
-        } else {
-            initializeQueue(tracks = tracks, startIndex = startIndex)
-        }
-    }
+    // --- Queue Management ---
+
+    final override fun setQueue(tracks: List<Track>, startIndex: Int) =
+        if (tracks.isEmpty()) clearQueue() else initializeQueue(tracks, startIndex)
 
     final override fun addToQueue(track: Track?) {
-        track?.let {
-            if (currentQueue.isEmpty()) {
-                setQueue(tracks = listOf(track), startIndex = 0)
-            } else {
-                val insertIndex = (currentTrackIndex + 1).coerceIn(0, currentQueue.size)
-                val updatedQueue = currentQueue.toMutableList().apply {
-                    add(insertIndex, element = track)
-                }
-                currentQueue = updatedQueue
-                reduce { copy(queue = updatedQueue) }
+        val t = track ?: return
+        if (currentQueue.isEmpty()) return setQueue(listOf(t), 0)
 
-                onTrackAddedNext(track, insertIndex)
-            }
-        }
+        val insertIndex = (currentTrackIndex + 1).coerceIn(0, currentQueue.size)
+        currentQueue = currentQueue.toMutableList().apply { add(insertIndex, t) }
+        reduce { copy(queue = currentQueue) }
+
+        onTrackAddedNext(t, insertIndex)
     }
-
-    protected abstract fun onTrackAddedNext(track: Track, insertIndex: Int)
 
     protected open fun clearQueue() {
         currentQueue = emptyList()
@@ -63,6 +53,10 @@ internal abstract class BasePlayerController(
     }
 
     protected abstract fun initializeQueue(tracks: List<Track>, startIndex: Int)
+
+    protected abstract fun onTrackAddedNext(track: Track, insertIndex: Int)
+
+    // --- State & Position Updates ---
 
     protected abstract fun getCurrentPositionMs(): Long
 
@@ -78,7 +72,7 @@ internal abstract class BasePlayerController(
             copy(
                 status = status,
                 currentPositionMs = getCurrentPositionMs().coerceAt0(),
-                currentTrack = currentQueue.getOrNull(index = currentTrackIndex) ?: currentTrack,
+                currentTrack = currentQueue.getOrNull(currentTrackIndex) ?: currentTrack,
             )
         }
         if (isPlaying) startPositionUpdates() else stopPositionUpdates()
@@ -89,7 +83,7 @@ internal abstract class BasePlayerController(
         positionUpdateJob = scope.launch {
             while (isActive) {
                 updatePosition(positionMs = getCurrentPositionMs())
-                delay(timeMillis = POSITION_UPDATE_INTERVAL_MS)
+                delay(duration = POSITION_UPDATE_INTERVAL_MS.milliseconds)
             }
         }
     }
@@ -99,7 +93,9 @@ internal abstract class BasePlayerController(
         positionUpdateJob = null
     }
 
-    protected fun Long.coerceAt0(): Long = this.coerceAtLeast(minimumValue = 0L)
+    // --- Helpers & Constants ---
+
+    protected fun Long.coerceAt0(): Long = coerceAtLeast(0L)
 
     companion object {
         protected const val POSITION_UPDATE_INTERVAL_MS = 250L

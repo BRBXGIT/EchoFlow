@@ -14,11 +14,9 @@ class PlayerViewModel : EchoFlowViewModel<UiPlayerState, PlayerIntent, Unit>(
 
     init { playerStateObserver }
 
-    override fun dispatchIntent(intent: PlayerIntent) {
-        when (intent) {
-            is PlayerIntent.Playback -> playbackController(intent)
-            is PlayerIntent.Seek -> seekController(intent)
-            is PlayerIntent.ObservePlayerState -> playerStateObserver(intent)
-        }
+    override fun dispatchIntent(intent: PlayerIntent) = when (intent) {
+        is PlayerIntent.Playback -> playbackController(intent)
+        is PlayerIntent.Seek -> seekController(intent)
+        is PlayerIntent.ObservePlayerState -> playerStateObserver(intent)
     }
 }

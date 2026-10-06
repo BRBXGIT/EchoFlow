@@ -20,14 +20,12 @@ internal class PlayerStateObserverImpl(
         observePlayerState()
     }
 
-    private fun observePlayerState() =
-        getPlayerStateUseCase() bindLatest { it.toUi() }
+    private fun observePlayerState() = getPlayerStateUseCase() bindLatest { it.toUi() }
 
-    internal fun PlayerState.toUi() =
-        UiPlayerState(
-            currentTrack = currentTrack,
-            currentPositionMs = currentPositionMs,
-            queue = queue.toPersistentList(),
-            status = status,
-        )
+    internal fun PlayerState.toUi() = UiPlayerState(
+        currentTrack = currentTrack,
+        currentPositionMs = currentPositionMs,
+        queue = queue.toPersistentList(),
+        status = status,
+    )
 }
