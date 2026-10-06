@@ -26,7 +26,6 @@ internal val androidControllerModule = module {
         AndroidPlayerController(
             playerProvider = get(),
             authRepository = get(),
-            streamsLoader = get(),
             dispatcherMainImmediate = getMainImmediateDispatcher(),
             dispatcherDefault = getDefaultDispatcher(),
         )

@@ -13,7 +13,6 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import com.brbx.data.common.toRequestException
-import com.brbx.data.loader.TrackStreamsLoader
 import com.brbx.data.provider.PlayerProvider
 import com.brbx.data.repository.AuthRepository
 import com.brbx.domain.model.common.Track
@@ -32,8 +31,7 @@ internal class AndroidPlayerController(
     private val authRepository: AuthRepository,
     private val dispatcherDefault: CoroutineDispatcher,
     private val dispatcherMainImmediate: CoroutineDispatcher,
-    streamsLoader: TrackStreamsLoader,
-) : BasePlayerController(streamsLoader, dispatcherDefault, dispatcherMainImmediate) {
+) : BasePlayerController(dispatcherMainImmediate) {
 
     private lateinit var player: ExoPlayer
 

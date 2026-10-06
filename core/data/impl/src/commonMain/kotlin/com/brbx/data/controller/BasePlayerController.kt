@@ -1,16 +1,12 @@
 package com.brbx.data.controller
 
-import com.brbx.data.loader.TrackStreamsLoader
 import com.brbx.domain.model.PlayerState
 import com.brbx.domain.model.common.Track
-import com.brbx.domain.model.common.fold
 import com.brbx.domain.model.enums.PlaybackStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,8 +15,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 internal abstract class BasePlayerController(
-    private val streamsLoader: TrackStreamsLoader,
-    private val dispatcherDefault: CoroutineDispatcher,
     dispatcherMainImmediate: CoroutineDispatcher,
 ) : PlayerController {
 
@@ -104,17 +98,6 @@ internal abstract class BasePlayerController(
         positionUpdateJob?.cancel()
         positionUpdateJob = null
     }
-
-    protected fun loadTrackStream(urn: String): Deferred<String?> =
-        scope.async(context = dispatcherDefault) {
-            streamsLoader.load(urn).fold(
-                onSuccess = { url -> url },
-                onException = { e ->
-                    reduce { copy(exception = e) }
-                    null
-                }
-            )
-        }
 
     protected fun Long.coerceAt0(): Long = this.coerceAtLeast(minimumValue = 0L)
 

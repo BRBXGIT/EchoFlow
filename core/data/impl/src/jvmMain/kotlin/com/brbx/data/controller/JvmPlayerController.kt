@@ -1,6 +1,5 @@
 package com.brbx.data.controller
 
-import com.brbx.data.loader.TrackStreamsLoader
 import com.brbx.domain.model.common.Track
 import com.brbx.domain.model.enums.PlaybackStatus
 import javafx.embed.swing.JFXPanel
@@ -11,9 +10,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 
 internal class JvmPlayerController(
     dispatcherMainImmediate: CoroutineDispatcher,
-    dispatcherDefault: CoroutineDispatcher,
-    streamsLoader: TrackStreamsLoader,
-) : BasePlayerController(streamsLoader, dispatcherDefault, dispatcherMainImmediate) {
+) : BasePlayerController(dispatcherMainImmediate) {
 
     private var mediaPlayer: MediaPlayer? = null
 
