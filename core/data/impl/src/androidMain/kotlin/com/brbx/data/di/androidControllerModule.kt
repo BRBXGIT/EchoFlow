@@ -1,7 +1,6 @@
 package com.brbx.data.di
 
 import com.brbx.core_common.dispatchers.getDefaultDispatcher
-import com.brbx.core_common.dispatchers.getIoDispatcher
 import com.brbx.core_common.dispatchers.getMainImmediateDispatcher
 import com.brbx.data.controller.AndroidPlayerController
 import com.brbx.data.controller.MediaServiceIntentProvider
@@ -20,8 +19,6 @@ internal val androidControllerModule = module {
             tokensSource = get(),
             streamsLoader = get(),
             context = androidContext(),
-            dispatcherIo = getIoDispatcher(),
-            dispatcherDefault = getDefaultDispatcher(),
         )
     }
     single<PlayerController> {
