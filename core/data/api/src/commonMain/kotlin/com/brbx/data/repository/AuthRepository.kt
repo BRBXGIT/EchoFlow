@@ -10,5 +10,5 @@ interface AuthRepository {
 
     suspend fun authenticate(code: String, verifier: String): RequestResult<AuthTokens>
 
-    suspend fun refreshTokens(): RequestResult<AuthTokens>
+    suspend fun refreshTokens(): RequestResult<Unit>
 }

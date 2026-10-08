@@ -32,7 +32,7 @@ internal const val echoFlowTrackScheme = "echoflow-track"
 internal class AndroidPlayerController(
     private val playerProvider: PlayerProvider,
     private val authRepository: AuthRepository,
-    private val dispatcherDefault: CoroutineDispatcher,
+    private val dispatcherIo: CoroutineDispatcher,
     private val dispatcherMainImmediate: CoroutineDispatcher,
 ) : BasePlayerController(dispatcherMainImmediate) {
 
@@ -148,7 +148,7 @@ internal class AndroidPlayerController(
             else -> RequestException.Unknown
         }
         if (requestException == RequestException.Unauthorized) {
-            scope.launch(dispatcherDefault) {
+            scope.launch(dispatcherIo) {
                 authRepository.refreshTokens() onSuccess {
                     withContext(dispatcherMainImmediate) {
                         reduce { copy(exception = null) }

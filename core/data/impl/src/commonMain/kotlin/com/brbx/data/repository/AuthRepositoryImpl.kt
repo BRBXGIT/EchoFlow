@@ -5,6 +5,8 @@ import com.brbx.domain.model.auth.AuthTokens
 import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.domain.model.common.RequestResult
 import com.brbx.domain.model.common.failure
+import com.brbx.domain.model.common.fold
+import com.brbx.domain.model.common.success
 import com.brbx.domain.model.enums.RequestException
 import com.brbx.network.api.AuthApi
 import com.brbx.network.model.auth.AuthRequestDto
@@ -37,12 +39,21 @@ internal class AuthRepositoryImpl(
         return handler.handle { authApi.exchangeCode(authRequest = dto).toDomain() }
     }
 
-    override suspend fun refreshTokens(): RequestResult<AuthTokens> {
+    override suspend fun refreshTokens(): RequestResult<Unit> {
         val token = authPrefs.refreshToken.first()
         return if (token == null) {
             failure(exception = RequestException.Unknown)
         } else {
-            handler.handle { authApi.refreshTokens(token).toDomain() }
+            handler.handle { authApi.refreshTokens(token).toDomain() }.fold(
+                onSuccess = { tokens ->
+                    authPrefs.saveAccessToken(tokens.access)
+                    authPrefs.saveRefreshToken(tokens.refresh)
+                    success(Unit)
+                },
+                onException = { e ->
+                    failure(e)
+                }
+            )
         }
     }
 
