@@ -52,3 +52,7 @@ hs_err_pid*
 
 # Firebase hosting
 **/echoflow-deeplink/
+
+# LibVLC native binaries
+libvlc/
+**/libvlc/

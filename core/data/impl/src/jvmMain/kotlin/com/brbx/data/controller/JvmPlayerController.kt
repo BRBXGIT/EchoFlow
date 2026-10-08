@@ -8,6 +8,7 @@ import javafx.scene.media.MediaPlayer
 import javafx.util.Duration
 import kotlinx.coroutines.CoroutineDispatcher
 
+// TODO Add Gradle task for downloading libvlc for someone who will check this project
 internal class JvmPlayerController(
     dispatcherMainImmediate: CoroutineDispatcher,
 ) : BasePlayerController(dispatcherMainImmediate) {
