@@ -12,7 +12,6 @@ val dataModule = module {
         handlerModule,
         dataSourceModule,
         platformModule,
-        storageModule,
         loaderModule,
     )
 }

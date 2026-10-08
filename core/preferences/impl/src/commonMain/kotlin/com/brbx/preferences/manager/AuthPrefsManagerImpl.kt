@@ -2,24 +2,37 @@ package com.brbx.preferences.manager
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.brbx.preferences.AuthPrefsManager
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 internal class AuthPrefsManagerImpl(
-    store: DataStore<Preferences>,
+    private val store: DataStore<Preferences>,
 ) : BasePrefsManager(store), AuthPrefsManager {
 
-    override val accessToken: Flow<String?> = getValue(accessTokenKey)
-    override val refreshToken: Flow<String?> = getValue(refreshTokenKey)
+    override val tokens = store.data.map { preferences ->
+        val access = preferences[accessTokenKey]
+        val refresh = preferences[refreshTokenKey]
+        if (access != null && refresh != null) {
+            access to refresh
+        } else null
+    }
 
-    override suspend fun saveAccessToken(token: String) = setValue(accessTokenKey, token)
+    override suspend fun saveTokens(access: String, refresh: String) {
+        store.edit { preferences ->
+            preferences[accessTokenKey] = access
+            preferences[refreshTokenKey] = refresh
+        }
+    }
 
-    override suspend fun saveRefreshToken(token: String) = setValue(refreshTokenKey, token)
-
-    override suspend fun clearAccessToken() = clearValue(accessTokenKey)
-
-    override suspend fun clearRefreshToken() = clearValue(refreshTokenKey)
+    override suspend fun clearTokens() {
+        store.edit { preferences ->
+            preferences.remove(accessTokenKey)
+            preferences.remove(refreshTokenKey)
+        }
+    }
 
     private companion object {
         private const val accessTokenKeyName = "access_token"

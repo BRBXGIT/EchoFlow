@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthRepository {
     val userAuthState: Flow<UserAuthState>
 
-    suspend fun authenticate(code: String, verifier: String): RequestResult<AuthTokens>
+    suspend fun authenticate(code: String, verifier: String): RequestResult<Unit>
 
     suspend fun refreshTokens(): RequestResult<Unit>
 }

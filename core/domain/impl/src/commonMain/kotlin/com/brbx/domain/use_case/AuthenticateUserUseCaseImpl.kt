@@ -1,21 +1,16 @@
 package com.brbx.domain.use_case
 
 import com.brbx.data.builder.AuthUrlBuilder
-import com.brbx.data.datasource.AuthTokenDataSource
 import com.brbx.data.handler.AuthCallbackHandler
 import com.brbx.data.repository.AuthRepository
-import com.brbx.domain.model.auth.AuthTokens
-import com.brbx.domain.model.enums.RequestException
 import com.brbx.domain.model.common.RequestResult
 import com.brbx.domain.model.common.failure
-import com.brbx.domain.model.common.map
-import com.brbx.domain.model.common.onSuccess
+import com.brbx.domain.model.enums.RequestException
 
 internal class AuthenticateUserUseCaseImpl(
     private val authCallbackHandler: AuthCallbackHandler,
     private val authUrlBuilder: AuthUrlBuilder,
     private val authRepository: AuthRepository,
-    private val authTokenDataSource: AuthTokenDataSource,
 ) : AuthenticateUserUseCase {
     override suspend fun invoke(rawUri: String): RequestResult<Unit> {
         val deeplinkPayload = authCallbackHandler.handle(rawUri)
@@ -31,10 +26,6 @@ internal class AuthenticateUserUseCaseImpl(
 
         return savedVerifier?.let { verifier ->
             authRepository.authenticate(deeplinkPayload.code, verifier)
-                .onSuccess { codes ->
-                    authTokenDataSource.saveTokens(AuthTokens(codes.access, codes.refresh))
-                }
-                .map {}
                 .also { authUrlBuilder.clear() }
         } ?: failure(exception = RequestException.Unknown).also { authUrlBuilder.clear() }
     }

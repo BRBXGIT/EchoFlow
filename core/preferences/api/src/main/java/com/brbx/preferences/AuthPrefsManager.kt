@@ -4,11 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthPrefsManager {
 
-    val accessToken: Flow<String?>
-    val refreshToken: Flow<String?>
+    val tokens: Flow<Pair<String, String>?>
 
-    suspend fun saveAccessToken(token: String)
-    suspend fun saveRefreshToken(token: String)
-    suspend fun clearAccessToken()
-    suspend fun clearRefreshToken()
+    suspend fun saveTokens(access: String, refresh: String)
+    suspend fun clearTokens()
 }

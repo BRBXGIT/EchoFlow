@@ -1,58 +1,60 @@
 package com.brbx.data.repository
 
+import com.brbx.data.datasource.AuthTokenDataSource
 import com.brbx.data.handler.NetworkResponseHandler
 import com.brbx.domain.model.auth.AuthTokens
-import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.domain.model.common.RequestResult
 import com.brbx.domain.model.common.failure
 import com.brbx.domain.model.common.fold
 import com.brbx.domain.model.common.success
 import com.brbx.domain.model.enums.RequestException
+import com.brbx.domain.model.enums.UserAuthState
 import com.brbx.network.api.AuthApi
 import com.brbx.network.model.auth.AuthRequestDto
 import com.brbx.network.model.auth.AuthResponseDto
-import com.brbx.preferences.AuthPrefsManager
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 internal class AuthRepositoryImpl(
-    private val authPrefs: AuthPrefsManager,
+    private val authTokenDataSource: AuthTokenDataSource,
     private val authApi: AuthApi,
     private val handler: NetworkResponseHandler,
 ) : AuthRepository {
-    override val userAuthState: Flow<UserAuthState> =
-        combine(
-            flow = authPrefs.accessToken,
-            flow2 = authPrefs.refreshToken,
-        ) { accessToken, refreshToken ->
-            if (accessToken == null && refreshToken == null) {
-                UserAuthState.Unauthorized
-            } else UserAuthState.Authorized
-        }
 
-    override suspend fun authenticate(code: String, verifier: String): RequestResult<AuthTokens> {
+    override val userAuthState = authTokenDataSource.tokens.map { tokens ->
+        if (tokens == null) {
+            UserAuthState.Unauthorized
+        } else {
+            UserAuthState.Authorized
+        }
+    }
+
+    override suspend fun authenticate(code: String, verifier: String): RequestResult<Unit> {
         val dto = AuthRequestDto(
             code = code,
-            codeVerifier = verifier
+            codeVerifier = verifier,
         )
         return handler.handle { authApi.exchangeCode(authRequest = dto).toDomain() }
+            .fold(
+                onException = ::failure,
+                onSuccess = { tokens ->
+                    authTokenDataSource.saveTokens(AuthTokens(tokens.access, tokens.refresh))
+                    success(Unit)
+                },
+            )
     }
 
     override suspend fun refreshTokens(): RequestResult<Unit> {
-        val token = authPrefs.refreshToken.first()
-        return if (token == null) {
+        val tokens = authTokenDataSource.tokens.first()
+        return if (tokens == null) {
             failure(exception = RequestException.Unknown)
         } else {
-            handler.handle { authApi.refreshTokens(token).toDomain() }.fold(
-                onSuccess = { tokens ->
-                    authPrefs.saveAccessToken(tokens.access)
-                    authPrefs.saveRefreshToken(tokens.refresh)
+            handler.handle { authApi.refreshTokens(tokens.refresh).toDomain() }.fold(
+                onSuccess = { newTokens ->
+                    authTokenDataSource.saveTokens(newTokens)
                     success(Unit)
                 },
-                onException = { e ->
-                    failure(e)
-                }
+                onException = ::failure,
             )
         }
     }
