@@ -32,7 +32,8 @@ kotlin {
             implementation(projects.core.localServer.api)
 
             // Libs
-            implementation(libs.javafx.media)
+            implementation(libs.javafx.media) // TODO Remove
+            implementation(libs.vlcj)
         }
 
         commonTest.dependencies {
