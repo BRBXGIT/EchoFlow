@@ -22,6 +22,7 @@ import com.brbx.domain.model.common.onSuccess
 import com.brbx.domain.model.enums.PlaybackStatus
 import com.brbx.domain.model.enums.RequestException
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
@@ -37,6 +38,8 @@ internal class AndroidPlayerController(
 ) : BasePlayerController(dispatcherMainImmediate) {
 
     private lateinit var player: ExoPlayer
+
+    private var tokenUpdaterJob: Job? = null
 
     private val playerListener = object : Player.Listener {
         override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) =
@@ -148,7 +151,8 @@ internal class AndroidPlayerController(
             else -> RequestException.Unknown
         }
         if (requestException == RequestException.Unauthorized) {
-            scope.launch(dispatcherIo) {
+            tokenUpdaterJob?.cancel()
+            tokenUpdaterJob = scope.launch(dispatcherIo) {
                 authRepository.refreshTokens() onSuccess {
                     withContext(dispatcherMainImmediate) {
                         reduce { copy(exception = null) }
