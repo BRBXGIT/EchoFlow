@@ -3,8 +3,6 @@ package com.brbx.onboarding.view_model
 import androidx.compose.runtime.Immutable
 import com.brbx.feature_common.view_model.EchoFlowViewModel
 import com.brbx.feature_common.view_model.injectDelegate
-import com.brbx.mvi_core.helpers.shareInWhileSubscribed
-import com.brbx.mvi_core.helpers.stateInWhileSubscribed
 import com.brbx.onboarding.model.OnboardingIntent
 import com.brbx.onboarding.model.OnboardingState
 
@@ -17,10 +15,6 @@ internal class OnboardingViewModel<T> :
     private val authenticator by injectDelegate<Authenticator>()
 
     init { dispatchIntent(OnboardingIntent.RefreshPages) }
-
-    override val state = _state.stateInWhileSubscribed(initialValue = OnboardingState())
-    override val effects = _effects.shareInWhileSubscribed()
-    override val screenEffects = _screenEffects.shareInWhileSubscribed()
 
     override fun dispatchIntent(intent: OnboardingIntent) =
         when (intent) {
