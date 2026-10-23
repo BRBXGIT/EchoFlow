@@ -27,16 +27,22 @@ internal class JvmPlayerController(
     }
 
     override fun resume() {
-        mediaPlayer?.play()
-        updatePlaybackStatus()
+        if (mediaPlayer == null && currentQueue.isNotEmpty()) {
+            val index = if (currentTrackIndex in currentQueue.indices) currentTrackIndex else 0
+            playTrackAtIndex(index)
+        } else {
+            mediaPlayer?.play()
+            updatePlaybackStatus()
+        }
     }
 
     override fun getCurrentPositionMs(): Long =
         mediaPlayer?.currentTime?.toMillis()?.toLong() ?: 0L
 
     override fun seekTo(positionMs: Long) {
-        mediaPlayer?.seek(Duration.millis(positionMs.toDouble()))
-        updatePosition(positionMs = positionMs)
+        val pos = positionMs.coerceAtLeast(0L)
+        mediaPlayer?.seek(Duration.millis(pos.toDouble()))
+        updatePosition(positionMs = pos)
     }
 
     override fun skipToNext() {
@@ -54,7 +60,11 @@ internal class JvmPlayerController(
 
     // --- Queue Controls ---
 
-    override fun onTrackAddedNext(track: Track, insertIndex: Int) = Unit
+    override fun onTrackAdded(track: Track, insertIndex: Int) {
+        if (mediaPlayer == null || resolvePlaybackStatus() == PlaybackStatus.Idle) {
+            playTrackAtIndex(insertIndex)
+        }
+    }
 
     override fun clearQueue() {
         stopMediaPlayer()
@@ -73,7 +83,11 @@ internal class JvmPlayerController(
 
         currentTrackIndex = index
         val track = currentQueue.getOrNull(index) ?: return
-        val url = track.streamUrl?.takeIf { it.isNotBlank() } ?: return
+        val url = track.streamUrl?.takeIf { it.isNotBlank() }
+        if (url == null) {
+            handlePlayStateChange(isPlaying = false, status = PlaybackStatus.Stopped)
+            return
+        }
 
         runCatching {
             mediaPlayer = MediaPlayer(Media(url)).apply {
@@ -81,7 +95,15 @@ internal class JvmPlayerController(
                     play()
                     handlePlayStateChange(isPlaying = true, status = PlaybackStatus.Playing)
                 }
-                setOnEndOfMedia { skipToNext() }
+                setOnEndOfMedia {
+                    val nextIndex = currentTrackIndex + 1
+                    if (nextIndex in currentQueue.indices) {
+                        playTrackAtIndex(nextIndex)
+                    } else {
+                        stopPositionUpdates()
+                        handlePlayStateChange(isPlaying = false, status = PlaybackStatus.Idle)
+                    }
+                }
                 setOnError {
                     handlePlayStateChange(isPlaying = false, status = PlaybackStatus.Stopped)
                 }

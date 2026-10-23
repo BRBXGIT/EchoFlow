@@ -43,7 +43,7 @@ fun EchoFlowApp(deeplink: String?) {
     CompositionLocalProvider(
         LocalNavigator provides navigator,
         LocalCurrentPlayingTrackId provides playerState.currentTrack?.id,
-        LocalCurrentPlayingTrackPaused provides isPlaying,
+        LocalCurrentPlayingTrackPaused provides !isPlaying,
     ) {
         EchoFlowNavGraph()
     }

@@ -31,13 +31,12 @@ import org.koin.core.component.inject
 internal const val echoFlowTrackScheme = "echoflow-track"
 
 internal class AndroidPlayerController(
+    private val player: ExoPlayer,
     private val playerProvider: PlayerProvider,
     private val authRepository: AuthRepository,
     private val dispatcherIo: CoroutineDispatcher,
     private val dispatcherMainImmediate: CoroutineDispatcher,
 ) : BasePlayerController(dispatcherMainImmediate) {
-
-    private lateinit var player: ExoPlayer
 
     private var tokenUpdaterJob: Job? = null
 
@@ -67,12 +66,21 @@ internal class AndroidPlayerController(
 
     override fun pause() = player.pause()
 
-    override fun resume() = player.play()
+    override fun resume() {
+        if (player.playbackState == Player.STATE_ENDED) {
+            player.seekTo(0, 0L)
+        } else if (player.playbackState == Player.STATE_IDLE) {
+            player.prepare()
+        }
+        player.play()
+    }
 
     override fun getCurrentPositionMs(): Long = player.currentPosition
 
-    override fun seekTo(positionMs: Long) =
-        player.seekTo(positionMs).also { updatePosition(positionMs) }
+    override fun seekTo(positionMs: Long) {
+        val pos = positionMs.coerceAt0()
+        player.seekTo(pos).also { updatePosition(pos) }
+    }
 
     override fun skipToNext() =
         if (player.hasNextMediaItem()) player.seekToNextMediaItem() else Unit
@@ -85,10 +93,16 @@ internal class AndroidPlayerController(
 
     // --- Queue Commands ---
 
-    override fun onTrackAddedNext(track: Track, insertIndex: Int) =
+    override fun onTrackAdded(track: Track, insertIndex: Int) {
         player.addMediaItem(insertIndex, track.mapToMediaItem())
+        if (player.playbackState == Player.STATE_ENDED) {
+            player.seekToDefaultPosition(insertIndex)
+            player.play()
+        }
+    }
 
     override fun clearQueue() {
+        player.stop()
         player.clearMediaItems()
         super.clearQueue()
     }
@@ -106,7 +120,7 @@ internal class AndroidPlayerController(
                 queue = tracks,
                 currentTrack = tracks.getOrNull(currentTrackIndex),
                 currentPositionMs = 0L,
-                status = if (player.isPlaying) PlaybackStatus.Playing else PlaybackStatus.Stopped,
+                status = PlaybackStatus.Playing,
             )
         }
     }
@@ -132,15 +146,15 @@ internal class AndroidPlayerController(
     }
 
     private fun resolvePlaybackStatus(): PlaybackStatus = when {
-        player.isPlaying -> PlaybackStatus.Playing
         player.playbackState == Player.STATE_IDLE || player.playbackState == Player.STATE_ENDED -> PlaybackStatus.Idle
+        player.playWhenReady -> PlaybackStatus.Playing
         else -> PlaybackStatus.Stopped
     }
 
     // --- Setup & Error Handling ---
 
     private fun initializePlayer() {
-        player = playerProvider.getPlayer { e -> reduce { copy(exception = e) } }
+        playerProvider.onFailedUrlException = { e -> reduce { copy(exception = e) } }
         player.addListener(playerListener)
         updatePlaybackStatus()
     }
@@ -210,7 +224,6 @@ class PlaybackService : MediaSessionService(), KoinComponent {
 
     override fun onDestroy() {
         mediaSession?.run {
-            player.release()
             release()
             mediaSession = null
         }

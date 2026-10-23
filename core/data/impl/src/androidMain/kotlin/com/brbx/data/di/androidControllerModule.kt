@@ -1,5 +1,6 @@
 package com.brbx.data.di
 
+import androidx.media3.exoplayer.ExoPlayer
 import com.brbx.core_common.dispatchers.getIoDispatcher
 import com.brbx.core_common.dispatchers.getMainImmediateDispatcher
 import com.brbx.data.controller.AndroidPlayerController
@@ -21,8 +22,12 @@ internal val androidControllerModule = module {
             context = androidContext(),
         )
     }
+    single<ExoPlayer> {
+        get<PlayerProvider>().getPlayer()
+    }
     single<PlayerController> {
         AndroidPlayerController(
+            player = get(),
             playerProvider = get(),
             authRepository = get(),
             dispatcherMainImmediate = getMainImmediateDispatcher(),

@@ -23,7 +23,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 
 internal interface PlayerProvider {
-    fun getPlayer(onFailedUrlException: (RequestException) -> Unit): ExoPlayer
+    var onFailedUrlException: ((RequestException) -> Unit)?
+
+    fun getPlayer(): ExoPlayer
 }
 
 internal class PlayerProviderImpl(
@@ -31,6 +33,10 @@ internal class PlayerProviderImpl(
     private val tokensSource: AuthTokenDataSource,
     private val streamsLoader: TrackStreamsLoader,
 ) : PlayerProvider {
+
+    override var onFailedUrlException: ((RequestException) -> Unit)? = null
+
+    private var exoPlayer: ExoPlayer? = null
 
     private val okHttpClient by lazy {
         OkHttpClient.Builder()
@@ -46,12 +52,13 @@ internal class PlayerProviderImpl(
             .build()
     }
 
-    override fun getPlayer(onFailedUrlException: (RequestException) -> Unit): ExoPlayer =
-        ExoPlayer.Builder(context)
-            .setMediaSourceFactory(dataSourceFactory(onFailedUrlException))
+    override fun getPlayer(): ExoPlayer =
+        exoPlayer ?: ExoPlayer.Builder(context)
+            .setMediaSourceFactory(dataSourceFactory())
             .setAudioAttributes(audioAttributes(), true)
             .setHandleAudioBecomingNoisy(true)
             .build()
+            .also { exoPlayer = it }
 
     private fun audioAttributes() = AudioAttributes.Builder()
         .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
@@ -59,9 +66,7 @@ internal class PlayerProviderImpl(
         .build()
 
     @OptIn(UnstableApi::class)
-    private fun dataSourceFactory(
-        onFailedUrlException: (RequestException) -> Unit,
-    ): DefaultMediaSourceFactory {
+    private fun dataSourceFactory(): DefaultMediaSourceFactory {
         val httpDataSourceFactory = OkHttpDataSource.Factory(okHttpClient)
         val resolver = ResolvingDataSource.Resolver { dataSpec ->
             val uri = dataSpec.uri
@@ -71,12 +76,12 @@ internal class PlayerProviderImpl(
                 runBlocking {
                     streamsLoader.load(urn)
                         .onSuccess { url -> hlsUrl = url }
-                        .onException { e -> onFailedUrlException(e) }
+                        .onException { e -> onFailedUrlException?.invoke(e) }
                 }
                 return@Resolver if (hlsUrl != null) {
                     dataSpec.withUri(hlsUrl.toUri())
                 } else {
-                    onFailedUrlException(RequestException.Unknown)
+                    onFailedUrlException?.invoke(RequestException.Unknown)
                     dataSpec
                 }
             }

@@ -38,11 +38,11 @@ internal abstract class BasePlayerController(
         val t = track ?: return
         if (currentQueue.isEmpty()) return setQueue(listOf(t), 0)
 
-        val insertIndex = (currentTrackIndex + 1).coerceIn(0, currentQueue.size)
-        currentQueue = currentQueue.toMutableList().apply { add(insertIndex, t) }
+        val insertIndex = currentQueue.size
+        currentQueue = currentQueue + t
         reduce { copy(queue = currentQueue) }
 
-        onTrackAddedNext(t, insertIndex)
+        onTrackAdded(t, insertIndex)
     }
 
     protected open fun clearQueue() {
@@ -54,7 +54,7 @@ internal abstract class BasePlayerController(
 
     protected abstract fun initializeQueue(tracks: List<Track>, startIndex: Int)
 
-    protected abstract fun onTrackAddedNext(track: Track, insertIndex: Int)
+    protected abstract fun onTrackAdded(track: Track, insertIndex: Int)
 
     // --- State & Position Updates ---
 
@@ -72,7 +72,7 @@ internal abstract class BasePlayerController(
             copy(
                 status = status,
                 currentPositionMs = getCurrentPositionMs().coerceAt0(),
-                currentTrack = currentQueue.getOrNull(currentTrackIndex) ?: currentTrack,
+                currentTrack = if (currentQueue.isEmpty()) null else currentQueue.getOrNull(currentTrackIndex) ?: currentTrack,
             )
         }
         if (isPlaying) startPositionUpdates() else stopPositionUpdates()

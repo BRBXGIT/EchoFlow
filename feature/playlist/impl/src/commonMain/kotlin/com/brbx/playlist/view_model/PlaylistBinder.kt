@@ -4,6 +4,7 @@ import com.brbx.domain.model.common.Track
 import com.brbx.domain.pagination.Paginator
 import com.brbx.feature_common.model.UiPaginationState
 import com.brbx.feature_common.model.toUi
+import com.brbx.mvi_core.helpers.bindLatest
 import com.brbx.mvi_core.helpers.reduce
 import com.brbx.playlist.Playlist
 import com.brbx.playlist.model.PlaylistIntent
@@ -23,9 +24,10 @@ internal class PlaylistBinderImpl(
         when (playlist) {
             is Playlist.Id -> { /* TODO */ }
             is Playlist.Paged -> {
-                val mapped = playlist.paginator
-                    .also { it.addToStoreAsPaged() }.state.value.toUi()
-                reduce { copy(tracks = mapped, title = playlist.title) }
+                playlist.paginator.addToStoreAsPaged()
+                playlist.paginator.state.bindLatest { paged ->
+                    copy(tracks = paged.toUi(), title = playlist.title)
+                }
             }
             is Playlist.ReadyList -> {
                 val emptyPagination = UiPaginationState(
